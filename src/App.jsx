@@ -7,6 +7,7 @@ import { BrowserRouter,Routes,Route } from 'react-router-dom'
 import About from './About'
 import Activities from './Activities'
 import Events from './Events'
+import { UpcomingEvents } from './UpcomingEvents'
 
 function App() {
   
@@ -15,11 +16,10 @@ function App() {
     <BrowserRouter>
     <Navbar/><br/>
     <Routes>
-      <Route path='/' element={<ImageCarousel/>} />
+      <Route path='/' element={<><ImageCarousel/> <UpcomingEvents/></>} />
       <Route path='/about-us' element={<About/>} />
       <Route path='/activities' element={<Activities/>} />
       <Route path='/events' element={<Events/>} />
-
     </Routes>
     <Footer/>
 

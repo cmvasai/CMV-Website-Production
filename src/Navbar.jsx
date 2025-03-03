@@ -14,7 +14,7 @@ export const Navbar = () => {
     { name: "Activities", path: "/activities" },
     { name: "Events", path: "/events" },
     { name: "Volunteer / Join Us", path: "/volunteer" },
-    { name: "Donate", path: "/donate" },
+    // { name: "Donate", path: "/donate" },
     { name: "Contact Us", path: "/contact-us" },
   ];
 
@@ -26,7 +26,7 @@ export const Navbar = () => {
           <div className="pt-1">
             <Link to="/">
             <img
-              src="src/assets/lamp.png"
+              src="/images/lamp.png"
               alt="img"
               className="h-8 sm:h-12 md:h-16 lg:h-20 xl:h-24 w-auto"
             />
