@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { FaSun, FaMoon } from "react-icons/fa";
 
-export const Navbar = () => {
+export const Navbar = ({ toggleDarkMode, darkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -14,43 +15,42 @@ export const Navbar = () => {
     { name: "Activities", path: "/activities" },
     { name: "Events", path: "/events" },
     { name: "Volunteer / Join Us", path: "/volunteer" },
-    // { name: "Donate", path: "/donate" },
     { name: "Contact Us", path: "/contact-us" },
   ];
 
   return (
     <>
-      <div className="h-auto px-4 lg:px-16 flex justify-between items-center shadow-lg">
+      <div className="h-auto px-4 lg:px-16 flex justify-between items-center shadow-lg bg-white dark:bg-gray-800">
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
           <div className="pt-1">
             <Link to="/">
-            <img
-              src="/images/lamp.png"
-              alt="img"
-              className="h-8 sm:h-12 md:h-16 lg:h-20 xl:h-24 w-auto"
-            />
+              <img
+                src={darkMode ? "/images/lamp1.png" : "/images/lamp.png"}
+                alt="img"
+                className="h-8 sm:h-12 md:h-16 lg:h-20 xl:h-24 w-auto"
+              />
             </Link>
           </div>
           <div>
             <Link to="/">
-              <h1 className="sm:text-xl md:text-base lg:text-lg xl:text-xl text-[#BC3612] font-bold">CHINMAYA MISSION VASAI</h1>
+              <h1 className="sm:text-xl md:text-base lg:text-lg xl:text-xl text-[#BC3612] dark:text-[#F47930] font-bold">CHINMAYA MISSION VASAI</h1>
             </Link>
             <Link to="/">
-            <p className="text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base font-bold">
-              To Give Maximum Happiness To Maximum People
-            </p>
-            <p className="text-xs sm:text-sm md:text-xs lg:text-sm xl:text-base font-bold">
-              For Maximum Time
-            </p>
+              <p className="text-xs sm:text-xs md:text-xs lg:text-sm xl:text-base font-bold dark:text-[#FFFFFF]">
+                To Give Maximum Happiness To Maximum People
+              </p>
+              <p className="text-xs sm:text-sm md:text-xs lg:text-sm xl:text-base font-bold dark:text-[#FFFFFF]">
+                For Maximum Time
+              </p>
             </Link>
           </div>
         </div>
 
-        {/* Hamburger Icon for Mobile */}
-        <div className="lg:hidden">
+        {/* Hamburger Icon and Dark Mode Toggle for Mobile */}
+        <div className="lg:hidden flex flex-col items-center space-y-2">
           <button
-            className="text-[#F47930] focus:outline-none"
+            className="text-[#F47930] dark:text-[#F47930] focus:outline-none"
             onClick={toggleMenu}
           >
             <svg
@@ -68,6 +68,12 @@ export const Navbar = () => {
               />
             </svg>
           </button>
+          <button
+            onClick={toggleDarkMode}
+            className="p-1 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+          >
+            {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
+          </button>
         </div>
 
         {/* Navigation Section */}
@@ -80,8 +86,8 @@ export const Navbar = () => {
                   className={({ isActive }) =>
                     `px-3 py-2 text-xs sm:text-xs md:text-xs lg:text-sm xl:text-lg font-bold transition-all ${
                       isActive
-                        ? "text-[#BC3612] underline underline-offset-4"
-                        : "hover:text-[#BC3612]"
+                        ? "text-[#BC3612] dark:text-[#F47930] underline underline-offset-4"
+                        : "hover:text-[#BC3612] dark:hover:text-[#F47930] dark:text-[#FFFFFF]"
                     }`
                   }
                 >
@@ -91,11 +97,21 @@ export const Navbar = () => {
             ))}
           </ul>
         </nav>
+
+        {/* Dark Mode Toggle Button for Larger Screens */}
+        <div className="hidden lg:flex items-center">
+          <button
+            onClick={toggleDarkMode}
+            className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+          >
+            {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
+          </button>
+        </div>
       </div>
 
       {/* Dropdown Menu for Mobile */}
       {isOpen && (
-        <nav className="lg:hidden px-4 py-4">
+        <nav className="lg:hidden px-4 py-4 bg-white dark:bg-gray-800">
           <ul className="space-y-2">
             {navItems.map((item, index) => (
               <li key={index}>
@@ -104,8 +120,8 @@ export const Navbar = () => {
                   className={({ isActive }) =>
                     `block w-full text-left px-3 py-2 text-sm font-bold transition-all ${
                       isActive
-                        ? "text-[#BC3612] underline underline-offset-4"
-                        : "hover:text-[#BC3612]"
+                        ? "text-[#BC3612] dark:text-[#F47930] underline underline-offset-4"
+                        : "hover:text-[#BC3612] dark:hover:text-[#F47930] dark:text-[#FFFFFF]"
                     }`
                   }
                 >

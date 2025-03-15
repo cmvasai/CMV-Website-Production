@@ -29,8 +29,8 @@ export const UpcomingEvents = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-center mb-8">Upcoming Events</h1>
+    <div className="bg-white dark:bg-gray-900">
+      <h1 className="text-3xl font-bold text-center mb-8 dark:text-white">Upcoming Events</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
         {events.map((event) => (
           <div
@@ -45,10 +45,10 @@ export const UpcomingEvents = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="mt-4 text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="mt-4 text-xl font-semibold text-gray-900 dark:text-gray-200 mb-2">
               {event.name}
             </h3>
-            <p className="text-gray-600 line-clamp-2 text-center">
+            <p className="text-gray-600 dark:text-gray-400 line-clamp-2 text-center">
               {event.description}
             </p>
           </div>
