@@ -98,14 +98,17 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
           </ul>
         </nav>
 
-        {/* Dark Mode Toggle Button for Larger Screens */}
-        <div className="hidden lg:flex items-center">
+        {/* Dark Mode Toggle Button and Login Button for Larger Screens */}
+        <div className="hidden lg:flex items-center space-x-4">
           <button
             onClick={toggleDarkMode}
-            className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+            className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
           >
             {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
           </button>
+          {/* <Link to="/admin/login" className="text-[#BC3612] dark:text-[#F47930] font-bold">
+            Admin Login
+          </Link> */}
         </div>
       </div>
 
@@ -129,6 +132,11 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
                 </NavLink>
               </li>
             ))}
+            {/* <li>
+              <Link to="/admin/login" className="block w-full text-left px-3 py-2 text-sm font-bold transition-all text-[#BC3612] dark:text-[#F47930] hover:text-[#BC3612] dark:hover:text-[#F47930]">
+                Admin Login
+              </Link>
+            </li> */}
           </ul>
         </nav>
       )}

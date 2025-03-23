@@ -1,66 +1,7 @@
 import { useState } from 'react';
 import EventsModal from './EventsModal';
 
-const events = [
-  {
-    id: 1,
-    name: "Winter Camps",
-    image: "/images/winter-camp.jpeg",
-    description: "Our annual winter camps provide an immersive spiritual experience for youth. Through a blend of meditation, yoga, outdoor activities, and interactive Vedanta sessions, participants discover their inner potential while forming lasting friendships. ",
-    schedule: "December (During Winter Break)",
-    highlights: [
-      "Spiritual discourses and interactive sessions",
-      "Team building activities and games",
-      "Yoga and meditation workshops",
-      "Cultural performances and talent shows"
-    ],
-    contact: "For registration: camp.coordinator@chinmayavasai.org"
-  },
-  {
-    id: 2,
-    name: "Shivaratri Celebrations",
-    image: "/images/shivaratri.jpeg",
-    description: "Experience the divine night of Lord Shiva with continuous pujas, bhajans, and spiritual discourses. This night-long celebration includes special arrangements for devotees to participate in various sevas and spiritual activities.",
-    schedule: "As per Hindu Calendar",
-    highlights: [
-      "Continuous Shiva Puja throughout the night",
-      "Devotional music and bhajans",
-      "Special spiritual discourses",
-      "Prasad distribution"
-    ],
-    contact: "For more details: temple@chinmayavasai.org"
-  },
-  {
-    id: 3,
-    name: "Monsoon Trekking",
-    image: "/images/trekking.jpeg",
-    description: "Our spiritual treks combine the thrill of adventure with the wisdom of Vedanta. Experience the beauty of nature while engaging in meaningful discussions and meditation sessions amidst scenic locations.",
-    schedule: "July - September (During Monsoon)",
-    highlights: [
-      "Guided treks with spiritual discussions",
-      "Meditation in nature",
-      "Team bonding activities",
-      "Photography sessions"
-    ],
-    contact: "For trek details: youth.coordinator@chinmayavasai.org"
-  },
-  {
-    id: 4,
-    name: "New Year Celebrations",
-    image: "/images/new-year.jpeg",
-    description: "Start your new year with spiritual consciousness. Join us for a unique celebration that includes meditation, special pujas, cultural programs, and inspiring talks to begin the year with positive energy and spiritual resolve.",
-    schedule: "December 31st - January 1st",
-    highlights: [
-      "Special New Year puja",
-      "Meditation and chanting sessions",
-      "Cultural performances",
-      "Community dinner"
-    ],
-    contact: "For participation: events@chinmayavasai.org"
-  }
-];
-
-const Events = () => {
+const Events = ({ featuredEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -98,7 +39,7 @@ const Events = () => {
         <h2 className="text-2xl font-bold text-center mb-12">Our Featured Events</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {events.map((event) => (
+          {featuredEvents.map((event) => (
             <div 
               key={event.id}
               className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
