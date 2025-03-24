@@ -13,6 +13,8 @@ import AdminDashboard from './AdminDashboard'
 import EditCarousel from './EditCarousel'
 import EditUpcomingEvents from './EditUpcomingEvents'
 import EditFeaturedEvents from './EditFeaturedEvents'
+import ContactUs from './ContactUs'
+
 
 const initialCarouselItems = [
   { title: "Bike Ride 2K24", description: "Chinmaya Mission Vasai Bike Ride to Trimbakeshwar Temple", image: "/images/bikeRide1.jpeg" },
@@ -150,6 +152,7 @@ function App() {
           <Route path='/' element={<><ImageCarousel carouselItems={carouselItems} /> <UpcomingEvents upcomingEvents={upcomingEvents} /></>} />
           <Route path='/about-us' element={<About />} />
           <Route path='/activities' element={<Activities />} />
+          <Route path='/contact-us' element={<ContactUs />} />
           <Route path='/events' element={<Events featuredEvents={featuredEvents} />} />
           <Route path='/admin/login' element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
           <Route path='/admin/dashboard' element={adminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin/login" />} />
