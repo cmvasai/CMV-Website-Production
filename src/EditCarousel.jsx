@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const EditCarousel = ({ carouselItems, setCarouselItems }) => {
@@ -6,6 +6,20 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
   const [newTitle, setNewTitle] = useState('');
   const [newDescription, setNewDescription] = useState('');
   const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    const fetchCarouselItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/carousel-items');
+        setCarouselItems(response.data || []); // Ensure the data is an array
+      } catch (error) {
+        console.error('Error fetching carousel items:', error);
+        setCarouselItems([]); // Fallback to an empty array on error
+      }
+    };
+
+    fetchCarouselItems();
+  }, [setCarouselItems]);
 
   const handleAddImage = async () => {
     if (newImageFile) {
@@ -21,10 +35,14 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
         );
         const imageUrl = response.data.secure_url;
 
-        setCarouselItems([
-          ...carouselItems,
-          { title: newTitle, description: newDescription, image: imageUrl },
-        ]);
+        const newItem = {
+          title: newTitle,
+          description: newDescription,
+          image: imageUrl,
+        };
+
+        const apiResponse = await axios.post('http://localhost:5000/api/carousel-items', newItem);
+        setCarouselItems([...carouselItems, apiResponse.data]);
         setNewImageFile(null);
         setNewTitle('');
         setNewDescription('');
@@ -38,8 +56,13 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
     }
   };
 
-  const handleRemoveImage = (index) => {
-    setCarouselItems(carouselItems.filter((_, i) => i !== index));
+  const handleRemoveImage = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/carousel-items/${id}`);
+      setCarouselItems(carouselItems.filter(item => item.id !== id));
+    } catch (error) {
+      console.error('Error removing image:', error);
+    }
   };
 
   return (
@@ -47,8 +70,8 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Edit Carousel Images</h2>
         <div className="space-y-4">
-          {carouselItems.map((item, index) => (
-            <div key={index} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
+          {carouselItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
               <div>
                 <p className="text-lg font-bold dark:text-white">{item.title}</p>
                 <p className="text-sm dark:text-gray-300">{item.description}</p>
@@ -61,7 +84,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
                 </div>
               </div>
               <button
-                onClick={() => handleRemoveImage(index)}
+                onClick={() => handleRemoveImage(item.id)}
                 className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
               >
                 Remove

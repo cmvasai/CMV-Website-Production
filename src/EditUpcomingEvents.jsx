@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
@@ -10,6 +10,20 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
   const [newContact, setNewContact] = useState('');
   const [uploading, setUploading] = useState(false);
 
+  useEffect(() => {
+    const fetchUpcomingEvents = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/upcoming-events');
+        setUpcomingEvents(response.data || []); // Ensure the data is an array
+      } catch (error) {
+        console.error('Error fetching upcoming events:', error);
+        setUpcomingEvents([]); // Fallback to an empty array on error
+      }
+    };
+
+    fetchUpcomingEvents();
+  }, [setUpcomingEvents]);
+
   const handleAddEvent = async () => {
     if (newImageFile) {
       setUploading(true);
@@ -19,23 +33,22 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
 
       try {
         const response = await axios.post(
-          `https://api.cloudinary.com/v1_1/dnqi49qyr/image/upload`,
+          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
           formData
         );
         const imageUrl = response.data.secure_url;
 
-        setUpcomingEvents([
-          ...upcomingEvents,
-          {
-            id: upcomingEvents.length + 1,
-            eventName: newEventName,
-            image: imageUrl,
-            description: newDescription,
-            schedule: newSchedule,
-            highlights: newHighlights.split(','),
-            contact: newContact,
-          },
-        ]);
+        const newEvent = {
+          eventName: newEventName,
+          description: newDescription,
+          schedule: newSchedule,
+          highlights: newHighlights.split(','),
+          contact: newContact,
+          image: imageUrl,
+        };
+
+        const apiResponse = await axios.post('http://localhost:5000/api/upcoming-events', newEvent);
+        setUpcomingEvents([...upcomingEvents, apiResponse.data]);
         setNewImageFile(null);
         setNewEventName('');
         setNewDescription('');
@@ -52,8 +65,13 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
     }
   };
 
-  const handleRemoveEvent = (index) => {
-    setUpcomingEvents(upcomingEvents.filter((_, i) => i !== index));
+  const handleRemoveEvent = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/upcoming-events/${id}`);
+      setUpcomingEvents(upcomingEvents.filter(event => event.id !== id));
+    } catch (error) {
+      console.error('Error removing event:', error);
+    }
   };
 
   return (
@@ -61,14 +79,21 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Edit Upcoming Events</h2>
         <div className="space-y-4">
-          {upcomingEvents.map((event, index) => (
-            <div key={index} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
+          {upcomingEvents.map((event) => (
+            <div key={event.id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
               <div>
                 <p className="text-lg font-bold dark:text-white">{event.eventName}</p>
                 <p className="text-sm dark:text-gray-300">{event.description}</p>
+                <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg mt-2">
+                  <img
+                    src={event.image}
+                    alt={event.eventName}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
               <button
-                onClick={() => handleRemoveEvent(index)}
+                onClick={() => handleRemoveEvent(event.id)}
                 className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
               >
                 Remove

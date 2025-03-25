@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
@@ -10,6 +10,20 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
   const [newContact, setNewContact] = useState('');
   const [uploading, setUploading] = useState(false);
 
+  useEffect(() => {
+    const fetchFeaturedEvents = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/featured-events');
+        setFeaturedEvents(response.data || []); // Ensure the data is an array
+      } catch (error) {
+        console.error('Error fetching featured events:', error);
+        setFeaturedEvents([]); // Fallback to an empty array on error
+      }
+    };
+
+    fetchFeaturedEvents();
+  }, [setFeaturedEvents]);
+
   const handleAddEvent = async () => {
     if (newImageFile) {
       setUploading(true);
@@ -19,23 +33,22 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
 
       try {
         const response = await axios.post(
-          `https://api.cloudinary.com/v1_1/dnqi49qyr/image/upload`,
+          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
           formData
         );
         const imageUrl = response.data.secure_url;
 
-        setFeaturedEvents([
-          ...featuredEvents,
-          {
-            id: featuredEvents.length + 1,
-            name: newEventName,
-            image: imageUrl,
-            description: newDescription,
-            schedule: newSchedule,
-            highlights: newHighlights.split(','),
-            contact: newContact,
-          },
-        ]);
+        const newEvent = {
+          name: newEventName,
+          description: newDescription,
+          schedule: newSchedule,
+          highlights: newHighlights.split(','),
+          contact: newContact,
+          image: imageUrl,
+        };
+
+        const apiResponse = await axios.post('http://localhost:5000/api/featured-events', newEvent);
+        setFeaturedEvents([...featuredEvents, apiResponse.data]);
         setNewImageFile(null);
         setNewEventName('');
         setNewDescription('');
@@ -52,8 +65,13 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
     }
   };
 
-  const handleRemoveEvent = (index) => {
-    setFeaturedEvents(featuredEvents.filter((_, i) => i !== index));
+  const handleRemoveEvent = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/featured-events/${id}`);
+      setFeaturedEvents(featuredEvents.filter(event => event.id !== id));
+    } catch (error) {
+      console.error('Error removing event:', error);
+    }
   };
 
   return (
@@ -61,8 +79,8 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Edit Featured Events</h2>
         <div className="space-y-4">
-          {featuredEvents.map((event, index) => (
-            <div key={index} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
+          {featuredEvents.map((event) => (
+            <div key={event.id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
               <div>
                 <p className="text-lg font-bold dark:text-white">{event.name}</p>
                 <p className="text-sm dark:text-gray-300">{event.description}</p>
@@ -75,7 +93,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
                 </div>
               </div>
               <button
-                onClick={() => handleRemoveEvent(index)}
+                onClick={() => handleRemoveEvent(event.id)}
                 className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
               >
                 Remove
