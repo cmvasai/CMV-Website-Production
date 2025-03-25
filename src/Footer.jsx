@@ -20,7 +20,7 @@ const Footer = () => {
                 className="text-black dark:text-white hover:text-[#ff725e] dark:hover:text-[#ff725e]">
                 <FaInstagram size={24} />
               </a>
-              <a href="https://www.youtube.com/@chinmayamissionvasai" 
+              <a href="https://www.youtube.com/@chinmayamissionvasai730" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-black dark:text-white hover:text-[#ff725e] dark:hover:text-[#ff725e]">
