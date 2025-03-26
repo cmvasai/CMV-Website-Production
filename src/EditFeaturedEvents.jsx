@@ -13,7 +13,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
   useEffect(() => {
     const fetchFeaturedEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/featured-events');
+        const response = await axios.get('https://cmv-backend.onrender.com/api/featured-events');
         setFeaturedEvents(response.data || []); // Ensure the data is an array
       } catch (error) {
         console.error('Error fetching featured events:', error);
@@ -47,7 +47,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
           image: imageUrl,
         };
 
-        const apiResponse = await axios.post('http://localhost:5000/api/featured-events', newEvent);
+        const apiResponse = await axios.post('https://cmv-backend.onrender.com/api/featured-events', newEvent);
         setFeaturedEvents([...featuredEvents, apiResponse.data]);
         setNewImageFile(null);
         setNewEventName('');
@@ -67,7 +67,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
 
   const handleRemoveEvent = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/featured-events/${id}`);
+      await axios.delete(`https://cmv-backend.onrender.com/api/featured-events/${id}`);
       setFeaturedEvents(featuredEvents.filter(event => event.id !== id));
     } catch (error) {
       console.error('Error removing event:', error);

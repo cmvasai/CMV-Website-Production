@@ -15,6 +15,7 @@ import EditUpcomingEvents from './EditUpcomingEvents';
 import EditFeaturedEvents from './EditFeaturedEvents';
 import ContactUs from './ContactUs';
 import axios from 'axios';
+import Volunteer from './Volunteer';
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -39,9 +40,9 @@ function App() {
     const fetchData = async () => {
       try {
         const [carouselRes, upcomingRes, featuredRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/carousel-items'),
-          axios.get('http://localhost:5000/api/upcoming-events'),
-          axios.get('http://localhost:5000/api/featured-events'),
+          axios.get('https://cmv-backend.onrender.com/api/carousel-items'),
+          axios.get('https://cmv-backend.onrender.com/api/upcoming-events'),
+          axios.get('https://cmv-backend.onrender.com/api/featured-events'),
         ]);
         setCarouselItems(carouselRes.data || []);
         setUpcomingEvents(upcomingRes.data || []);
@@ -75,6 +76,7 @@ function App() {
           <Route path="/about-us" element={<About />} />
           <Route path="/activities" element={<Activities />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
           <Route path="/admin/login" element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
           <Route

@@ -13,7 +13,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
   useEffect(() => {
     const fetchUpcomingEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/upcoming-events');
+        const response = await axios.get('https://cmv-backend.onrender.com/api/upcoming-events');
         setUpcomingEvents(response.data || []); // Ensure the data is an array
       } catch (error) {
         console.error('Error fetching upcoming events:', error);
@@ -47,7 +47,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
           image: imageUrl,
         };
 
-        const apiResponse = await axios.post('http://localhost:5000/api/upcoming-events', newEvent);
+        const apiResponse = await axios.post('https://cmv-backend.onrender.com/api/upcoming-events', newEvent);
         setUpcomingEvents([...upcomingEvents, apiResponse.data]);
         setNewImageFile(null);
         setNewEventName('');
@@ -67,7 +67,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
 
   const handleRemoveEvent = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/upcoming-events/${id}`);
+      await axios.delete(`https://cmv-backend.onrender.com/api/upcoming-events/${id}`);
       setUpcomingEvents(upcomingEvents.filter(event => event.id !== id));
     } catch (error) {
       console.error('Error removing event:', error);

@@ -10,7 +10,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
   useEffect(() => {
     const fetchCarouselItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/carousel-items');
+        const response = await axios.get('https://cmv-backend.onrender.com/api/carousel-items');
         setCarouselItems(response.data || []); // Ensure the data is an array
       } catch (error) {
         console.error('Error fetching carousel items:', error);
@@ -41,7 +41,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
           image: imageUrl,
         };
 
-        const apiResponse = await axios.post('http://localhost:5000/api/carousel-items', newItem);
+        const apiResponse = await axios.post('https://cmv-backend.onrender.com/api/carousel-items', newItem);
         setCarouselItems([...carouselItems, apiResponse.data]);
         setNewImageFile(null);
         setNewTitle('');
@@ -58,7 +58,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
 
   const handleRemoveImage = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/carousel-items/${id}`);
+      await axios.delete(`https://cmv-backend.onrender.com/api/carousel-items/${id}`);
       setCarouselItems(carouselItems.filter(item => item.id !== id));
     } catch (error) {
       console.error('Error removing image:', error);
