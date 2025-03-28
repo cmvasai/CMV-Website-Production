@@ -1,6 +1,57 @@
+import axios from "axios";
+import e from "cors";
+import { useState } from "react";
+
 const Volunteer = () => {
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
+  const [comments, setComments] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  
+
   const onSubmit = async (event) => {
     event.preventDefault();
+
+    // Check if the form is already submitted
+    if (formSubmitted) {
+      alert("Form already submitted");
+      return;
+    }
+    setFormSubmitted(true); // Set formSubmitted to true
+    
+    try {
+      await axios.post("http://localhost:5000/api/volunteer", {
+        firstName,
+        lastName,
+        email,
+        phone,
+        dob,
+        comments,
+      });
+      alert("Form submitted successfully");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhone("");
+      setDob("");
+      setComments("");
+      setFormSubmitted(false); 
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Error submitting form. Please try again.");
+      setFormSubmitted(false); // Reset formSubmitted on error
+      return;
+      
+    }
+
+
+
+
+
     const formData = new FormData(event.target);
 
     formData.append("access_key", "2e176cdf-a2d7-4ffe-a2a5-40a08c3f04f6");
@@ -90,6 +141,8 @@ const Volunteer = () => {
                 className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                 name="First Name"
                 required
+                onChange={(e) => setFirstName(e.target.value)}
+                value={firstName}
               />
               <input
                 type="text"
@@ -97,6 +150,8 @@ const Volunteer = () => {
                 className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                 name="Last Name"
                 required
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
               />
             </div>
 
@@ -106,43 +161,42 @@ const Volunteer = () => {
               className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
               name="Email"
               required
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
 
             <input
-              type="text"
-              placeholder="Profession"
+              type="number"
+              placeholder="Phone No"
               className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-              name="Profession"
+              name="Phone No"
+              required
+              onChange={(e) => setPhone(e.target.value)}
+              value={phone}
             />
 
             <div className="space-y-2">
-              <label className="font-semibold text-sm sm:text-base">Skills:</label>
+            <label className="font-semibold text-sm sm:text-base">DOB</label>
               <input
-                type="text"
-                placeholder="Example - Photography, IT, Teaching, etc"
+                type="date"
+                placeholder="DOB"
                 className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                name="Skills"
+                name="DOB"
+                required
+                onChange={(e) => setDob(e.target.value)}
+                value={dob}
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="font-semibold text-sm sm:text-base">
-                Areas of Interest (For Volunteering):
-              </label>
-              <input
-                type="text"
-                placeholder="Example - Photography, Teaching, Data Entry, Accounts, etc"
-                className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                name="Areas of Interest(for volunteering)"
-              />
-            </div>
 
             <div className="space-y-2">
-              <label className="font-semibold text-sm sm:text-base">Other Skills and Comments:</label>
+              <label className="font-semibold text-sm sm:text-base">Additional Comments:</label>
               <input
                 type="text"
                 className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                 name="other skills and comments"
+                onChange={(e) => setComments(e.target.value)}
+                value={comments}
               />
             </div>
 
