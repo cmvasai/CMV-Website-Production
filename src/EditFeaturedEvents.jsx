@@ -68,7 +68,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
   const handleRemoveEvent = async (id) => {
     try {
       await axios.delete(`https://cmv-backend.onrender.com/api/featured-events/${id}`);
-      setFeaturedEvents(featuredEvents.filter(event => event.id !== id));
+      setFeaturedEvents(featuredEvents.filter(event => event._id !== id));
     } catch (error) {
       console.error('Error removing event:', error);
     }
@@ -80,7 +80,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
         <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Edit Featured Events</h2>
         <div className="space-y-4">
           {featuredEvents.map((event) => (
-            <div key={event.id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
+            <div key={event._id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
               <div>
                 <p className="text-lg font-bold dark:text-white">{event.name}</p>
                 <p className="text-sm dark:text-gray-300">{event.description}</p>
@@ -93,7 +93,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
                 </div>
               </div>
               <button
-                onClick={() => handleRemoveEvent(event.id)}
+                onClick={() => handleRemoveEvent(event._id)}
                 className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
               >
                 Remove

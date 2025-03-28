@@ -59,7 +59,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
   const handleRemoveImage = async (id) => {
     try {
       await axios.delete(`https://cmv-backend.onrender.com/api/carousel-items/${id}`);
-      setCarouselItems(carouselItems.filter(item => item.id !== id));
+      setCarouselItems(carouselItems.filter(item => item._id !== id));
     } catch (error) {
       console.error('Error removing image:', error);
     }
@@ -71,7 +71,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
         <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Edit Carousel Images</h2>
         <div className="space-y-4">
           {carouselItems.map((item) => (
-            <div key={item.id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
+            <div key={item._id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
               <div>
                 <p className="text-lg font-bold dark:text-white">{item.title}</p>
                 <p className="text-sm dark:text-gray-300">{item.description}</p>
@@ -84,7 +84,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
                 </div>
               </div>
               <button
-                onClick={() => handleRemoveImage(item.id)}
+                onClick={() => handleRemoveImage(item._id)}
                 className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
               >
                 Remove

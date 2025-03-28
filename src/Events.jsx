@@ -41,7 +41,7 @@ const Events = ({ featuredEvents }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {featuredEvents.map((event) => (
             <div 
-              key={event.id}
+              key={event._id}
               className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
               onClick={() => handleEventClick(event)}
             >
