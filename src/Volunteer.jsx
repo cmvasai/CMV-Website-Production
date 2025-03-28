@@ -24,7 +24,7 @@ const Volunteer = () => {
     setFormSubmitted(true); // Set formSubmitted to true
     
     try {
-      await axios.post("http://localhost:5000/api/volunteer", {
+      await axios.post("https://cmv-backend.onrender.com/api/volunteer", {
         firstName,
         lastName,
         email,
