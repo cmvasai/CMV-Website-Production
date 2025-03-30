@@ -30,58 +30,59 @@ const activities = [
     ],
     contact: "Join our WhatsApp group: +91 XXXXXXXXXX"
   },
-  // Add more activities as needed
 ];
 
 const Activities = () => {
   const [selectedActivity, setSelectedActivity] = useState(null);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto mb-16">
-        <h1 className="text-3xl font-bold text-center mb-8">Activities</h1>
-        
-        <div className="prose max-w-none text-gray-800">
-          <p className="text-lg leading-relaxed mb-6 text-justify">
-            Chinmaya Mission Vasai conducts various spiritual and cultural activities aimed at inner transformation and character development for all age groups. Our activities are designed to promote the understanding of Vedantic knowledge and its practical application in daily life.
-          </p>
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto mb-16">
+          <h1 className="text-3xl font-bold text-center mb-8">Activities</h1>
           
-          <p className="text-lg leading-relaxed mb-6 text-justify">
-            Through regular study groups, workshops, cultural programs, and community service initiatives, we provide platforms for individuals to grow spiritually while serving society. Our activities include Vedanta classes, meditation sessions, youth programs, children's cultural education, and various community outreach programs.
-          </p>
+          <div className="prose max-w-none text-gray-800 dark:text-gray-300">
+            <p className="text-lg leading-relaxed mb-6 text-justify">
+              Chinmaya Mission Vasai conducts various spiritual and cultural activities aimed at inner transformation and character development for all age groups. Our activities are designed to promote the understanding of Vedantic knowledge and its practical application in daily life.
+            </p>
+            
+            <p className="text-lg leading-relaxed mb-6 text-justify">
+              Through regular study groups, workshops, cultural programs, and community service initiatives, we provide platforms for individuals to grow spiritually while serving society. Our activities include Vedanta classes, meditation sessions, youth programs, children's cultural education, and various community outreach programs.
+            </p>
 
-          <p className="text-lg leading-relaxed mb-6 text-justify">
-            Each activity at Chinmaya Mission is carefully structured to help participants understand the deeper meaning of life while fostering values like compassion, discipline, and selfless service. We welcome everyone to join our activities and experience the transformative wisdom of Vedanta.
-          </p>
+            <p className="text-lg leading-relaxed mb-6 text-justify">
+              Each activity at Chinmaya Mission is carefully structured to help participants understand the deeper meaning of life while fostering values like compassion, discipline, and selfless service. We welcome everyone to join our activities and experience the transformative wisdom of Vedanta.
+            </p>
+          </div>
+
+          <h2 className="text-2xl font-bold text-center mb-12">Our Regular Activities</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {activities.map((activity) => (
+              <div 
+                key={activity.id}
+                className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
+                onClick={() => setSelectedActivity(activity)}
+              >
+                <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
+                  <img
+                    src={activity.image}
+                    alt={activity.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="mt-4 text-xl font-semibold text-center dark:text-white">{activity.name}</h3>
+              </div>
+            ))}
+          </div>
+
+          <ActivitiesModal
+            isOpen={!!selectedActivity}
+            onClose={() => setSelectedActivity(null)}
+            activity={selectedActivity}
+          />
         </div>
       </div>
-
-      <h2 className="text-2xl font-bold text-center mb-12">Our Regular Activities</h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {activities.map((activity) => (
-          <div 
-            key={activity.id}
-            className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
-            onClick={() => setSelectedActivity(activity)}
-          >
-            <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
-              <img
-                src={activity.image}
-                alt={activity.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <h3 className="mt-4 text-xl font-semibold text-center">{activity.name}</h3>
-          </div>
-        ))}
-      </div>
-
-      <ActivitiesModal
-        isOpen={!!selectedActivity}
-        onClose={() => setSelectedActivity(null)}
-        activity={selectedActivity}
-      />
     </div>
   );
 };
