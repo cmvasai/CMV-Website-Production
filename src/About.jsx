@@ -34,21 +34,12 @@ const About = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
       <div className="container mx-auto px-4 py-8">
-        {/* Original About Us Section */}
+        {/* About Us Section */}
         <h1 className="text-3xl font-bold text-center mb-8">About Us</h1>
 
         <div className="max-w-4xl mx-auto text-gray-800 dark:text-gray-300">
           <div className="flex flex-col md:flex-row gap-8 items-center">
-            {/* Swami Chinmayananda's Image - Adjusted width and positioning */}
-            <div className="w-full md:w-1/4 flex justify-center mb-4 md:mb-0 order-1 md:order-2">
-              <img 
-                src="/images/swamiji.jpg" 
-                alt="Swami Chinmayananda" 
-                className="rounded-lg shadow-lg w-[200px] h-auto object-cover" 
-              />
-            </div>
-
-            {/* Text Content - Center aligned and justified */}
+            {/* Text Content */}
             <div className="w-full md:w-3/4 space-y-6 text-justify order-2 md:order-1">
               <p className="text-lg leading-relaxed">
                 Chinmaya Mission was established in 1953 by devotees of the world-renowned Vedanta teacher, His Holiness Swami Chinmayananda. The Mission carries forward the spiritual and educational legacy of this great visionary through its numerous activities and centers worldwide.
@@ -73,10 +64,19 @@ const About = () => {
                 </p>
               </div>
             </div>
+
+            {/* Swami Chinmayananda's Image */}
+            <div className="w-full md:w-1/4 flex justify-center mb-4 md:mb-0 order-1 md:order-2">
+              <img 
+                src="/images/swamiji.jpg" 
+                alt="Swami Chinmayananda" 
+                className="rounded-lg shadow-lg w-[200px] h-auto object-cover" 
+              />
+            </div>
           </div>
         </div>
 
-        {/* New Acharyas Section */}
+        {/* Acharyas Section */}
         <div className="mt-20 mb-12">
           <h2 className="text-3xl font-bold text-center mb-12">Our Acharyas</h2>
           
