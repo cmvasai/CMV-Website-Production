@@ -1,5 +1,4 @@
 import axios from "axios";
-import e from "cors";
 import { useState } from "react";
 
 const Volunteer = () => {
@@ -194,7 +193,7 @@ const Volunteer = () => {
               <input
                 type="text"
                 className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                name="other skills and comments"
+                name="additional comments"
                 onChange={(e) => setComments(e.target.value)}
                 value={comments}
               />
