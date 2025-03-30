@@ -54,34 +54,34 @@ const Activities = () => {
               Each activity at Chinmaya Mission is carefully structured to help participants understand the deeper meaning of life while fostering values like compassion, discipline, and selfless service. We welcome everyone to join our activities and experience the transformative wisdom of Vedanta.
             </p>
           </div>
-        </div>
 
-        <h2 className="text-2xl font-bold text-center mb-12">Our Regular Activities</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {activities.map((activity) => (
-            <div 
-              key={activity.id}
-              className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
-              onClick={() => setSelectedActivity(activity)}
-            >
-              <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
-                <img
-                  src={activity.image}
-                  alt={activity.name}
-                  className="w-full h-full object-cover"
-                />
+          <h2 className="text-2xl font-bold text-center mb-12">Our Regular Activities</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {activities.map((activity) => (
+              <div 
+                key={activity.id}
+                className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
+                onClick={() => setSelectedActivity(activity)}
+              >
+                <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
+                  <img
+                    src={activity.image}
+                    alt={activity.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="mt-4 text-xl font-semibold text-center dark:text-white">{activity.name}</h3>
               </div>
-              <h3 className="mt-4 text-xl font-semibold text-center dark:text-white">{activity.name}</h3>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <ActivitiesModal
-          isOpen={!!selectedActivity}
-          onClose={() => setSelectedActivity(null)}
-          activity={selectedActivity}
-        />
+          <ActivitiesModal
+            isOpen={!!selectedActivity}
+            onClose={() => setSelectedActivity(null)}
+            activity={selectedActivity}
+          />
+        </div>
       </div>
     </div>
   );
