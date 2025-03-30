@@ -24,7 +24,7 @@ const acharyas = [
     id: 4,
     name: "Swami Nirbhayananda",
     image: "/images/swami-nirbhayananda.jpeg",
-    description: "Swami Nirbhayananda hailing from South India received his formal education overseas. A Software professional in his purvashram was involved with Chinmaya Mission and it’s activities from his childhood. Served the Chinmaya Mission Mumbai as it”s General Secretary for the Youth Wing in late 90’s took up to learning of Vedanta as a full time student in 2002-2004 under the tutelage of Sw. Ishwaranandaji and received the name Br. Pavan Chaitanya in 2004 by Pujya Guruji Sw. Tejomayanandaji. Ever since his posting in Chinmaya Mission Mumbai at Chinmaya Bhakti, Borivali, the Area has seen a steady grow in it’s activities. He is proficient in English, Hindi and Malayalam alike and has been conducting workshops in B’ Schools, Educational Institutions, Corporate Offices. He is known for his sessions on parenting, Stress buster modules and talks on Human Values based on Bhagavat Geeta and Upanishads. He has addressed seminars on Indian approach to Management and also uses movie workshops and Outdoor-Experiential-Learning (OEL) through adventurous treks, etc. effectively. He has been an inspiration to the Chinmaya Yuva Kendra (CHYK), the youth wing of Chinmaya Mission. Br. Pavan Chaitanya wins hearts with his simplicity and affection to one and all around him. He is a Tech Savvy and passionate about painting and loves playing Badminton. He is known for his focus and clarity in the spiritual Path."
+    description: "Swami Nirbhayananda hailing from South India received his formal education overseas. A Software professional in his purvashram was involved with Chinmaya Mission and it’s activities from his childhood. Served the Chinmaya Mission Mumbai as it”s General Secretary for the Youth Wing in late 90’s took up to learning of Vedanta as a full time student in 2002-2004 under the tutelage of Sw. Ishwaranandaji and received the name Br. Pavan Chaitanya in 2004 by Pujya Guruji Sw. Tejomayanandaji. Ever since his posting in Chinmaya Mission Mumbai at Chinmaya Bhakti, Borivali, the Area has seen a steady grow in it’s activities. He is proficient in English, Hindi and Malayalam alike and has been conducting workshops in B’ Schools, Educational Institutions, Corporate Offices. He is known for his sessions on parenting, Stress buster modules and talks on Human Values based on Bhagavat Geeta and Upanishads. He has addressed seminars on Indian approach to Management and also uses movie workshops and Outdoor-Experiential-Learning (OEL) through adventurous treks, etc. effectively. He has been an inspiration to the Chinmaya Yuva Kendra (CHYK), the youth wing of Chinmaya Mission.Br. Pavan Chaitanya wins hearts with his simplicity and affection to one and all around him. He is a Tech Savvy and passionate about painting and loves playing Badminton. He is known for his focus and clarity in the spiritual Path."
   }
 ];
 
@@ -38,9 +38,18 @@ const About = () => {
         <h1 className="text-3xl font-bold text-center mb-8">About Us</h1>
 
         <div className="max-w-4xl mx-auto text-gray-800 dark:text-gray-300">
-          <div className="flex flex-col-reverse md:flex-row gap-8 items-center md:items-start">
-            {/* Text Content */}
-            <div className="w-full md:w-2/3 space-y-6">
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            {/* Swami Chinmayananda's Image - Adjusted width and positioning */}
+            <div className="w-full md:w-1/4 flex justify-center mb-4 md:mb-0 order-1 md:order-2">
+              <img 
+                src="/images/swamiji.jpg" 
+                alt="Swami Chinmayananda" 
+                className="rounded-lg shadow-lg w-[200px] h-auto object-cover" 
+              />
+            </div>
+
+            {/* Text Content - Center aligned and justified */}
+            <div className="w-full md:w-3/4 space-y-6 text-justify order-2 md:order-1">
               <p className="text-lg leading-relaxed">
                 Chinmaya Mission was established in 1953 by devotees of the world-renowned Vedanta teacher, His Holiness Swami Chinmayananda. The Mission carries forward the spiritual and educational legacy of this great visionary through its numerous activities and centers worldwide.
               </p>
@@ -63,15 +72,6 @@ const About = () => {
                   "To provide to individuals from any background, the wisdom of Vedanta and the practical means for spiritual growth and happiness, enabling them to become positive contributors to society."
                 </p>
               </div>
-            </div>
-
-            {/* Swami Chinmayananda's Image */}
-            <div className="w-full md:w-1/3 flex justify-center mb-8 md:mb-0">
-              <img 
-                src="/images/swamiji.jpg" 
-                alt="Swami Chinmayananda" 
-                className="rounded-lg shadow-lg w-[250px] h-auto object-cover"
-              />
             </div>
           </div>
         </div>

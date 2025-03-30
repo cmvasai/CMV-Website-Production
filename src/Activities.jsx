@@ -30,7 +30,6 @@ const activities = [
     ],
     contact: "Join our WhatsApp group: +91 XXXXXXXXXX"
   },
-  // Add more activities as needed
 ];
 
 const Activities = () => {
@@ -43,15 +42,15 @@ const Activities = () => {
           <h1 className="text-3xl font-bold text-center mb-8">Activities</h1>
           
           <div className="prose max-w-none text-gray-800 dark:text-gray-300">
-            <p className="text-lg leading-relaxed mb-6">
+            <p className="text-lg leading-relaxed mb-6 text-justify">
               Chinmaya Mission Vasai conducts various spiritual and cultural activities aimed at inner transformation and character development for all age groups. Our activities are designed to promote the understanding of Vedantic knowledge and its practical application in daily life.
             </p>
             
-            <p className="text-lg leading-relaxed mb-6">
+            <p className="text-lg leading-relaxed mb-6 text-justify">
               Through regular study groups, workshops, cultural programs, and community service initiatives, we provide platforms for individuals to grow spiritually while serving society. Our activities include Vedanta classes, meditation sessions, youth programs, children's cultural education, and various community outreach programs.
             </p>
 
-            <p className="text-lg leading-relaxed mb-6">
+            <p className="text-lg leading-relaxed mb-6 text-justify">
               Each activity at Chinmaya Mission is carefully structured to help participants understand the deeper meaning of life while fostering values like compassion, discipline, and selfless service. We welcome everyone to join our activities and experience the transformative wisdom of Vedanta.
             </p>
           </div>
