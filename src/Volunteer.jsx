@@ -2,77 +2,98 @@ import axios from "axios";
 import { useState } from "react";
 
 const Volunteer = () => {
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpError, setOtpError] = useState("");
 
+  // Form-related states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNo, setphoneNo] = useState("");
   const [dob, setDob] = useState("");
-  const [comments, setComments] = useState("");
+  const [additionalComments, setAdditionalComments] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
-  
 
+  // Function to send OTP
+  const handleSendOtp = async () => {
+    try {
+      await axios.post("https://cmv-backend.onrender.com/api/send-otp-email", { email });
+      setOtpSent(true);
+      alert("OTP sent to your email. Please check your inbox.");
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      alert("Failed to send OTP. Please try again.");
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await axios.post("https://cmv-backend.onrender.com/api/verify-otp", {
+        identifier: email,
+        otp,
+      });
+  
+      // Check if the response contains the success key
+      if (response.data && response.data.success) {
+        setOtpVerified(true);
+        alert("OTP verified successfully!");
+        setOtpError("");
+      } else {
+        setOtpError("Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      setOtpError("Failed to verify OTP. Please try again.");
+    }
+  };
+
+  // Function to handle form submission
   const onSubmit = async (event) => {
     event.preventDefault();
-
+  
     // Check if the form is already submitted
     if (formSubmitted) {
       alert("Form already submitted");
       return;
     }
     setFormSubmitted(true); // Set formSubmitted to true
-    
+  
     try {
+      // Send all form data to the backend
       await axios.post("https://cmv-backend.onrender.com/api/volunteer", {
         firstName,
         lastName,
         email,
-        phone,
+        phoneNo, // Ensure phone is included
         dob,
-        comments,
+        additionalComments, // Ensure comments are included
       });
+  
       alert("Form submitted successfully");
+  
+      // Reset form fields after successful submission
       setFirstName("");
       setLastName("");
       setEmail("");
-      setPhone("");
+      setphoneNo("");
       setDob("");
-      setComments("");
-      setFormSubmitted(false); 
+      setAdditionalComments("");
+      setOtp("");
+      setOtpSent(false);
+      setOtpVerified(false);
+      setFormSubmitted(false);
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting form. Please try again.");
       setFormSubmitted(false); // Reset formSubmitted on error
-      return;
-      
-    }
-
-
-
-
-
-    const formData = new FormData(event.target);
-
-    formData.append("access_key", "2e176cdf-a2d7-4ffe-a2a5-40a08c3f04f6");
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      alert("Form Submitted Successfully");
-    } else {
-      console.log("Error", data);
-      alert("error");
     }
   };
 
   return (
     <>
-      {/* Background Image Section (Unchanged) */}
+      {/* Background Image Section */}
       <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-8 px-4">
         <div
           className="relative w-full h-[calc(100vh-4rem)] bg-black bg-contain bg-center flex items-end sm:items-center justify-start bg-no-repeat"
@@ -93,8 +114,8 @@ const Volunteer = () => {
         </div>
       </div>
 
-      {/* Why Serve Section */}
-      <div className="bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-8 px-4">
+       {/* Why Serve Section */}
+       <div className="bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-8 px-4">
         <div className="bg-white dark:bg-gray-900 text-black dark:text-white shadow-2xl dark:shadow-[0_20px_50px_rgba(255,255,255,0.1)] p-6 rounded-lg w-full max-w-4xl flex flex-col gap-6 transition-all duration-300">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">Why Serve?</h1>
           <div className="space-y-4 text-sm sm:text-base md:text-lg leading-relaxed">
@@ -133,27 +154,7 @@ const Volunteer = () => {
           </h1>
 
           <form onSubmit={onSubmit} className="space-y-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="text"
-                placeholder="First Name"
-                className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                name="First Name"
-                required
-                onChange={(e) => setFirstName(e.target.value)}
-                value={firstName}
-              />
-              <input
-                type="text"
-                placeholder="Last Name"
-                className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                name="Last Name"
-                required
-                onChange={(e) => setLastName(e.target.value)}
-                value={lastName}
-              />
-            </div>
-
+            {/* Email and OTP Section */}
             <input
               type="email"
               placeholder="Email"
@@ -162,46 +163,98 @@ const Volunteer = () => {
               required
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              disabled={otpVerified}
             />
 
+            <div className="space-y-4">
+              {!otpSent && (
+                <button
+                  type="button"
+                  onClick={handleSendOtp}
+                  className="bg-blue-500 text-white px-6 py-3 rounded-md w-full sm:w-auto hover:bg-blue-600 transition-all duration-300 font-semibold"
+                >
+                  Send OTP
+                </button>
+              )}
+
+              {otpSent && (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Enter OTP"
+                    className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    disabled={otpVerified}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleVerifyOtp}
+                    className="bg-green-500 text-white px-6 py-3 rounded-md w-full sm:w-auto hover:bg-green-600 transition-all duration-300 font-semibold"
+                    disabled={otpVerified}
+                  >
+                    Verify OTP
+                  </button>
+                  {otpError && <p className="text-red-500 text-sm">{otpError}</p>}
+                </>
+              )}
+            </div>
+
+            {/* Other Form Fields */}
+            <input
+              type="text"
+              placeholder="First Name"
+              className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+              name="First Name"
+              required
+              onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
+              disabled={!otpVerified}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+              name="Last Name"
+              required
+              onChange={(e) => setLastName(e.target.value)}
+              value={lastName}
+              disabled={!otpVerified}
+            />
             <input
               type="number"
               placeholder="Phone No"
               className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
               name="Phone No"
               required
-              onChange={(e) => setPhone(e.target.value)}
-              value={phone}
+              onChange={(e) => setphoneNo(e.target.value)}
+              value={phoneNo}
+              disabled={!otpVerified}
             />
-
-            <div className="space-y-2">
-            <label className="font-semibold text-sm sm:text-base">DOB</label>
-              <input
-                type="date"
-                placeholder="DOB"
-                className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                name="DOB"
-                required
-                onChange={(e) => setDob(e.target.value)}
-                value={dob}
-              />
-            </div>
-
-
-            <div className="space-y-2">
-              <label className="font-semibold text-sm sm:text-base">Additional Comments:</label>
-              <input
-                type="text"
-                className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                name="additional comments"
-                onChange={(e) => setComments(e.target.value)}
-                value={comments}
-              />
-            </div>
+            <input
+              type="date"
+              placeholder="DOB"
+              className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+              name="DOB"
+              required
+              onChange={(e) => setDob(e.target.value)}
+              value={dob}
+              disabled={!otpVerified}
+            />
+            <input
+              type="text"
+              placeholder="Additional Comments"
+              className="border border-gray-300 dark:border-gray-600 p-3 rounded-md w-full bg-white dark:bg-gray-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+              name="Additional Comments"
+              onChange={(e) => setAdditionalComments(e.target.value)}
+              value={additionalComments}
+              disabled={!otpVerified}
+            />
 
             <button
               type="submit"
               className="bg-blue-500 text-white px-6 py-3 rounded-md w-full sm:w-auto hover:bg-blue-600 transition-all duration-300 font-semibold"
+              disabled={!otpVerified}
             >
               Submit
             </button>
