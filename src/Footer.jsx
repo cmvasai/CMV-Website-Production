@@ -1,4 +1,5 @@
-import { FaFacebook, FaInstagram, FaYoutube, FaTwitter } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -8,13 +9,13 @@ const Footer = () => {
           {/* Social Media */}
           <div className="mb-3">
             <div className="flex justify-center space-x-4">
-              <a href="https://www.facebook.com/ChinmayaVasai" 
+              <a href="https://www.facebook.com/share/18uKZokgN6/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-black dark:text-white hover:text-[#ff725e] dark:hover:text-[#ff725e]">
                 <FaFacebook size={24} />
               </a>
-              <a href="https://www.instagram.com/chinmayamissionvasai" 
+              <a href="https://www.instagram.com/cm_vasai?igsh=MWwyMjdlcHJ3dWJvNw==" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-black dark:text-white hover:text-[#ff725e] dark:hover:text-[#ff725e]">
@@ -26,11 +27,11 @@ const Footer = () => {
                 className="text-black dark:text-white hover:text-[#ff725e] dark:hover:text-[#ff725e]">
                 <FaYoutube size={24} />
               </a>
-              <a href="https://twitter.com/ChinmayaVasai" 
+              <a href="https://x.com/Chinmaya_Vasai" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-black dark:text-white hover:text-[#ff725e] dark:hover:text-[#ff725e]">
-                <FaTwitter size={24} />
+                <FaXTwitter size={24} />
               </a>
             </div>
           </div>
