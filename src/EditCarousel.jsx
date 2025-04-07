@@ -21,33 +21,50 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
     fetchCarouselItems();
   }, [setCarouselItems]);
 
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+  
   const handleAddImage = async () => {
     if (newImageFile) {
       setUploading(true);
-      const formData = new FormData();
-      formData.append('file', newImageFile);
-      formData.append('upload_preset', 'ml_default'); // Using the default upload preset
-
+  
       try {
-        const response = await axios.post(
-          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          formData
+        // Step 1: Convert image to base64
+        const base64Image = await toBase64(newImageFile);
+  
+        // Step 2: Upload image to backend
+        const uploadResponse = await axios.post(
+          'https://cmv-backend.onrender.com/api/upload-image',
+          { imageBase64: base64Image }
         );
-        const imageUrl = response.data.secure_url;
-
+  
+        const imageUrl = uploadResponse.data.imageUrl;
+  
+        // Step 3: Send new carousel item with uploaded image URL
         const newItem = {
           title: newTitle,
           description: newDescription,
           image: imageUrl,
         };
-
-        const apiResponse = await axios.post('https://cmv-backend.onrender.com/api/carousel-items', newItem);
+  
+        const apiResponse = await axios.post(
+          'https://cmv-backend.onrender.com/api/carousel-items',
+          newItem
+        );
+  
         setCarouselItems([...carouselItems, apiResponse.data]);
+  
+        // Step 4: Reset fields
         setNewImageFile(null);
         setNewTitle('');
         setNewDescription('');
       } catch (error) {
-        console.error('Error uploading image:', error);
+        console.error('Error uploading image or adding carousel item:', error);
       } finally {
         setUploading(false);
       }
@@ -55,6 +72,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
       alert('Please select an image file to upload.');
     }
   };
+  
 
   const handleRemoveImage = async (id) => {
     try {

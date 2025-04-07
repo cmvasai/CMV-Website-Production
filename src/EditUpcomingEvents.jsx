@@ -24,20 +24,33 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
     fetchUpcomingEvents();
   }, [setUpcomingEvents]);
 
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+  
   const handleAddEvent = async () => {
     if (newImageFile) {
       setUploading(true);
-      const formData = new FormData();
-      formData.append('file', newImageFile);
-      formData.append('upload_preset', 'ml_default'); // Using the default upload preset
-
+  
       try {
-        const response = await axios.post(
-          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          formData
+        // Step 1: Convert file to Base64
+        const base64Image = await toBase64(newImageFile);
+  
+        // Step 2: Upload image to backend (which handles Cloudinary)
+        const uploadResponse = await axios.post(
+          'https://cmv-backend.onrender.com/api/upload-image',
+          {
+            imageBase64: base64Image,
+          }
         );
-        const imageUrl = response.data.secure_url;
-
+  
+        const imageUrl = uploadResponse.data.imageUrl;
+  
+        // Step 3: Add event to backend
         const newEvent = {
           eventName: newEventName,
           description: newDescription,
@@ -46,9 +59,15 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
           contact: newContact,
           image: imageUrl,
         };
-
-        const apiResponse = await axios.post('https://cmv-backend.onrender.com/api/upcoming-events', newEvent);
+  
+        const apiResponse = await axios.post(
+          'https://cmv-backend.onrender.com/api/upcoming-events',
+          newEvent
+        );
+  
         setUpcomingEvents([...upcomingEvents, apiResponse.data]);
+  
+        // Step 4: Reset fields
         setNewImageFile(null);
         setNewEventName('');
         setNewDescription('');
@@ -56,7 +75,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
         setNewHighlights('');
         setNewContact('');
       } catch (error) {
-        console.error('Error uploading image:', error);
+        console.error('Error uploading image or adding event:', error);
       } finally {
         setUploading(false);
       }
@@ -64,6 +83,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
       alert('Please select an image file to upload.');
     }
   };
+  
 
   const handleRemoveEvent = async (id) => {
     try {

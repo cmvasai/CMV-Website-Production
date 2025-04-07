@@ -25,45 +25,68 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
   }, [setFeaturedEvents]);
 
   const handleAddEvent = async () => {
-    if (newImageFile) {
-      setUploading(true);
-      const formData = new FormData();
-      formData.append('file', newImageFile);
-      formData.append('upload_preset', 'ml_default'); // Using the default upload preset
-
-      try {
-        const response = await axios.post(
-          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          formData
-        );
-        const imageUrl = response.data.secure_url;
-
-        const newEvent = {
-          name: newEventName,
-          description: newDescription,
-          schedule: newSchedule,
-          highlights: newHighlights.split(','),
-          contact: newContact,
-          image: imageUrl,
-        };
-
-        const apiResponse = await axios.post('https://cmv-backend.onrender.com/api/featured-events', newEvent);
-        setFeaturedEvents([...featuredEvents, apiResponse.data]);
-        setNewImageFile(null);
-        setNewEventName('');
-        setNewDescription('');
-        setNewSchedule('');
-        setNewHighlights('');
-        setNewContact('');
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      } finally {
-        setUploading(false);
-      }
-    } else {
+    if (!newImageFile) {
       alert('Please select an image file to upload.');
+      return;
+    }
+  
+    setUploading(true);
+  
+    const toBase64 = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+      });
+  
+    try {
+      // Convert image to base64 and upload via backend
+      const base64Image = await toBase64(newImageFile);
+  
+      const uploadResponse = await axios.post(
+        'https://cmv-backend.onrender.com/api/upload-image',
+        {
+          imageBase64: base64Image,
+        }
+      );
+  
+      const imageUrl = uploadResponse.data.imageUrl;
+  
+      // Prepare new event data
+      const newEvent = {
+        name: newEventName,
+        description: newDescription,
+        schedule: newSchedule,
+        highlights: newHighlights.split(','),
+        contact: newContact,
+        image: imageUrl,
+      };
+  
+      // Save the event data in MongoDB
+      const apiResponse = await axios.post(
+        'https://cmv-backend.onrender.com/api/featured-events',
+        newEvent
+      );
+  
+      // Update local state
+      setFeaturedEvents([...featuredEvents, apiResponse.data]);
+  
+      // Reset form
+      setNewImageFile(null);
+      setNewEventName('');
+      setNewDescription('');
+      setNewSchedule('');
+      setNewHighlights('');
+      setNewContact('');
+    } catch (error) {
+      console.error('Error uploading image or saving event:', error);
+      alert('Something went wrong while uploading or saving the event.');
+    } finally {
+      setUploading(false);
     }
   };
+  
 
   const handleRemoveEvent = async (id) => {
     try {
