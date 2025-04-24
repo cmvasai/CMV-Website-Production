@@ -62,7 +62,7 @@ const Volunteer = () => {
   
     try {
       // Send all form data to the backend
-      await axios.post("${import.meta.env.VITE_BACKEND_URL}/api/volunteer", {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/volunteer`, {
         firstName,
         lastName,
         email,
