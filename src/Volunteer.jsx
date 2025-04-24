@@ -19,7 +19,7 @@ const Volunteer = () => {
   // Function to send OTP
   const handleSendOtp = async () => {
     try {
-      await axios.post("${import.meta.env.VITE_BACKEND_URL}/api/send-otp-email", { email });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/send-otp-email`, { email });
       setOtpSent(true);
       alert("OTP sent to your email. Please check your inbox.");
     } catch (error) {
