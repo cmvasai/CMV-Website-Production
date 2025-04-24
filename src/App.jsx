@@ -40,9 +40,9 @@ function App() {
     const fetchData = async () => {
       try {
         const [carouselRes, upcomingRes, featuredRes] = await Promise.all([
-          axios.get('https://cmv-backend.onrender.com/api/carousel-items'),
-          axios.get('https://cmv-backend.onrender.com/api/upcoming-events'),
-          axios.get('https://cmv-backend.onrender.com/api/featured-events'),
+          axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/carousel-items`),
+          axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events`),
+          axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/featured-events`),
         ]);
         setCarouselItems(carouselRes.data || []);
         setUpcomingEvents(upcomingRes.data || []);

@@ -11,7 +11,7 @@ const AdminLogin = ({ setAdminLoggedIn }) => {
     e.preventDefault();
   
     try {
-      const response = await axios.post(`https://cmv-backend.onrender.com/api/admin/login`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/admin/login`, {
         username,
         password,
       });

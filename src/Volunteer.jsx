@@ -19,7 +19,7 @@ const Volunteer = () => {
   // Function to send OTP
   const handleSendOtp = async () => {
     try {
-      await axios.post("https://cmv-backend.onrender.com/api/send-otp-email", { email });
+      await axios.post("${import.meta.env.VITE_BACKEND_URL}/api/send-otp-email", { email });
       setOtpSent(true);
       alert("OTP sent to your email. Please check your inbox.");
     } catch (error) {
@@ -30,7 +30,7 @@ const Volunteer = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const response = await axios.post("https://cmv-backend.onrender.com/api/verify-otp", {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/verify-otp`, {
         identifier: email,
         otp,
       });
@@ -62,7 +62,7 @@ const Volunteer = () => {
   
     try {
       // Send all form data to the backend
-      await axios.post("https://cmv-backend.onrender.com/api/volunteer", {
+      await axios.post("${import.meta.env.VITE_BACKEND_URL}/api/volunteer", {
         firstName,
         lastName,
         email,

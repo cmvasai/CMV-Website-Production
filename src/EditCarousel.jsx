@@ -10,7 +10,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
   useEffect(() => {
     const fetchCarouselItems = async () => {
       try {
-        const response = await axios.get('https://cmv-backend.onrender.com/api/carousel-items');
+        const response = await axios.get('${import.meta.env.VITE_BACKEND_URL}/api/carousel-items');
         setCarouselItems(response.data || []); // Ensure the data is an array
       } catch (error) {
         console.error('Error fetching carousel items:', error);
@@ -39,7 +39,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
   
         // Step 2: Upload image to backend
         const uploadResponse = await axios.post(
-          'https://cmv-backend.onrender.com/api/upload-image',
+          `${import.meta.env.VITE_BACKEND_URL}/api/upload-image`,
           { imageBase64: base64Image }
         );
   
@@ -53,7 +53,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
         };
   
         const apiResponse = await axios.post(
-          'https://cmv-backend.onrender.com/api/carousel-items',
+          `${import.meta.env.VITE_BACKEND_URL}/api/carousel-items`,
           newItem
         );
   
@@ -76,7 +76,7 @@ const EditCarousel = ({ carouselItems, setCarouselItems }) => {
 
   const handleRemoveImage = async (id) => {
     try {
-      await axios.delete(`https://cmv-backend.onrender.com/api/carousel-items/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/carousel-items/${id}`);
       setCarouselItems(carouselItems.filter(item => item._id !== id));
     } catch (error) {
       console.error('Error removing image:', error);

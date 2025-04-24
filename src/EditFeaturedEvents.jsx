@@ -13,7 +13,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
   useEffect(() => {
     const fetchFeaturedEvents = async () => {
       try {
-        const response = await axios.get('https://cmv-backend.onrender.com/api/featured-events');
+        const response = await axios.get('${import.meta.env.VITE_BACKEND_URL}/api/featured-events');
         setFeaturedEvents(response.data || []); // Ensure the data is an array
       } catch (error) {
         console.error('Error fetching featured events:', error);
@@ -45,7 +45,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
       const base64Image = await toBase64(newImageFile);
   
       const uploadResponse = await axios.post(
-        'https://cmv-backend.onrender.com/api/upload-image',
+        '${import.meta.env.VITE_BACKEND_URL}/api/upload-image',
         {
           imageBase64: base64Image,
         }
@@ -65,7 +65,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
   
       // Save the event data in MongoDB
       const apiResponse = await axios.post(
-        'https://cmv-backend.onrender.com/api/featured-events',
+        '${import.meta.env.VITE_BACKEND_URL}/api/featured-events',
         newEvent
       );
   
@@ -90,7 +90,7 @@ const EditFeaturedEvents = ({ featuredEvents, setFeaturedEvents }) => {
 
   const handleRemoveEvent = async (id) => {
     try {
-      await axios.delete(`https://cmv-backend.onrender.com/api/featured-events/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/featured-events/${id}`);
       setFeaturedEvents(featuredEvents.filter(event => event._id !== id));
     } catch (error) {
       console.error('Error removing event:', error);

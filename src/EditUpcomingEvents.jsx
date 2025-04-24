@@ -13,7 +13,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
   useEffect(() => {
     const fetchUpcomingEvents = async () => {
       try {
-        const response = await axios.get('https://cmv-backend.onrender.com/api/upcoming-events');
+        const response = await axios.get('${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events');
         setUpcomingEvents(response.data || []); // Ensure the data is an array
       } catch (error) {
         console.error('Error fetching upcoming events:', error);
@@ -42,7 +42,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
   
         // Step 2: Upload image to backend (which handles Cloudinary)
         const uploadResponse = await axios.post(
-          'https://cmv-backend.onrender.com/api/upload-image',
+          '${import.meta.env.VITE_BACKEND_URL}/api/upload-image',
           {
             imageBase64: base64Image,
           }
@@ -61,7 +61,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
         };
   
         const apiResponse = await axios.post(
-          'https://cmv-backend.onrender.com/api/upcoming-events',
+          '${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events',
           newEvent
         );
   
@@ -87,7 +87,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
 
   const handleRemoveEvent = async (id) => {
     try {
-      await axios.delete(`https://cmv-backend.onrender.com/api/upcoming-events/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events/${id}`);
       setUpcomingEvents(upcomingEvents.filter(event => event._id !== id));
     } catch (error) {
       console.error('Error removing event:', error);
