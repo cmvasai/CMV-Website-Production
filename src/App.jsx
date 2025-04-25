@@ -82,23 +82,27 @@ function App() {
           axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events`),
           axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/featured-events`),
         ]);
-        setCarouselItems(carouselRes.data || []);
-        setUpcomingEvents(upcomingRes.data || []);
-        setFeaturedEvents(featuredRes.data || []);
+        
+        // Ensure we always set arrays
+        setCarouselItems(Array.isArray(carouselRes.data) ? carouselRes.data : []);
+        setUpcomingEvents(Array.isArray(upcomingRes.data) ? upcomingRes.data : []);
+        setFeaturedEvents(Array.isArray(featuredRes.data) ? featuredRes.data : []);
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Set empty arrays on error
+        setCarouselItems([]);
+        setUpcomingEvents([]);
+        setFeaturedEvents([]);
       } finally {
         const elapsedTime = Date.now() - startTime;
         const minDisplayTime = 500; // Minimum 500ms for skeleton
-       
+        
         if (elapsedTime < minDisplayTime) {
           setTimeout(() => {
             setLoading(false);
-          
           }, minDisplayTime - elapsedTime);
         } else {
           setLoading(false);
-  
         }
       }
     };
@@ -138,7 +142,10 @@ function App() {
             path="/admin/edit-carousel"
             element={
               adminLoggedIn ? (
-                <EditCarousel carouselItems={carouselItems} setCarouselItems={setCarouselItems} />
+                <EditCarousel
+                  carouselItems={Array.isArray(carouselItems) ? carouselItems : []}
+                  setCarouselItems={setCarouselItems}
+                />
               ) : (
                 <Navigate to="/admin/login" />
               )
@@ -149,7 +156,7 @@ function App() {
             element={
               adminLoggedIn ? (
                 <EditUpcomingEvents
-                  upcomingEvents={upcomingEvents}
+                  upcomingEvents={Array.isArray(upcomingEvents) ? upcomingEvents : []}
                   setUpcomingEvents={setUpcomingEvents}
                 />
               ) : (
@@ -162,7 +169,7 @@ function App() {
             element={
               adminLoggedIn ? (
                 <EditFeaturedEvents
-                  featuredEvents={featuredEvents}
+                  featuredEvents={Array.isArray(featuredEvents) ? featuredEvents : []}
                   setFeaturedEvents={setFeaturedEvents}
                 />
               ) : (

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
+const EditUpcomingEvents = ({ upcomingEvents = [], setUpcomingEvents }) => {
   const [newImageFile, setNewImageFile] = useState(null);
   const [newEventName, setNewEventName] = useState('');
   const [newDescription, setNewDescription] = useState('');
@@ -9,15 +9,27 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
   const [newHighlights, setNewHighlights] = useState('');
   const [newContact, setNewContact] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUpcomingEvents = async () => {
       try {
-        const response = await axios.get('${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events');
-        setUpcomingEvents(response.data || []); // Ensure the data is an array
+        setLoading(true);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events`);
+        
+        if (Array.isArray(response.data)) {
+          setUpcomingEvents(response.data);
+        } else {
+          console.error('Expected array but got:', response.data);
+          setUpcomingEvents([]);
+        }
       } catch (error) {
         console.error('Error fetching upcoming events:', error);
-        setUpcomingEvents([]); // Fallback to an empty array on error
+        setError('Failed to load upcoming events');
+        setUpcomingEvents([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -42,7 +54,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
   
         // Step 2: Upload image to backend (which handles Cloudinary)
         const uploadResponse = await axios.post(
-          '${import.meta.env.VITE_BACKEND_URL}/api/upload-image',
+          `${import.meta.env.VITE_BACKEND_URL}/api/upload-image`,
           {
             imageBase64: base64Image,
           }
@@ -61,7 +73,7 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
         };
   
         const apiResponse = await axios.post(
-          '${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events',
+          `${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events`,
           newEvent
         );
   
@@ -98,29 +110,41 @@ const EditUpcomingEvents = ({ upcomingEvents, setUpcomingEvents }) => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Edit Upcoming Events</h2>
-        <div className="space-y-4">
-          {upcomingEvents.map((event) => (
-            <div key={event._id} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
-              <div>
-                <p className="text-lg font-bold dark:text-white">{event.eventName}</p>
-                <p className="text-sm dark:text-gray-300">{event.description}</p>
-                <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg mt-2">
-                  <img
-                    src={event.image}
-                    alt={event.eventName}
-                    className="w-full h-full object-contain"
-                  />
+        
+        {loading ? (
+          <div className="text-center">Loading upcoming events...</div>
+        ) : error ? (
+          <div className="text-center text-red-500">{error}</div>
+        ) : (
+          <div className="space-y-4">
+            {Array.isArray(upcomingEvents) && upcomingEvents.length > 0 ? (
+              upcomingEvents.map((event, index) => (
+                <div key={event._id || index} className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 p-4 rounded-lg">
+                  <div>
+                    <p className="text-lg font-bold dark:text-white">{event.eventName}</p>
+                    <p className="text-sm dark:text-gray-300">{event.description}</p>
+                    <div className="w-full h-64 rounded-lg overflow-hidden shadow-lg mt-2">
+                      <img
+                        src={event.image}
+                        alt={event.eventName}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveEvent(event._id)}
+                    className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
+                  >
+                    Remove
+                  </button>
                 </div>
-              </div>
-              <button
-                onClick={() => handleRemoveEvent(event._id)}
-                className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
+              ))
+            ) : (
+              <p className="text-center dark:text-white">No upcoming events found.</p>
+            )}
+          </div>
+        )}
+        
         <div className="mt-6">
           <input
             type="file"
