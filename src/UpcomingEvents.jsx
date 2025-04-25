@@ -55,13 +55,13 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   };
 
   return (
-    <div className="py-12 bg-white dark:bg-gray-900">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-900 dark:text-white">
+    <div className="bg-white dark:bg-gray-900 py-12">
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 dark:text-white">
         Upcoming Events
       </h1>
-      <div ref={carouselRef} className="relative w-full max-w-6xl mx-auto overflow-hidden">
+      <div ref={carouselRef} className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900">
         <motion.div
-          className="flex w-full"
+          className="flex w-full bg-white dark:bg-gray-900"
           animate={{ x: -(currentIndex * containerWidth) }}
           transition={SPRING_OPTIONS}
           style={{ width: `${upcomingEvents.length * containerWidth}px` }}
@@ -69,25 +69,25 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
           {upcomingEvents.map((event) => (
             <motion.div
               key={event._id}
-              className="relative shrink-0 flex flex-col items-center cursor-pointer p-4 md:p-6"
+              className="relative shrink-0 flex flex-col items-center cursor-pointer p-4 md:p-6 bg-white dark:bg-gray-900"
               style={{ width: `${containerWidth}px` }}
               onClick={() => handleEventClick(event)}
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
             >
               <div
-                className="relative w-full rounded-lg overflow-hidden shadow-lg mb-4 group bg-white dark:bg-gray-800"
+                className="relative w-full rounded-lg overflow-hidden mb-4 group bg-white dark:bg-gray-900"
                 onMouseEnter={!isMobile ? handleMouseEnter : undefined}
                 onMouseLeave={!isMobile ? handleMouseLeave : undefined}
               >
                 <img
                   src={event.image}
                   alt={event.name}
-                  className="w-full h-64 sm:h-72 md:h-80 object-contain"
+                  className="w-full h-64 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20 hover:bg-opacity-10 transition-opacity" />
+                <div className="absolute inset-0 bg-opacity-0 hover:bg-opacity-0 transition-opacity" />
                 {/* Clickable Cue */}
                 <motion.div
-                  className="absolute inset-0 flex items-center justify-center text-white text-sm sm:text-base font-semibold bg-black bg-opacity-30 md:bg-opacity-0 md:group-hover:bg-opacity-30 transition-all duration-300"
+                  className="absolute inset-0 flex items-center justify-center text-white text-sm sm:text-base font-semibold bg-opacity-0 md:bg-opacity-0 md:group-hover:bg-opacity-30 transition-all duration-300"
                   initial={{ opacity: isMobile ? 1 : 0 }}
                   whileHover={{ opacity: 1 }}
                   animate={{ opacity: isMobile ? 1 : 0 }}
@@ -106,14 +106,14 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
         </motion.div>
 
         {/* Navigation Dots */}
-        <div className="flex justify-center mt-6 space-x-2">
+        <div className="flex justify-center mt-6 space-x-2 bg-white dark:bg-gray-900">
           {upcomingEvents.map((_, index) => (
             <button
               key={index}
               className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
                 currentIndex === index
-                  ? "bg-[#BC3612] dark:bg-[#F47930]"
-                  : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                  ? "bg-gray-900 dark:bg-white"
+                  : "bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-500"
               }`}
               onClick={() => setCurrentIndex(index)}
               aria-label={`Go to event ${index + 1}`}
