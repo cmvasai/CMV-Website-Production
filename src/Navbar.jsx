@@ -30,7 +30,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
 
   return (
     <>
-      <div className="h-auto px-4 lg:px-16 flex justify-between items-center shadow-lg bg-white dark:bg-gray-800">
+      <div className="h-auto px-4 lg:px-5 flex justify-between items-center shadow-lg bg-white dark:bg-gray-800">
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
           <div className="pt-1">
@@ -50,7 +50,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
             </Link>
             <Link to="/">
               <p className="text-xs sm:text-sm md:text-base font-bold dark:text-white">
-                To Give Maximum Happiness To Maximum People
+                Maximum Happiness To Maximum People
               </p>
               <p className="text-xs sm:text-sm md:text-base font-bold dark:text-white">
                 For Maximum Time
@@ -60,9 +60,9 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
         </div>
 
         {/* Hamburger Icon and Dark Mode Toggle for Mobile */}
-        <div className="lg:hidden flex flex-col items-center space-y-2">
+        <div className="custom1250:hidden flex flex-col items-center space-y-2">
           <button
-            className="text-[#F47930] dark:text-[#F47930] focus:outline-none"
+            className="text-[#BC3612] dark:text-[#F47930] focus:outline-none"
             onClick={toggleMenu}
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
@@ -84,7 +84,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
           </button>
           <button
             onClick={toggleDarkMode}
-            className="p-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F47930]"
+            className="p-1 rounded-full bg-gray-100 dark:bg-gray-800 text-[#BC3612] dark:text-[#F47930] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930]"
             aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
@@ -92,7 +92,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
         </div>
 
         {/* Navigation Section */}
-        <nav className="hidden lg:flex flex-wrap items-center">
+        <nav className="hidden custom1250:flex flex-wrap items-center">
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {navItems.map((item, index) => (
               <li key={index}>
@@ -114,10 +114,10 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
         </nav>
 
         {/* Dark Mode Toggle Button for Larger Screens */}
-        <div className="hidden lg:flex items-center space-x-4">
+        <div className="hidden custom1250:flex items-center space-x-4">
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F47930]"
+            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-[#BC3612] dark:text-[#F47930] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930]"
             aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
@@ -129,7 +129,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.nav
-            className="lg:hidden px-4 py-4 bg-white dark:bg-gray-800 shadow-md"
+            className="custom1250:hidden px-4 py-4 bg-white dark:bg-gray-900 shadow-md"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -140,12 +140,12 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
                 <li key={index}>
                   <NavLink
                     to={item.path}
-                    onClick={handleLinkClick} // Auto-collapse on click
+                    onClick={handleLinkClick}
                     className={({ isActive }) =>
                       `block w-full text-left px-3 py-2 text-sm md:text-base font-bold transition-colors ${
                         isActive
                           ? "text-[#BC3612] dark:text-[#F47930] underline underline-offset-4"
-                          : "text-gray-800 dark:text-white hover:text-[#BC3612] dark:hover:text-[#F47930]"
+                        : "text-gray-800 dark:text-white hover:text-[#BC3612] dark:hover:text-[#F47930]"
                       }`
                     }
                   >

@@ -55,8 +55,8 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 py-12">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 dark:text-white">
+    <div className="py-12 bg-white dark:bg-gray-900">
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-900 dark:text-white">
         Upcoming Events
       </h1>
       <div ref={carouselRef} className="relative w-full max-w-6xl mx-auto overflow-hidden">
@@ -75,7 +75,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
             >
               <div
-                className="relative w-full rounded-lg overflow-hidden shadow-lg mb-4 group"
+                className="relative w-full rounded-lg overflow-hidden shadow-lg mb-4 group bg-white dark:bg-gray-800"
                 onMouseEnter={!isMobile ? handleMouseEnter : undefined}
                 onMouseLeave={!isMobile ? handleMouseLeave : undefined}
               >
@@ -95,7 +95,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   <span>Click for Details</span>
                 </motion.div>
               </div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2 text-center">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-2 text-center">
                 {event.name}
               </h3>
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 line-clamp-2 text-center">
@@ -112,8 +112,8 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
               key={index}
               className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
                 currentIndex === index
-                  ? "bg-gray-900 dark:bg-white"
-                  : "bg-gray-400 hover:bg-gray-500"
+                  ? "bg-[#BC3612] dark:bg-[#F47930]"
+                  : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
               }`}
               onClick={() => setCurrentIndex(index)}
               aria-label={`Go to event ${index + 1}`}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import './App.css';
 import { Navbar } from './Navbar';
 import Footer from './Footer';
@@ -16,30 +16,42 @@ import EditFeaturedEvents from './EditFeaturedEvents';
 import ContactUs from './ContactUs';
 import axios from 'axios';
 import Volunteer from './Volunteer';
-import { FiCircle } from 'react-icons/fi';
 
-// Enhanced Skeleton Component for Carousel
-const CarouselSkeleton = () => {
+// Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
+const CarouselSkeleton = memo(() => {
   const isMobile = window.innerWidth < 768;
 
   return (
-    <div className="relative w-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-      <div
-        className="w-full bg-gray-300 dark:bg-gray-600 animate-shimmer"
-        style={{
-          height: isMobile ? '50vh' : '80vh',
-        }}
-      ></div>
-      <div className="absolute bottom-0 w-full bg-black bg-opacity-50 p-4 rounded-t-lg">
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 bg-gray-400 dark:bg-gray-500 rounded-full animate-pulse"></div>
-          <div className="h-6 w-1/3 bg-gray-400 dark:bg-gray-500 rounded animate-pulse"></div>
+    <>
+      <style>{`.animate-shimmer { /* Log to confirm CSS */ }`}</style>
+      <div className="relative w-full bg-gray-200 dark:bg-gray-700">
+        <div
+          className="w-full bg-gray-300 dark:bg-gray-600 animate-shimmer relative"
+          style={{
+            height: isMobile ? '50vh' : '80vh',
+            willChange: 'transform',
+          }}
+        ></div>
+        <div className="absolute bottom-0 w-full bg-black bg-opacity-50 p-4 rounded-t-lg">
+          <div className="flex items-center gap-2">
+            <div
+              className="h-4 w-4 bg-gray-400 dark:bg-gray-500 rounded-full animate-shimmer-small relative"
+              style={{ willChange: 'transform' }}
+            ></div>
+            <div
+              className="h-6 w-1/3 bg-gray-400 dark:bg-gray-500 rounded animate-shimmer-small relative"
+              style={{ willChange: 'transform' }}
+            ></div>
+          </div>
+          <div
+            className="mt-2 h-4 w-2/3 bg-gray-400 dark:bg-gray-500 rounded animate-shimmer-small relative"
+            style={{ willChange: 'transform' }}
+          ></div>
         </div>
-        <div className="mt-2 h-4 w-2/3 bg-gray-400 dark:bg-gray-500 rounded animate-pulse"></div>
       </div>
-    </div>
+    </>
   );
-};
+});
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -63,6 +75,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const startTime = Date.now();
       try {
         const [carouselRes, upcomingRes, featuredRes] = await Promise.all([
           axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/carousel-items`),
@@ -75,7 +88,18 @@ function App() {
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        setLoading(false);
+        const elapsedTime = Date.now() - startTime;
+        const minDisplayTime = 500; // Minimum 500ms for skeleton
+       
+        if (elapsedTime < minDisplayTime) {
+          setTimeout(() => {
+            setLoading(false);
+          
+          }, minDisplayTime - elapsedTime);
+        } else {
+          setLoading(false);
+  
+        }
       }
     };
 
