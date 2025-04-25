@@ -16,6 +16,30 @@ import EditFeaturedEvents from './EditFeaturedEvents';
 import ContactUs from './ContactUs';
 import axios from 'axios';
 import Volunteer from './Volunteer';
+import { FiCircle } from 'react-icons/fi';
+
+// Enhanced Skeleton Component for Carousel
+const CarouselSkeleton = () => {
+  const isMobile = window.innerWidth < 768;
+
+  return (
+    <div className="relative w-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+      <div
+        className="w-full bg-gray-300 dark:bg-gray-600 animate-shimmer"
+        style={{
+          height: isMobile ? '50vh' : '80vh',
+        }}
+      ></div>
+      <div className="absolute bottom-0 w-full bg-black bg-opacity-50 p-4 rounded-t-lg">
+        <div className="flex items-center gap-2">
+          <div className="h-4 w-4 bg-gray-400 dark:bg-gray-500 rounded-full animate-pulse"></div>
+          <div className="h-6 w-1/3 bg-gray-400 dark:bg-gray-500 rounded animate-pulse"></div>
+        </div>
+        <div className="mt-2 h-4 w-2/3 bg-gray-400 dark:bg-gray-500 rounded animate-pulse"></div>
+      </div>
+    </div>
+  );
+};
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -25,6 +49,7 @@ function App() {
   const [carouselItems, setCarouselItems] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [featuredEvents, setFeaturedEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (darkMode) {
@@ -49,6 +74,8 @@ function App() {
         setFeaturedEvents(featuredRes.data || []);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -68,7 +95,7 @@ function App() {
             path="/"
             element={
               <>
-                <ImageCarousel carouselItems={carouselItems} />
+                {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
                 <UpcomingEvents upcomingEvents={upcomingEvents} />
               </>
             }
