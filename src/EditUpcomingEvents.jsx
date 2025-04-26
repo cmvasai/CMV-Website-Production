@@ -49,20 +49,14 @@ const EditUpcomingEvents = ({ upcomingEvents = [], setUpcomingEvents }) => {
       setUploading(true);
   
       try {
-        // Step 1: Convert file to Base64
         const base64Image = await toBase64(newImageFile);
-  
-        // Step 2: Upload image to backend (which handles Cloudinary)
         const uploadResponse = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/api/upload-image`,
-          {
-            imageBase64: base64Image,
-          }
+          { imageBase64: base64Image }
         );
   
         const imageUrl = uploadResponse.data.imageUrl;
   
-        // Step 3: Add event to backend
         const newEvent = {
           eventName: newEventName,
           description: newDescription,
@@ -79,7 +73,6 @@ const EditUpcomingEvents = ({ upcomingEvents = [], setUpcomingEvents }) => {
   
         setUpcomingEvents([...upcomingEvents, apiResponse.data]);
   
-        // Step 4: Reset fields
         setNewImageFile(null);
         setNewEventName('');
         setNewDescription('');
@@ -96,7 +89,6 @@ const EditUpcomingEvents = ({ upcomingEvents = [], setUpcomingEvents }) => {
     }
   };
   
-
   const handleRemoveEvent = async (id) => {
     try {
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events/${id}`);
@@ -146,6 +138,16 @@ const EditUpcomingEvents = ({ upcomingEvents = [], setUpcomingEvents }) => {
         )}
         
         <div className="mt-6">
+          <div
+            role="alert"
+            className="mb-4 p-4 bg-yellow-100 dark:bg-yellow-900 border-l-4 border-yellow-500 dark:border-yellow-400 text-yellow-800 dark:text-yellow-200 rounded-lg"
+          >
+            <p className="font-semibold">Image Upload Note:</p>
+            <p>
+              For best results, upload flyer-sized images (recommended: 2480x3508 pixels, A4 size, or 4:5 aspect ratio). 
+              Supported formats: JPEG, PNG. Maximum file size: 10MB.
+            </p>
+          </div>
           <input
             type="file"
             accept="image/*"
