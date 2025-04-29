@@ -1,7 +1,22 @@
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Volunteer = () => {
+  const location = useLocation();
+
+  // Effect to handle scrolling to form section when URL has the right hash
+  useEffect(() => {
+    if (location.hash === "#volunteer-form") {
+      setTimeout(() => {
+        const element = document.getElementById("volunteer-form");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100); // Small delay to ensure the component is fully rendered
+    }
+  }, [location]);
+
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -147,7 +162,7 @@ const Volunteer = () => {
       </div>
 
       {/* Form Section */}
-      <div className="bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-8 px-4">
+      <div id="volunteer-form" className="bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-8 px-4">
         <div className="bg-white dark:bg-gray-900 text-black dark:text-white shadow-2xl dark:shadow-[0_20px_50px_rgba(255,255,255,0.1)] p-6 rounded-lg w-full max-w-4xl flex flex-col gap-6 transition-all duration-300">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">
             Volunteering - Expression of Interest

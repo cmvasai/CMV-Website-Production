@@ -16,6 +16,8 @@ import EditFeaturedEvents from './EditFeaturedEvents';
 import ContactUs from './ContactUs';
 import axios from 'axios';
 import Volunteer from './Volunteer';
+import UtilityButtons from './UtilityButtons';
+import OurPledge from './OurPledge';
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(() => {
@@ -122,10 +124,11 @@ function App() {
           <Route
             path="/"
             element={
-              <>
-                <UpcomingEvents upcomingEvents={upcomingEvents} />
+              <div className="flex flex-col gap-0">
                 {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
-              </>
+                {<UtilityButtons/>}
+                <UpcomingEvents upcomingEvents={upcomingEvents} />
+              </div>
             }
           />
           <Route path="/about-us" element={<About />} />
@@ -177,6 +180,7 @@ function App() {
               )
             }
           />
+          <Route path="/pledge" element={<OurPledge />} />
         </Routes>
         <Footer />
       </BrowserRouter>
