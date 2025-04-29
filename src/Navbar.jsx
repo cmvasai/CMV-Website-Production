@@ -30,7 +30,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
 
   return (
     <>
-      <div className="h-auto px-4 lg:px-5 flex justify-between items-center shadow-lg bg-white dark:bg-gray-800">
+      <div className="sticky top-0 z-50 h-auto px-4 lg:px-5 flex justify-between items-center shadow-lg bg-white dark:bg-gray-800">
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
           <div className="pt-1">
@@ -129,7 +129,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.nav
-            className="custom1250:hidden px-4 py-4 bg-white dark:bg-gray-900 shadow-md"
+            className="custom1250:hidden px-4 py-4 bg-white dark:bg-gray-900 shadow-md sticky top-[height-of-main-navbar] z-40"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

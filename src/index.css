@@ -15,3 +15,8 @@ html, body, #root {
   height: 100%;
 }
 
+/* Add to src/index.css or src/App.css */
+.compact-layout .gap-reducer {
+  margin: 0;
+  padding: 0;
+}

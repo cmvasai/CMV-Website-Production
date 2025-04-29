@@ -55,11 +55,14 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 py-12">
+    <div className="bg-white dark:bg-gray-900 py-6">
       {/* <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 dark:text-white">
         Upcoming Events
       </h1> */}
-      <div ref={carouselRef} className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900">
+      <div
+        ref={carouselRef}
+        className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900"
+      >
         <motion.div
           className="flex w-full bg-white dark:bg-gray-900"
           animate={{ x: -(currentIndex * containerWidth) }}
@@ -104,9 +107,9 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
             </motion.div>
           ))}
         </motion.div>
-
         {/* Navigation Dots */}
-        <div className="flex justify-center mt-6 space-x-2 bg-white dark:bg-gray-900">
+        {/* // In UpcomingEvents.jsx // Reduce the margin for the navigation dots */}
+        <div className="flex justify-center mt-3 space-x-2 bg-white dark:bg-gray-900">
           {upcomingEvents.map((_, index) => (
             <button
               key={index}

@@ -11,3 +11,8 @@ body.dark {
   @apply bg-gray-900 text-white;
 }
 
+/* Add to src/index.css or src/App.css */
+.compact-layout .gap-reducer {
+  margin: 0;
+  padding: 0;
+}
