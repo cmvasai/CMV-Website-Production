@@ -10,7 +10,7 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const carouselRef = useRef(null);
 
-  // Update container width dynamically
+  // Update container width and mobile status dynamically
   useEffect(() => {
     const updateWidth = () => {
       if (carouselRef.current) {
@@ -48,8 +48,8 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
             style={{
               backgroundImage: `url(${item.image})`,
               width: `${containerWidth}px`,
-              height: isMobile ? "50vh" : "85vh",
-              backgroundSize: "contain",
+              height: isMobile ? "50vh" : "80vh", // Slightly reduced from 85vh for flexibility
+              backgroundSize: isMobile ? "contain" : "cover", // Contain for mobile, cover for larger screens
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
             }}

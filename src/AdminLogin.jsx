@@ -1,19 +1,29 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AdminLogin = ({ setAdminLoggedIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Simple authentication logic using environment variables
-    if (username === import.meta.env.VITE_ADMIN_USERNAME && password === import.meta.env.VITE_ADMIN_PASSWORD) {
-      setAdminLoggedIn(true);
-      navigate('/admin/dashboard');
-    } else {
-      alert('Invalid credentials');
+  
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/admin/login`, {
+        username,
+        password,
+      });
+  
+      if (response.data.success) {
+        setAdminLoggedIn(true);
+        navigate('/admin/dashboard');
+      } else {
+        alert('Login failed: ' + response.data.message);
+      }
+    } catch (error) {
+      alert('Login error: ' + (error.response?.data?.message || error.message));
     }
   };
 
