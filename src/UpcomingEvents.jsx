@@ -56,9 +56,9 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
 
   return (
     <div className="bg-white dark:bg-gray-900 py-12">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 dark:text-white">
+      {/* <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 dark:text-white">
         Upcoming Events
-      </h1>
+      </h1> */}
       <div ref={carouselRef} className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900">
         <motion.div
           className="flex w-full bg-white dark:bg-gray-900"

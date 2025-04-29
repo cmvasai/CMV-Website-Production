@@ -123,8 +123,8 @@ function App() {
             path="/"
             element={
               <>
-                {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
                 <UpcomingEvents upcomingEvents={upcomingEvents} />
+                {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
               </>
             }
           />
