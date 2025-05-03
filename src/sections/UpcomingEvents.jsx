@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import UpcomingEventsModal from "./UpcomingEventsModal";
+import UpcomingEventsModal from "../modals/UpcomingEventsModal";
 
 const SPRING_OPTIONS = { type: "spring", stiffness: 300, damping: 30 };
 

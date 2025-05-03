@@ -1,4 +1,4 @@
-import Carousel from "./CarouselCode/Carousel";
+import Carousel from "../utils/CarouselCode/Carousel";
 
 const ImageCarousel = ({ carouselItems }) => {
   return (

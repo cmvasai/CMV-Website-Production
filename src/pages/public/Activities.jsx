@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ActivitiesModal from './ActivitiesModal';
+import ActivitiesModal from '../../modals/ActivitiesModal';
 
 const activities = [
   {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EventsModal from "./EventsModal";
+import EventsModal from "../../modals/EventsModal";
 
 const Events = ({ featuredEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
