@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AcharyaModal from './AcharyaModal';
+import AcharyaModal from '../../modals/AcharyaModal';
 
 const acharyas = [
   {

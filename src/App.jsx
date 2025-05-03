@@ -1,24 +1,26 @@
 import { useState, useEffect, memo, useRef } from 'react';
-import './App.css';
-import { Navbar } from './Navbar';
-import Footer from './Footer';
-import ImageCarousel from './Carousel';
+import './styles/App.css';
+import { Navbar } from './layout/Navbar';
+import Footer from './layout/Footer';
+import ImageCarousel from './modals/Carousel';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
-import About from './About';
-import Activities from './Activities';
-import Events from './Events';
-import { UpcomingEvents } from './UpcomingEvents';
-import AdminLogin from './AdminLogin';
-import AdminDashboard from './AdminDashboard';
-import EditCarousel from './EditCarousel';
-import EditUpcomingEvents from './EditUpcomingEvents';
-import EditFeaturedEvents from './EditFeaturedEvents';
-import ContactUs from './ContactUs';
+import About from './pages/public/About';
+import Activities from './pages/public/Activities';
+import Events from './pages/public/Events';
+import { UpcomingEvents } from './sections/UpcomingEvents';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import EditCarousel from './pages/admin/EditCarousel';
+import EditUpcomingEvents from './pages/admin/EditUpcomingEvents';
+import EditFeaturedEvents from './pages/admin/EditFeaturedEvents';
+import ContactUs from './pages/public/ContactUs';
 import axios from 'axios';
-import Volunteer from './Volunteer';
-import UtilityButtons from './UtilityButtons';
-import OurPledge from './OurPledge';
+import Volunteer from './pages/public/Volunteer';
+import UtilityButtons from './utils/UtilityButtons';
+import OurPledge from './pages/public/OurPledge';
+import HeroSection from './sections/HeroSection';
+import StatisticsSection from './sections/StatisticsSection';
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(() => {
@@ -56,125 +58,6 @@ const CarouselSkeleton = memo(() => {
   );
 });
 
-// Hero Section Component
-const HeroSection = () => {
-  return (
-    <div className="relative w-full bg-transparent">
-      <img
-        src="/images/newYear2.jpeg"
-        alt="Chinmaya Mission Vasai spiritual gathering"
-        className="w-full h-full max-h-[50vh] object-cover"
-        loading="lazy"
-      />
-      <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center px-2">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-3">
-          Chinmaya Mission Vasai
-        </h1>
-        <p className="text-base sm:text-lg text-white text-center max-w-xl mb-6">
-          Spiritual Events, Bala Vihar, and Community in Vasai
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 max-w-md w-full">
-          <Link
-            to="/events"
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-[#BC3612] dark:bg-[#F47930] hover:bg-[#ff725e] dark:hover:bg-[#ff725e] text-white text-sm sm:text-base font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930] text-center"
-            aria-label="Explore our events"
-          >
-            Explore Events
-          </Link>
-          <Link
-            to="/volunteer"
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-[#BC3612] dark:bg-[#F47930] hover:bg-[#ff725e] dark:hover:bg-[#ff725e] text-white text-sm sm:text-base font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930] text-center"
-            aria-label="Volunteer with us"
-          >
-            Volunteer
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Statistics Section Component with Count Animation
-const StatisticsSection = () => {
-  // Stats data
-  const stats = [
-    { name: "Balavihar", count: 35, icon: "fas fa-child" },
-    { name: "CHYK", count: 30, icon: "fas fa-users" },
-    { name: "Members", count: 145, icon: "fas fa-user-friends" },
-    { name: "Devi Group", count: 35, icon: "fas fa-hands-praying" }
-  ];
-
-  const [counters, setCounters] = useState(stats.map(() => 0));
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    // Check if element is in viewport
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          
-          // Start the animation for each stat
-          stats.forEach((stat, index) => {
-            const duration = 2500; // Increased from 1500ms to 2500ms
-            const steps = 50; // Increased from 30 to 50 steps
-            const increment = Math.ceil(stat.count / steps);
-            let current = 0;
-            const timer = setInterval(() => {
-              current += increment;
-              if (current >= stat.count) {
-                current = stat.count;
-                clearInterval(timer);
-              }
-              
-              setCounters(prevCounters => {
-                const newCounters = [...prevCounters];
-                newCounters[index] = current;
-                return newCounters;
-              });
-            }, duration / steps);
-          });
-        }
-      },
-      { threshold: 0.1 } // Trigger when at least 10% of the element is visible
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, [hasAnimated, stats]);
-
-  return (
-    <div ref={sectionRef} className="bg-white dark:bg-gray-900 py-6 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats.map((stat, index) => (
-            <div 
-              key={index}
-              className="flex flex-col items-center bg-[#ffe4d6] dark:bg-gray-800 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow"
-            >
-              <i className={`${stat.icon} text-[#BC3612] dark:text-[#F47930] text-xl md:text-2xl mb-2`}></i>
-              <span className="text-2xl md:text-3xl font-bold text-[#BC3612] dark:text-[#F47930]">
-                {counters[index]}+
-              </span>
-              <span className="text-sm md:text-base font-medium text-gray-800 dark:text-gray-200">
-                {stat.name}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
