@@ -73,9 +73,9 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
           </motion.div>
         ))}
       </motion.div>
-      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm pointer-events-none z-10">
+      {/* <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm pointer-events-none z-10">
         Click to view featured events
-      </div>
+      </div> */}
     </div>
   );
 }
