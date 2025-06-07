@@ -55,7 +55,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 py-4 sm:py-6">
+    <div className="bg-white dark:bg-gray-900 py-2 sm:py-6">
       <div
         ref={carouselRef}
         className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900"
@@ -69,20 +69,20 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
           {upcomingEvents.map((event) => (
             <motion.div
               key={event._id}
-              className="relative shrink-0 flex flex-col items-center cursor-pointer p-1 sm:p-4 md:p-6 bg-white dark:bg-gray-900"
+              className="relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-4 md:p-6 bg-white dark:bg-gray-900"
               style={{ width: `${containerWidth}px` }}
               onClick={() => handleEventClick(event)}
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
             >
               <div
-                className="relative w-full rounded-lg overflow-hidden mb-2 sm:mb-4 group bg-white dark:bg-gray-900"
+                className="relative w-full rounded-lg overflow-hidden mb-1 sm:mb-4 group bg-white dark:bg-gray-900"
                 onMouseEnter={!isMobile ? handleMouseEnter : undefined}
                 onMouseLeave={!isMobile ? handleMouseLeave : undefined}
               >
                 <img
                   src={event.image}
                   alt={event.name}
-                  className="w-full h-60 sm:h-64 md:h-80 object-contain bg-white dark:bg-gray-900"
+                  className="w-full h-80 sm:h-64 md:h-80 object-contain bg-white dark:bg-gray-900"
                 />
                 <div className="absolute inset-0 bg-opacity-0 hover:bg-opacity-0 transition-opacity" />
                 <motion.div
@@ -97,9 +97,6 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
               <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
                 {event.name}
               </h3>
-              <p className="text-[10px] sm:text-base text-gray-600 dark:text-gray-300 line-clamp-2 text-center">
-                {event.description}
-              </p>
             </motion.div>
           ))}
         </motion.div>

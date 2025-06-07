@@ -56,24 +56,9 @@ const FiguresSection = () => {
   }, [hasAnimated, figures]);
 
   return (
-    <div ref={sectionRef} className="bg-white dark:bg-gray-900 py-1 px-1 sm:py-4 sm:px-2 figures-section">
+    <div ref={sectionRef} className="bg-white dark:bg-gray-700 py-2 sm:py-4 sm:px-2 figures-section">
       <style>
         {`
-          .stats-card {
-            min-width: 70px;
-            width: 100%;
-            max-width: 90px;
-          }
-          .stats-icon {
-            font-size: 1rem !important;
-            margin-bottom: 0.25rem !important;
-          }
-          .stats-count {
-            font-size: 1rem !important;
-          }
-          .stats-name {
-            font-size: 0.625rem !important;
-          }
           @media (min-width: 425px) {
             .figures-section {
               padding: 1.5rem 1rem !important;
@@ -123,17 +108,31 @@ const FiguresSection = () => {
         `}
       </style>
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-row flex-wrap justify-around gap-2 figures-container text-center">
+        {/* Mobile View: Stacked number and name */}
+        <div className="flex justify-center gap-2 sm:hidden text-center">
+          {figures.map((figure, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <span className="text-[10px] font-medium text-[#BC3612] dark:text-[#F47930]">
+                {counters[index]}+
+              </span>
+              <span className="text-[9px] font-medium text-[#BC3612] dark:text-[#F47930]">
+                {figure.name}
+              </span>
+            </div>
+          ))}
+        </div>
+        {/* Tablet and Larger: Original Card Layout */}
+        <div className="hidden sm:flex sm:flex-row sm:flex-wrap sm:justify-around sm:gap-2 figures-container text-center">
           {figures.map((figure, index) => (
             <div 
               key={index}
               className="flex flex-col items-center bg-[#ffe4d6] dark:bg-gray-800 rounded-lg p-0.5 sm:p-2 figures-card shadow-md hover:shadow-lg transition-shadow"
             >
-              <i className={`${figure.icon} text-[#BC3612] dark:text-[#F47930] text-lg figures-icon mb-1 sm:mb-1 stats-icon`}></i>
-              <span className="text-base sm:text-lg figures-count font-bold text-[#BC3612] dark:text-[#F47930] stats-count">
+              <i className={`${figure.icon} text-[#BC3612] dark:text-[#F47930] text-lg figures-icon mb-1 sm:mb-1`}></i>
+              <span className="text-base sm:text-lg figures-count font-bold text-[#BC3612] dark:text-[#F47930]">
                 {figure.suffix === "Cr+" ? (counters[index] / 10000000).toFixed(1) + "Cr+" : counters[index] + "+"}
               </span>
-              <span className="text-[10px] sm:text-xs figures-name font-medium text-gray-800 dark:text-gray-200 stats-name">
+              <span className="text-[10px] sm:text-xs figures-name font-medium text-gray-800 dark:text-gray-200">
                 {figure.name}
               </span>
             </div>

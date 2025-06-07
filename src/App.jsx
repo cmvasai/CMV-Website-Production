@@ -21,7 +21,7 @@ import UtilityButtons from './utils/UtilityButtons';
 import OurPledge from './pages/public/OurPledge';
 // import StatisticsSection from './sections/StatisticsSection';
 import QuotesSection from './sections/QuotesSection'; // New import
-import FiguresSection from './sections/FiguresSection'; // New import
+// import FiguresSection from './sections/FiguresSection'; // New import
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(function CarouselSkeleton() {
@@ -165,7 +165,7 @@ function App() {
               element={
                 <div className="flex flex-col gap-0">
                   <QuotesSection />
-                  <FiguresSection />
+                  {/* <FiguresSection /> */}
                   <UpcomingEvents upcomingEvents={upcomingEvents} />
                   {/* <StatisticsSection /> */}
                   <UtilityButtons />
