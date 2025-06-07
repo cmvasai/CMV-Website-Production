@@ -108,8 +108,8 @@ const FiguresSection = () => {
         `}
       </style>
       <div className="max-w-6xl mx-auto">
-        {/* Mobile View: Stacked number and name */}
-        <div className="flex justify-center gap-2 sm:hidden text-center">
+        {/* Mobile View: Grid layout with 3 columns */}
+        <div className="grid grid-cols-3 gap-2 sm:hidden text-center">
           {figures.map((figure, index) => (
             <div key={index} className="flex flex-col items-center">
               <span className="text-[10px] font-medium text-[#BC3612] dark:text-[#F47930]">
