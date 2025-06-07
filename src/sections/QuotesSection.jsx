@@ -24,28 +24,23 @@ const QuotesSection = () => {
         {/* Quote Card */}
         <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md transition-all duration-500 w-full">
           <div
-            key={currentQuoteIndex} // Key ensures the div remounts on quote change, triggering the transition
+            key={currentQuoteIndex}
             className="transition-opacity duration-500 opacity-0 animate-fade-in"
           >
-            <p className="text-sm sm:text-base md:text-lg italic text-gray-700 dark:text-gray-300 p-3 sm:p-4 md:p-6">
+            <p className="text-xs sm:text-base md:text-lg italic text-gray-700 dark:text-gray-300 p-2 sm:p-4 md:p-6">
               `{quotes[currentQuoteIndex].text}`
             </p>
-            <p className="text-xs sm:text-sm md:text-base font-medium text-[#BC3612] dark:text-[#F47930] px-3 sm:px-4 md:px-6 pb-3 sm:pb-4 md:pb-6">
+            <p className="text-[10px] sm:text-sm md:text-base font-medium text-[#BC3612] dark:text-[#F47930] px-2 sm:px-4 md:px-6 pb-2 sm:pb-4 md:pb-6">
               — {quotes[currentQuoteIndex].author}
             </p>
           </div>
         </div>
       </div>
-      {/* Inline style for the fade-in animation */}
       <style>
         {`
           @keyframes fadeIn {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
           }
           .animate-fade-in {
             animation: fadeIn 500ms ease-in-out forwards;

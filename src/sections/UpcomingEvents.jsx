@@ -55,10 +55,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 py-6">
-      {/* <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 dark:text-white">
-        Upcoming Events
-      </h1> */}
+    <div className="bg-white dark:bg-gray-900 py-4 sm:py-6">
       <div
         ref={carouselRef}
         className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900"
@@ -72,25 +69,24 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
           {upcomingEvents.map((event) => (
             <motion.div
               key={event._id}
-              className="relative shrink-0 flex flex-col items-center cursor-pointer p-4 md:p-6 bg-white dark:bg-gray-900"
+              className="relative shrink-0 flex flex-col items-center cursor-pointer p-2 sm:p-4 md:p-6 bg-white dark:bg-gray-900"
               style={{ width: `${containerWidth}px` }}
               onClick={() => handleEventClick(event)}
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
             >
               <div
-                className="relative w-full rounded-lg overflow-hidden mb-4 group bg-white dark:bg-gray-900"
+                className="relative w-full rounded-lg overflow-hidden mb-2 sm:mb-4 group bg-white dark:bg-gray-900"
                 onMouseEnter={!isMobile ? handleMouseEnter : undefined}
                 onMouseLeave={!isMobile ? handleMouseLeave : undefined}
               >
                 <img
                   src={event.image}
                   alt={event.name}
-                  className="w-full h-64 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
+                  className="w-full h-56 sm:h-64 md:h-80 object-contain bg-white dark:bg-gray-900"
                 />
                 <div className="absolute inset-0 bg-opacity-0 hover:bg-opacity-0 transition-opacity" />
-                {/* Clickable Cue */}
                 <motion.div
-                  className="absolute inset-0 flex items-center justify-center text-white text-sm sm:text-base font-semibold bg-opacity-0 md:bg-opacity-0 md:group-hover:bg-opacity-30 transition-all duration-300"
+                  className="absolute inset-0 flex items-center justify-center text-white text-xs sm:text-sm md:text-base font-semibold bg-opacity-0 md:bg-opacity-0 md:group-hover:bg-opacity-30 transition-all duration-300"
                   initial={{ opacity: isMobile ? 1 : 0 }}
                   whileHover={{ opacity: 1 }}
                   animate={{ opacity: isMobile ? 1 : 0 }}
@@ -98,18 +94,16 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   <span>Click for Details</span>
                 </motion.div>
               </div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-2 text-center">
+              <h3 className="text-base sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
                 {event.name}
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 line-clamp-2 text-center">
+              <p className="text-xs sm:text-base text-gray-600 dark:text-gray-300 line-clamp-2 text-center">
                 {event.description}
               </p>
             </motion.div>
           ))}
         </motion.div>
-        {/* Navigation Dots */}
-        {/* // In UpcomingEvents.jsx // Reduce the margin for the navigation dots */}
-        <div className="flex justify-center mt-3 space-x-2 bg-white dark:bg-gray-900">
+        <div className="flex justify-center mt-1 sm:mt-3 space-x-2 bg-white dark:bg-gray-900">
           {upcomingEvents.map((_, index) => (
             <button
               key={index}

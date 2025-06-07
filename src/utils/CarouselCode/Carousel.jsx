@@ -67,7 +67,7 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
-                filter: "blur(5px)",
+                filter: "blur(2px)",
               }}
             >
               {/* Semi-transparent white overlay */}
