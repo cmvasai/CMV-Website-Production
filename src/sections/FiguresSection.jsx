@@ -56,10 +56,10 @@ const FiguresSection = () => {
   }, [hasAnimated, figures]);
 
   return (
-    <div ref={sectionRef} className="bg-white dark:bg-gray-700 py-2 sm:py-4 sm:px-2 figures-section">
+    <div ref={sectionRef} className="bg-white dark:bg-gray-700 py-1 sm:py-4 sm:px-2 figures-section">
       <style>
         {`
-          @media (min-width: 425px) {
+          @media (min-width: 640px) {
             .figures-section {
               padding: 1.5rem 1rem !important;
             }

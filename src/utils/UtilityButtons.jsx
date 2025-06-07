@@ -37,7 +37,7 @@ const UtilityButtons = () => {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-900 py-2 px-2 sm:py-4 sm:px-4 shadow-md dark:shadow-[0_4px_6px_-1px_rgba(255,255,255,0.1)]">
+    <div className="bg-white dark:bg-gray-900 py-1 px-2 sm:py-4 sm:px-4 shadow-md dark:shadow-[0_4px_6px_-1px_rgba(255,255,255,0.1)]">
       <div className="container mx-auto">
         <div className="flex flex-wrap justify-center gap-2 sm:gap-6 md:gap-8">
           {buttons.map((button, index) => (

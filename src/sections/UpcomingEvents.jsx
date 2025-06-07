@@ -58,7 +58,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     <div className="bg-white dark:bg-gray-900 py-2 sm:py-6">
       <div
         ref={carouselRef}
-        className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900"
+        className="relative w-full max-w-6xl mx-auto sm:mx-auto overflow-hidden bg-white dark:bg-gray-900"
       >
         <motion.div
           className="flex w-full bg-white dark:bg-gray-900"
@@ -82,7 +82,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                 <img
                   src={event.image}
                   alt={event.name}
-                  className="w-full h-80 sm:h-64 md:h-80 object-contain bg-white dark:bg-gray-900"
+                  className="w-full h-88 sm:h-64 md:h-80 object-contain bg-white dark:bg-gray-900"
                 />
                 <div className="absolute inset-0 bg-opacity-0 hover:bg-opacity-0 transition-opacity" />
                 <motion.div
