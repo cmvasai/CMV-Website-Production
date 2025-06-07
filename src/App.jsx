@@ -1,9 +1,9 @@
-import { useState, useEffect, memo, useRef } from 'react';
+import { useState, useEffect, memo } from 'react';
 import './styles/App.css';
 import { Navbar } from './layout/Navbar';
 import Footer from './layout/Footer';
 import ImageCarousel from './modals/Carousel';
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import About from './pages/public/About';
 import Activities from './pages/public/Activities';
@@ -19,11 +19,12 @@ import axios from 'axios';
 import Volunteer from './pages/public/Volunteer';
 import UtilityButtons from './utils/UtilityButtons';
 import OurPledge from './pages/public/OurPledge';
-import HeroSection from './sections/HeroSection';
-import StatisticsSection from './sections/StatisticsSection';
+// import StatisticsSection from './sections/StatisticsSection';
+import QuotesSection from './sections/QuotesSection'; // New import
+import FiguresSection from './sections/FiguresSection'; // New import
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
-const CarouselSkeleton = memo(() => {
+const CarouselSkeleton = memo(function CarouselSkeleton() {
   const isMobile = window.innerWidth < 768;
 
   return (
@@ -57,7 +58,7 @@ const CarouselSkeleton = memo(() => {
     </>
   );
 });
-
+CarouselSkeleton.displayName = "CarouselSkeleton";
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -163,11 +164,12 @@ function App() {
               path="/"
               element={
                 <div className="flex flex-col gap-0">
-                  <HeroSection />
-                  <StatisticsSection />
-                  {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
-                  <UtilityButtons />
+                  <QuotesSection />
+                  <FiguresSection />
                   <UpcomingEvents upcomingEvents={upcomingEvents} />
+                  {/* <StatisticsSection /> */}
+                  <UtilityButtons />
+                  {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
                 </div>
               }
             />

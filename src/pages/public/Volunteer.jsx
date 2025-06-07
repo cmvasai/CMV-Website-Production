@@ -165,7 +165,7 @@ const Volunteer = () => {
       <div id="volunteer-form" className="bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-8 px-4">
         <div className="bg-white dark:bg-gray-900 text-black dark:text-white shadow-2xl dark:shadow-[0_20px_50px_rgba(255,255,255,0.1)] p-6 rounded-lg w-full max-w-4xl flex flex-col gap-6 transition-all duration-300">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">
-            Volunteering - Expression of Interest
+          Join Us
           </h1>
 
           <form onSubmit={onSubmit} className="space-y-6">

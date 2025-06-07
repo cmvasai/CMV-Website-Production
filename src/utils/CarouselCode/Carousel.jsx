@@ -51,19 +51,47 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
         {items.map((item, index) => (
           <motion.div
             key={index}
-            className="relative shrink-0 text-white flex flex-col justify-end p-4 cursor-pointer"
+            className="relative shrink-0 text-white flex flex-col cursor-pointer"
             onClick={handleCarouselClick}
             style={{
-              backgroundImage: `url(${item.image})`,
               width: `${containerWidth}px`,
-              height: isMobile ? "50vh" : "80vh", 
-              backgroundSize: isMobile ? "contain" : "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
+              height: isMobile ? "50vh" : "80vh",
             }}
             whileHover={{ scale: 1.01 }}
           >
-            <div className="bg-black bg-opacity-50 p-4 rounded">
+            {/* Blurred Background Layer */}
+            <div
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url(${item.image})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                filter: "blur(5px)",
+              }}
+            >
+              {/* Semi-transparent white overlay */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.5)", // White with 50% opacity for premium look
+                }}
+              />
+            </div>
+
+            {/* Main Image Layer */}
+            <div
+              className="relative z-10 flex-1"
+              style={{
+                backgroundImage: `url(${item.image})`,
+                backgroundSize: isMobile ? "contain" : "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+              }}
+            />
+
+            {/* Description Container (Fixed Below Image) */}
+            <div className="relative z-10 bg-black bg-opacity-50 p-4 rounded">
               <div className="flex items-center gap-2">
                 <FiCircle className="h-[16px] w-[16px] text-white" />
                 <h3 className="text-lg font-bold">{item.title}</h3>

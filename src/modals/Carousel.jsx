@@ -1,4 +1,5 @@
 import Carousel from "../utils/CarouselCode/Carousel";
+import PropTypes from "prop-types";
 
 const ImageCarousel = ({ carouselItems }) => {
   return (
@@ -6,6 +7,10 @@ const ImageCarousel = ({ carouselItems }) => {
       <Carousel items={carouselItems} autoplay={true} autoplayDelay={3000} />
     </div>
   );
+};
+
+ImageCarousel.propTypes = {
+  carouselItems: PropTypes.array.isRequired,
 };
 
 export default ImageCarousel;
