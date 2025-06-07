@@ -69,7 +69,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
           {upcomingEvents.map((event) => (
             <motion.div
               key={event._id}
-              className="relative shrink-0 flex flex-col items-center cursor-pointer p-2 sm:p-4 md:p-6 bg-white dark:bg-gray-900"
+              className="relative shrink-0 flex flex-col items-center cursor-pointer p-1 sm:p-4 md:p-6 bg-white dark:bg-gray-900"
               style={{ width: `${containerWidth}px` }}
               onClick={() => handleEventClick(event)}
               whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
@@ -82,7 +82,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                 <img
                   src={event.image}
                   alt={event.name}
-                  className="w-full h-56 sm:h-64 md:h-80 object-contain bg-white dark:bg-gray-900"
+                  className="w-full h-60 sm:h-64 md:h-80 object-contain bg-white dark:bg-gray-900"
                 />
                 <div className="absolute inset-0 bg-opacity-0 hover:bg-opacity-0 transition-opacity" />
                 <motion.div
@@ -94,29 +94,15 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   <span>Click for Details</span>
                 </motion.div>
               </div>
-              <h3 className="text-base sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
+              <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
                 {event.name}
               </h3>
-              <p className="text-xs sm:text-base text-gray-600 dark:text-gray-300 line-clamp-2 text-center">
+              <p className="text-[10px] sm:text-base text-gray-600 dark:text-gray-300 line-clamp-2 text-center">
                 {event.description}
               </p>
             </motion.div>
           ))}
         </motion.div>
-        <div className="flex justify-center mt-1 sm:mt-3 space-x-2 bg-white dark:bg-gray-900">
-          {upcomingEvents.map((_, index) => (
-            <button
-              key={index}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
-                currentIndex === index
-                  ? "bg-gray-900 dark:bg-white"
-                  : "bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-500"
-              }`}
-              onClick={() => setCurrentIndex(index)}
-              aria-label={`Go to event ${index + 1}`}
-            />
-          ))}
-        </div>
       </div>
 
       <UpcomingEventsModal

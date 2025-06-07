@@ -56,68 +56,68 @@ const FiguresSection = () => {
   }, [hasAnimated, figures]);
 
   return (
-    <div ref={sectionRef} className="bg-white dark:bg-gray-900 py-2 px-1 sm:py-4 sm:px-2 figures-section">
+    <div ref={sectionRef} className="bg-white dark:bg-gray-900 py-1 px-1 sm:py-4 sm:px-2 figures-section">
       <style>
         {`
           .stats-card {
-            min-width: 70px; /* Reduced for mobile */
+            min-width: 70px;
             width: 100%;
-            max-width: 90px; /* Reduced for mobile */
+            max-width: 90px;
           }
           .stats-icon {
-            font-size: 1rem !important; /* Reduced for mobile */
-            margin-bottom: 0.25rem !important; /* Reduced for mobile */
+            font-size: 1rem !important;
+            margin-bottom: 0.25rem !important;
           }
           .stats-count {
-            font-size: 1rem !important; /* Reduced for mobile */
+            font-size: 1rem !important;
           }
           .stats-name {
-            font-size: 0.625rem !important; /* text-[10px] for mobile */
+            font-size: 0.625rem !important;
           }
           @media (min-width: 425px) {
             .figures-section {
-              padding: 1.5rem 1rem !important; /* py-6 px-4 */
+              padding: 1.5rem 1rem !important;
             }
             .figures-container {
               display: grid !important;
               grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-              gap: 1.5rem !important; /* gap-6 */
+              gap: 1.5rem !important;
               justify-items: center !important;
             }
             .figures-card {
-              padding: 1rem !important; /* p-4 */
+              padding: 0.5rem !important;
               min-width: unset !important;
               max-width: 200px !important;
             }
             .figures-icon {
-              font-size: 1.25rem !important; /* text-xl */
-              margin-bottom: 0.5rem !important; /* mb-2 */
+              font-size: 1.25rem !important;
+              margin-bottom: 0.5rem !important;
             }
             .figures-count {
-              font-size: 1.5rem !important; /* text-2xl */
+              font-size: 1.5rem !important;
             }
             .figures-name {
-              font-size: 0.875rem !important; /* text-sm */
+              font-size: 0.875rem !important;
             }
           }
           @media (min-width: 768px) {
             .figures-container {
               grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-              gap: 1.5rem !important; /* gap-6 */
+              gap: 1.5rem !important;
               justify-items: center !important;
             }
             .figures-card {
-              padding: 1rem !important; /* p-4 */
+              padding: 1rem !important;
               max-width: 200px !important;
             }
             .figures-icon {
-              font-size: 1.5rem !important; /* md:text-2xl */
+              font-size: 1.5rem !important;
             }
             .figures-count {
-              font-size: 1.875rem !important; /* md:text-3xl */
+              font-size: 1.875rem !important;
             }
             .figures-name {
-              font-size: 1rem !important; /* md:text-base */
+              font-size: 1rem !important;
             }
           }
         `}
@@ -127,7 +127,7 @@ const FiguresSection = () => {
           {figures.map((figure, index) => (
             <div 
               key={index}
-              className="flex flex-col items-center bg-[#ffe4d6] dark:bg-gray-800 rounded-lg p-1 sm:p-2 figures-card shadow-md hover:shadow-lg transition-shadow"
+              className="flex flex-col items-center bg-[#ffe4d6] dark:bg-gray-800 rounded-lg p-0.5 sm:p-2 figures-card shadow-md hover:shadow-lg transition-shadow"
             >
               <i className={`${figure.icon} text-[#BC3612] dark:text-[#F47930] text-lg figures-icon mb-1 sm:mb-1 stats-icon`}></i>
               <span className="text-base sm:text-lg figures-count font-bold text-[#BC3612] dark:text-[#F47930] stats-count">

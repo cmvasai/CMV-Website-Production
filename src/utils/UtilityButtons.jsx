@@ -49,7 +49,7 @@ const UtilityButtons = () => {
                 rel="noopener noreferrer"
                 className="flex flex-col items-center group transition-transform hover:scale-110"
               >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center 
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center 
                   bg-[#ffe4d6] dark:bg-gray-800 text-[#BC3612] dark:text-[#F47930] 
                   shadow-md group-hover:shadow-lg transition-all">
                   {button.icon}
@@ -67,7 +67,7 @@ const UtilityButtons = () => {
                 key={index}
                 className="flex flex-col items-center group transition-transform hover:scale-110"
               >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center 
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center 
                   bg-[#ffe4d6] dark:bg-gray-800 text-[#BC3612] dark:text-[#F47930] 
                   shadow-md group-hover:shadow-lg transition-all">
                   {button.icon}
