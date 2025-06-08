@@ -7,7 +7,7 @@ import { MdContacts } from "react-icons/md";
 const UtilityButtons = () => {
   const buttons = [
     {
-      name: "Membership",
+      name: "Join Us",
       icon: <GoPersonFill className="w-5 h-5 sm:w-14 sm:h-14 md:w-10 md:h-10" />,
       path: "/volunteer#volunteer-form",
       description: "Join our community",

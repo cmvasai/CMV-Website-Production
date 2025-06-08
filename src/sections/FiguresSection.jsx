@@ -61,12 +61,12 @@ const FiguresSection = () => {
         {`
           @media (min-width: 640px) {
             .figures-section {
-              padding: 1.5rem 1rem !important;
+              padding: 1rem 1rem !important;
             }
             .figures-container {
               display: grid !important;
-              grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-              gap: 1.5rem !important;
+              grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+              gap: 1rem !important;
               justify-items: center !important;
             }
             .figures-card {
@@ -79,24 +79,24 @@ const FiguresSection = () => {
               margin-bottom: 0.5rem !important;
             }
             .figures-count {
-              font-size: 1.5rem !important;
+              font-size: 1rem !important;
             }
             .figures-name {
-              font-size: 0.875rem !important;
+              font-size: 0.75rem !important;
             }
           }
           @media (min-width: 768px) {
             .figures-section {
-              padding: 2rem 1rem !important;
+              padding: 1rem 1rem !important;
             }
             .figures-container {
               grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-              gap: 1.5rem !important;
+              gap: 0.75rem !important;
               justify-items: center !important;
             }
             .figures-card {
-              padding: 1rem !important;
-              max-width: 200px !important;
+              padding: 0.5rem !important;
+              max-width: 140px !important;
               background: linear-gradient(to bottom right, rgba(255, 229, 204, 0.8), rgba(255, 255, 255, 0.8)) !important;
               backdrop-filter: blur(8px) !important;
               border: 1px solid rgba(255, 165, 0, 0.3) !important;
@@ -107,17 +107,17 @@ const FiguresSection = () => {
               box-shadow: 0 0 15px rgba(255, 165, 0, 0.5) !important;
             }
             .figures-icon {
-              font-size: 2rem !important;
-              margin-bottom: 0.75rem !important;
+              font-size: 1.25rem !important;
+              margin-bottom: 0.5rem !important;
             }
             .figures-count {
-              font-size: 1.5rem !important;
+              font-size: 1rem !important;
             }
             .figures-name {
-              font-size: 0.875rem !important;
+              font-size: 0.75rem !important;
             }
             .dark .figures-card {
-              background: linear-gradient(to bottom right, rgba(75, 85, 99, 0.8), rgba(31, 41, 55, 0.8)) !important;
+              background: linear-gradient(to bottom right, rgba(75, 85, 99, 0.8), rgba(31, 41, 55, 55, 0.8)) !important;
               border: 1px solid rgba(244, 121, 48, 0.5) !important;
             }
             .dark .figures-card:hover {
@@ -129,11 +129,12 @@ const FiguresSection = () => {
               padding: 1rem !important;
             }
             .figures-container {
+              grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
               gap: 2rem !important;
             }
             .figures-card {
               padding: 0.5rem !important;
-              max-width: 220px !important;
+              max-width: 200px !important;
             }
             .figures-icon {
               font-size: 2rem !important;
@@ -197,7 +198,7 @@ const FiguresSection = () => {
               <span className="text-base sm:text-lg figures-count font-bold text-[#BC3612] dark:text-[#F47930]">
                 {figure.suffix === "Cr+" ? (counters[index] / 10000000).toFixed(1) + "Cr+" : counters[index] + "+"}
               </span>
-              <span className="text-[10px] sm:text-xs figures-name font-medium text-gray-800 dark:text-gray-200">
+              <span className="text-[10px] sm:text-sm figures-name font-medium text-gray-800 dark:text-gray-200">
                 {figure.name}
               </span>
             </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { FaChevronRight } from "react-icons/fa";
 import UpcomingEventsModal from "../modals/UpcomingEventsModal";
 
 const SPRING_OPTIONS = { type: "spring", stiffness: 200, damping: 20 };
@@ -82,17 +83,22 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                 <img
                   src={event.image}
                   alt={event.name}
-                  className="w-full h-88 sm:h-96 md:h-80 object-contain bg-white dark:bg-gray-900"
+                  className="w-full h-88 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
                 />
-                <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300" />
+                {/* Hover Overlay (Tablet/Laptop) */}
+                <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300 hidden sm:block" />
+                {/* Learn More Button */}
                 <motion.div
-                  className="absolute inset-0 flex items-center justify-center text-white text-xs sm:text-sm md:text-base font-semibold bg-opacity-0 transition-all duration-300"
-                  initial={{ opacity: isMobile ? 1 : 0 }}
-                  whileHover={{ opacity: 1 }}
-                  animate={{ opacity: isMobile ? 1 : 0 }}
+                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 sm:group-hover:-translate-y-2 transition-transform duration-300 sm:opacity-0 sm:group-hover:opacity-100 opacity-90"
+                  initial={{ opacity: isMobile ? 0.9 : 0, translateY: 0 }}
+                  whileHover={{ translateY: -8, opacity: 1 }}
+                  animate={{ opacity: isMobile ? 0.9 : 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <span>Click for Details</span>
+                  <button className="flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                    Learn More
+                    <FaChevronRight className="ml-2 w-4 h-4" />
+                  </button>
                 </motion.div>
               </div>
               <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">

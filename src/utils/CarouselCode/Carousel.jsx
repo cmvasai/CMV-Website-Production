@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { FiCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 const SPRING_OPTIONS = { type: "spring", stiffness: 300, damping: 30 };
@@ -51,7 +50,7 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
         {items.map((item, index) => (
           <motion.div
             key={index}
-            className="relative shrink-0 text-white flex flex-col cursor-pointer"
+            className="relative shrink-0 text-white flex flex-col cursor-pointer group"
             onClick={handleCarouselClick}
             style={{
               width: `${containerWidth}px`,
@@ -90,20 +89,30 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
               }}
             />
 
-            {/* Description Container (Fixed Below Image) */}
-            <div className="relative z-10 bg-black bg-opacity-50 p-4 rounded">
-              <div className="flex items-center gap-2">
-                <FiCircle className="h-[16px] w-[16px] text-white" />
-                <h3 className="text-lg font-bold">{item.title}</h3>
-              </div>
-              <p className="text-sm">{item.description}</p>
-            </div>
+            {/* Description Container (Redesigned) */}
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 z-10 p-3 sm:p-4 bg-gradient-to-t from-black/70 to-transparent group-hover:from-black/80 backdrop-blur-md transition-all duration-300"
+              initial={{ opacity: 0, translateY: 20 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <h3 className="text-xl sm:text-2xl font-semibold text-white mb-1 text-shadow">
+                {item.title}
+              </h3>
+              <p className="text-base sm:text-lg text-white text-shadow">
+                {item.description}
+              </p>
+            </motion.div>
           </motion.div>
         ))}
       </motion.div>
-      {/* <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm pointer-events-none z-10">
-        Click to view featured events
-      </div> */}
+      <style>
+        {`
+          .text-shadow {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+          }
+        `}
+      </style>
     </div>
   );
 }

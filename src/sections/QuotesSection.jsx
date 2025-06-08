@@ -69,21 +69,27 @@ const QuotesSection = () => {
             color: #BC3612;
           }
           @media (min-width: 768px) {
-            .quote-text::before,
+            .quote-text::before {
+              left: 24px;
+              top: 4px;
+              font-size: 30px;
+            }
             .quote-text::after {
-              font-size: 40px;
+              right: 24px;
+              bottom: 4px;
+              font-size: 30px;
             }
           }
           @media (min-width: 1024px) {
             .quote-text::before {
-              left: -20px;
-              top: -5px;
+              left: -40px;
+              top: -10px;
               font-size: 40px;
               z-index: 20;
             }
             .quote-text::after {
-              right: -20px;
-              bottom: -5px;
+              right: -40px;
+              bottom: -10px;
               font-size: 40px;
               z-index: 20;
             }
