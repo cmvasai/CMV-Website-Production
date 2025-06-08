@@ -86,6 +86,9 @@ const FiguresSection = () => {
             }
           }
           @media (min-width: 768px) {
+            .figures-section {
+              padding: 2rem 1rem !important;
+            }
             .figures-container {
               grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
               gap: 1.5rem !important;
@@ -94,16 +97,78 @@ const FiguresSection = () => {
             .figures-card {
               padding: 1rem !important;
               max-width: 200px !important;
+              background: linear-gradient(to bottom right, rgba(255, 229, 204, 0.8), rgba(255, 255, 255, 0.8)) !important;
+              backdrop-filter: blur(8px) !important;
+              border: 1px solid rgba(255, 165, 0, 0.3) !important;
+              transition: all 0.3s ease !important;
+            }
+            .figures-card:hover {
+              transform: scale(1.05) !important;
+              box-shadow: 0 0 15px rgba(255, 165, 0, 0.5) !important;
             }
             .figures-icon {
-              font-size: 1.5rem !important;
+              font-size: 2rem !important;
+              margin-bottom: 0.75rem !important;
             }
             .figures-count {
-              font-size: 1.875rem !important;
+              font-size: 1.5rem !important;
             }
             .figures-name {
-              font-size: 1rem !important;
+              font-size: 0.875rem !important;
             }
+            .dark .figures-card {
+              background: linear-gradient(to bottom right, rgba(75, 85, 99, 0.8), rgba(31, 41, 55, 0.8)) !important;
+              border: 1px solid rgba(244, 121, 48, 0.5) !important;
+            }
+            .dark .figures-card:hover {
+              box-shadow: 0 0 15px rgba(244, 121, 48, 0.5) !important;
+            }
+          }
+          @media (min-width: 1024px) {
+            .figures-section {
+              padding: 1rem !important;
+            }
+            .figures-container {
+              gap: 2rem !important;
+            }
+            .figures-card {
+              padding: 0.5rem !important;
+              max-width: 220px !important;
+            }
+            .figures-icon {
+              font-size: 2rem !important;
+              margin-bottom: 0.75rem !important;
+            }
+            .figures-count {
+              font-size: 1.5rem !important;
+            }
+            .figures-name {
+              font-size: 0.875rem !important;
+            }
+          }
+          @keyframes fadeInStagger {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fade-in-stagger:nth-child(1) {
+            animation: fadeInStagger 600ms ease-in-out forwards;
+          }
+          .animate-fade-in-stagger:nth-child(2) {
+            animation: fadeInStagger 600ms ease-in-out 200ms forwards;
+          }
+          .animate-fade-in-stagger:nth-child(3) {
+            animation: fadeInStagger 600ms ease-in-out 400ms forwards;
+          }
+          .figure-number::after {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 1px;
+            background: #BC3612;
+            margin: 2px auto;
+          }
+          .dark .figure-number::after {
+            background: #F47930;
           }
         `}
       </style>
@@ -111,22 +176,22 @@ const FiguresSection = () => {
         {/* Mobile View: Grid layout with 3 columns */}
         <div className="grid grid-cols-3 gap-2 sm:hidden text-center">
           {figures.map((figure, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <span className="text-[10px] font-medium text-[#BC3612] dark:text-[#F47930]">
+            <div key={index} className="flex flex-col items-center bg-gray-100 dark:bg-gray-800 rounded-md">
+              <span className="text-[11px] font-bold text-[#BC3612] dark:text-[#F47930] figure-number">
                 {counters[index]}+
               </span>
-              <span className="text-[9px] font-medium text-[#BC3612] dark:text-[#F47930]">
+              <span className="text-[9px] font-medium uppercase text-[#BC3612] dark:text-[#F47930]">
                 {figure.name}
               </span>
             </div>
           ))}
         </div>
-        {/* Tablet and Larger: Original Card Layout */}
+        {/* Tablet and Larger: Premium Card Layout */}
         <div className="hidden sm:flex sm:flex-row sm:flex-wrap sm:justify-around sm:gap-2 figures-container text-center">
           {figures.map((figure, index) => (
             <div 
               key={index}
-              className="flex flex-col items-center bg-[#ffe4d6] dark:bg-gray-800 rounded-lg p-0.5 sm:p-2 figures-card shadow-md hover:shadow-lg transition-shadow"
+              className="flex flex-col items-center rounded-lg p-0.5 sm:p-2 figures-card shadow-md animate-fade-in-stagger"
             >
               <i className={`${figure.icon} text-[#BC3612] dark:text-[#F47930] text-lg figures-icon mb-1 sm:mb-1`}></i>
               <span className="text-base sm:text-lg figures-count font-bold text-[#BC3612] dark:text-[#F47930]">

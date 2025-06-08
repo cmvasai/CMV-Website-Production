@@ -23,15 +23,15 @@ const QuotesSection = () => {
     <div className="bg-gray-100 dark:bg-gray-800">
       <div className="relative w-full text-center">
         {/* Quote Card */}
-        <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md transition-all duration-500 w-full">
+        <div className="bg-gradient-to-r from-white to-orange-100 dark:from-gray-700 dark:to-gray-500 rounded-lg shadow-lg dark:shadow-[0_10px_15px_-3px_rgba(255,165,0,0.2)] transition-all duration-500 w-full border-l-6 border-[#BC3612] dark:border-[#F47930] hover:scale-[1.01] group overflow-visible">
           <div
             key={currentQuoteIndex}
-            className="transition-opacity duration-500 opacity-0 animate-fade-in"
+            className="transition-opacity duration-500 opacity-0 animate-slide-up"
           >
-            <p className="text-xs sm:text-base md:text-lg italic text-gray-700 dark:text-gray-300 p-1 sm:p-4 md:p-6">
-              `{quotes[currentQuoteIndex].text}`
+            <p className="text-[13px] sm:text-lg md:text-xl font-serif italic tracking-wide text-gray-700 dark:text-gray-300 p-1 sm:p-6 relative quote-text">
+              {quotes[currentQuoteIndex].text}
             </p>
-            <p className="text-[10px] sm:text-sm md:text-base font-medium text-[#BC3612] dark:text-[#F47930] px-1 sm:px-4 md:px-6 pb-1 sm:pb-4 md:pb-6">
+            <p className="text-[10px] sm:text-base md:text-lg italic font-medium tracking-wide text-[#BC3612] dark:text-[#F47930] px-1 sm:px-6 pb-1 sm:pb-6">
               — {quotes[currentQuoteIndex].author}
             </p>
           </div>
@@ -45,8 +45,52 @@ const QuotesSection = () => {
             from { opacity: 0; }
             to { opacity: 1; }
           }
-          .animate-fade-in {
-            animation: fadeIn 500ms ease-in-out forwards;
+          @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-slide-up {
+            animation: slideUp 800ms ease-in-out forwards;
+          }
+          .quote-text::before {
+            content: '"';
+            position: absolute;
+            left: 4px;
+            top: 0;
+            font-size: 20px;
+            color: #BC3612;
+          }
+          .quote-text::after {
+            content: '"';
+            position: absolute;
+            right: 4px;
+            bottom: 0;
+            font-size: 20px;
+            color: #BC3612;
+          }
+          @media (min-width: 768px) {
+            .quote-text::before,
+            .quote-text::after {
+              font-size: 40px;
+            }
+          }
+          @media (min-width: 1024px) {
+            .quote-text::before {
+              left: -20px;
+              top: -5px;
+              font-size: 40px;
+              z-index: 20;
+            }
+            .quote-text::after {
+              right: -20px;
+              bottom: -5px;
+              font-size: 40px;
+              z-index: 20;
+            }
+          }
+          .dark .quote-text::before,
+          .dark .quote-text::after {
+            color: #F47930;
           }
         `}
       </style>
