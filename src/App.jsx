@@ -21,6 +21,11 @@ import UtilityButtons from './utils/UtilityButtons';
 import OurPledge from './pages/public/OurPledge';
 import QuotesSection from './sections/QuotesSection';
 import ArchivedEvents from './pages/public/ArchivedEvents';
+import ArchivedEventDetails from './pages/public/ArchivedEventDetails';
+import AddArchivedEvent from './pages/admin/AddArchivedEvent';
+import ManageArchivedEvents from './pages/admin/ManageArchivedEvents';
+import ArchivedEventsDebug from './components/ArchivedEventsDebug';
+import { ToastContainer } from './components/Toast';
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(function CarouselSkeleton() {
@@ -186,6 +191,9 @@ function App() {
               }
             />
             <Route path="/about-us" element={<About />} />
+            <Route path="/archived-events" element={<ArchivedEvents />} />
+            <Route path="/archived-events/:id" element={<ArchivedEventDetails />} />
+            <Route path="/archived-events-debug" element={<ArchivedEventsDebug />} />
             <Route path="/events/archived" element={<ArchivedEvents />} />
             <Route path="/activities" element={<Activities />} />
             <Route path="/contact-us" element={<ContactUs />} />
@@ -195,6 +203,26 @@ function App() {
             <Route
               path="/admin/dashboard"
               element={adminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin/login" />}
+            />
+            <Route
+              path="/admin/archived-events"
+              element={
+                adminLoggedIn ? (
+                  <ManageArchivedEvents />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+            <Route
+              path="/admin/archived-events/add"
+              element={
+                adminLoggedIn ? (
+                  <AddArchivedEvent />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
             />
             <Route
               path="/admin/edit-carousel"
@@ -238,6 +266,7 @@ function App() {
             <Route path="/pledge" element={<OurPledge />} />
           </Routes>
           <Footer />
+          <ToastContainer />
         </BrowserRouter>
       </div>
     </HelmetProvider>

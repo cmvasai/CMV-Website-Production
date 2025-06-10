@@ -1,5 +1,3 @@
-import React from 'react';
-
 const OurPledge = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-12 px-4">
@@ -29,7 +27,7 @@ const OurPledge = () => {
           {/* Pledge Text Container */}
           <div className="bg-[#ffe4d6] dark:bg-gray-800 p-6 rounded-lg text-center italic">
             <p className="text-base sm:text-lg md:text-xl font-medium">
-              "We stand as one family, bound to each other with love and respect.
+              &ldquo;We stand as one family, bound to each other with love and respect.
             </p>
             <p className="text-base sm:text-lg md:text-xl font-medium mt-2">
               We serve as an army, courageous and disciplined, ever ready to fight against all low tendencies and false values, within and without us.
