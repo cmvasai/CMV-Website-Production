@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useRef } from 'react';
+import { useState, useEffect, memo } from 'react';
 import './styles/App.css';
 import { Navbar } from './layout/Navbar';
 import Footer from './layout/Footer';
@@ -19,11 +19,16 @@ import axios from 'axios';
 import Volunteer from './pages/public/Volunteer';
 import UtilityButtons from './utils/UtilityButtons';
 import OurPledge from './pages/public/OurPledge';
-import HeroSection from './sections/HeroSection';
-import StatisticsSection from './sections/StatisticsSection';
+import QuotesSection from './sections/QuotesSection';
+import ArchivedEvents from './pages/public/ArchivedEvents';
+import ArchivedEventDetails from './pages/public/ArchivedEventDetails';
+import AddArchivedEvent from './pages/admin/AddArchivedEvent';
+import ManageArchivedEvents from './pages/admin/ManageArchivedEvents';
+import ArchivedEventsDebug from './components/ArchivedEventsDebug';
+import { ToastContainer } from './components/Toast';
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
-const CarouselSkeleton = memo(() => {
+const CarouselSkeleton = memo(function CarouselSkeleton() {
   const isMobile = window.innerWidth < 768;
 
   return (
@@ -57,7 +62,7 @@ const CarouselSkeleton = memo(() => {
     </>
   );
 });
-
+CarouselSkeleton.displayName = "CarouselSkeleton";
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -163,15 +168,33 @@ function App() {
               path="/"
               element={
                 <div className="flex flex-col gap-0">
-                  <HeroSection />
-                  <StatisticsSection />
-                  {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
-                  <UtilityButtons />
+                  <QuotesSection />
                   <UpcomingEvents upcomingEvents={upcomingEvents} />
+                  <UtilityButtons />
+                  {/* "Our Events" Heading */}
+                  <div className="bg-white dark:bg-gray-900 py-4 sm:py-6">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center">
+                      Our Events
+                    </h2>
+                  </div>
+                  {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
+                  {/* "View More Events" Link */}
+                  <div className="bg-white dark:bg-gray-900 py-4 sm:py-6 flex justify-center">
+                    <Link
+                      to="/events#featured-events"
+                      className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                    >
+                      View More Events
+                    </Link>
+                  </div>
                 </div>
               }
             />
             <Route path="/about-us" element={<About />} />
+            <Route path="/archived-events" element={<ArchivedEvents />} />
+            <Route path="/archived-events/:id" element={<ArchivedEventDetails />} />
+            <Route path="/archived-events-debug" element={<ArchivedEventsDebug />} />
+            <Route path="/events/archived" element={<ArchivedEvents />} />
             <Route path="/activities" element={<Activities />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/volunteer" element={<Volunteer />} />
@@ -180,6 +203,26 @@ function App() {
             <Route
               path="/admin/dashboard"
               element={adminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin/login" />}
+            />
+            <Route
+              path="/admin/archived-events"
+              element={
+                adminLoggedIn ? (
+                  <ManageArchivedEvents />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+            <Route
+              path="/admin/archived-events/add"
+              element={
+                adminLoggedIn ? (
+                  <AddArchivedEvent />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
             />
             <Route
               path="/admin/edit-carousel"
@@ -223,6 +266,7 @@ function App() {
             <Route path="/pledge" element={<OurPledge />} />
           </Routes>
           <Footer />
+          <ToastContainer />
         </BrowserRouter>
       </div>
     </HelmetProvider>

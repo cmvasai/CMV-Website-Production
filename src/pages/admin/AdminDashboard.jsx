@@ -54,6 +54,12 @@ const AdminDashboard = () => {
           >
             Edit Featured Events
           </Link>
+          <Link
+            to="/admin/archived-events"
+            className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
+          >
+            Manage Archived Events
+          </Link>
           <button 
             className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
             onClick={handleExportClick}

@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 
 const StatisticsSection = () => {
   // Stats data
-  const stats = [
+  const stats = useMemo(() => [
     { name: "Balavihar", count: 35, icon: "fas fa-child" },
     { name: "CHYK", count: 30, icon: "fas fa-users" },
     { name: "Members", count: 145, icon: "fas fa-user-friends" },
     { name: "Devi Group", count: 35, icon: "fas fa-hands-praying" }
-  ];
+  ], []);
 
   const [counters, setCounters] = useState(stats.map(() => 0));
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -25,12 +25,13 @@ const StatisticsSection = () => {
           stats.forEach((stat, index) => {
             const duration = 2500; // Increased from 1500ms to 2500ms
             const steps = 50; // Increased from 30 to 50 steps
-            const increment = Math.ceil(stat.count / steps);
+            const targetCount = stat.count;
+            const increment = Math.ceil(targetCount / steps);
             let current = 0;
             const timer = setInterval(() => {
               current += increment;
-              if (current >= stat.count) {
-                current = stat.count;
+              if (current >= targetCount) {
+                current = targetCount;
                 clearInterval(timer);
               }
               
@@ -46,13 +47,14 @@ const StatisticsSection = () => {
       { threshold: 0.1 } // Trigger when at least 10% of the element is visible
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const sectionNode = sectionRef.current;
+    if (sectionNode) {
+      observer.observe(sectionNode);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (sectionNode) {
+        observer.unobserve(sectionNode);
       }
     };
   }, [hasAnimated, stats]);
@@ -61,6 +63,11 @@ const StatisticsSection = () => {
     <div ref={sectionRef} className="bg-white dark:bg-gray-900 py-4 px-2 stats-section">
       <style>
         {`
+          .stats-card {
+            min-width: 80px; /* Ensure minimum width for mobile */
+            width: 100%; /* Take full width of container */
+            max-width: 100px; /* Limit width for uniformity */
+          }
           @media (min-width: 425px) {
             .stats-section {
               padding: 1.5rem 1rem; /* py-6 px-4 */
@@ -69,9 +76,12 @@ const StatisticsSection = () => {
               display: grid !important;
               grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
               gap: 1.5rem !important; /* gap-6 */
+              justify-items: center !important;
             }
             .stats-card {
               padding: 1rem !important; /* p-4 */
+              min-width: unset !important; /* Remove min-width for grid */
+              max-width: 200px !important; /* Slightly larger for larger screens */
             }
             .stats-icon {
               font-size: 1.25rem !important; /* text-xl */
@@ -87,6 +97,12 @@ const StatisticsSection = () => {
           @media (min-width: 768px) {
             .stats-container {
               grid-template-columns: repeat(4, minmax(0, 1fr)) !important; /* md:grid-cols-4 */
+              gap: 1.5rem !important; /* gap-6 */
+              justify-items: center !important;
+            }
+            .stats-card {
+              padding: 1rem !important; /* p-4 */
+              max-width: 200px !important; /* Consistent width */
             }
             .stats-icon {
               font-size: 1.5rem !important; /* md:text-2xl */

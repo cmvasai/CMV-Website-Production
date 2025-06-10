@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import EventsModal from "../../modals/EventsModal";
 
 const Events = ({ featuredEvents }) => {
@@ -33,7 +34,9 @@ const Events = ({ featuredEvents }) => {
             </p>
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-center mt-12 mb-10">Our Featured Events</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mt-12 mb-10" id="featured-events">
+            Our Featured Events
+          </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {featuredEvents.map((event) => (
@@ -60,6 +63,16 @@ const Events = ({ featuredEvents }) => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* "View Past Events" Button */}
+          <div className="bg-white dark:bg-gray-900 py-8 sm:py-12 flex justify-center">
+            <Link
+              to="/events/archived"
+              className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
+            >
+              View Past Events
+            </Link>
           </div>
 
           {/* Modal */}
