@@ -3,15 +3,17 @@ import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  // Function to scroll to top with smooth behavior
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="bg-[#ffe4d6] dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-8 sm:py-12 shadow-inner">
       <div className="container mx-auto px-4">
         {/* Top Section: Mission Statement */}
         <div className="text-center mb-8">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
-            Transforming Lives Through Vedantic Wisdom
-          </h2>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
             Chinmaya Mission Vasai
           </p>
         </div>
@@ -35,6 +37,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     to={link.path}
+                    onClick={scrollToTop} // Scroll to top on click
                     className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors"
                   >
                     {link.name}
@@ -62,26 +65,6 @@ const Footer = () => {
               Phone: +91 123-456-7890
             </p>
           </div>
-
-          {/* Newsletter Signup */}
-          {/* <div>
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
-              Newsletter
-            </h3>
-            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4">
-              Stay updated with our latest events and updates.
-            </p>
-            <div className="flex max-w-xs mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 text-sm sm:text-base text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-              <button className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-r-md hover:shadow-md transition-all">
-                Subscribe
-              </button>
-            </div>
-          </div> */}
         </div>
 
         {/* Bottom Section: Social Media and Copyright */}

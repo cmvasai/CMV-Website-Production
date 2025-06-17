@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import archivedEventsService from '../../services/archivedEventsService';
 import { ArchivedEventsListSkeleton } from '../../components/LoadingSkeletons';
 import { showToast } from '../../components/Toast';
+import { scrollToTop } from '../../utils/scrollUtils';
 
 const ArchivedEvents = () => {
   const [events, setEvents] = useState([]);
@@ -65,6 +66,10 @@ const ArchivedEvents = () => {
     } catch {
       return 'Date not available';
     }
+  };
+
+  const handleViewDetailsClick = () => {
+    scrollToTop();
   };
 
   if (loading) {
@@ -204,6 +209,7 @@ const ArchivedEvents = () => {
                           </div>
                           <Link
                             to={`/archived-events/${event._id}`}
+                            onClick={handleViewDetailsClick}
                             className="inline-flex items-center px-4 py-2 bg-[#BC3612] dark:bg-[#F47930] hover:bg-[#ff725e] dark:hover:bg-[#ff725e] text-white text-sm font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930]"
                             aria-label={`View details for ${event.title}`}
                           >

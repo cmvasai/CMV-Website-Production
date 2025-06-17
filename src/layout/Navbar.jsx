@@ -1,10 +1,12 @@
 import { useState, useMemo } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion"; // For mobile menu animation
+import { scrollToTop } from '../utils/scrollUtils';
 
 export const Navbar = ({ toggleDarkMode, darkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -13,6 +15,11 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
   // Close menu after clicking a link (auto-collapse)
   const handleLinkClick = () => {
     setIsOpen(false);
+    scrollToTop();
+  };
+
+  const handleNavLinkClick = () => {
+    scrollToTop();
   };
 
   // Memoize navItems to prevent re-creation on every render
@@ -34,7 +41,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
           <div className="pt-1">
-            <Link to="/" aria-label="Chinmaya Mission Vasai Home">
+            <Link to="/" onClick={handleNavLinkClick} aria-label="Chinmaya Mission Vasai Home">
               <img
                 src={darkMode ? "/images/lamp1.png" : "/images/lamp.png"}
                 alt="Chinmaya Mission Vasai Logo"
@@ -43,12 +50,12 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
             </Link>
           </div>
           <div>
-            <Link to="/">
+            <Link to="/" onClick={handleNavLinkClick}>
               <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#BC3612] dark:text-[#F47930] font-bold">
                 CHINMAYA MISSION VASAI
               </h1>
             </Link>
-            <Link to="/">
+            <Link to="/" onClick={handleNavLinkClick}>
               <p className="text-xs sm:text-sm md:text-base font-bold dark:text-white">
                 Maximum Happiness To Maximum People
               </p>
@@ -98,6 +105,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
               <li key={index}>
                 <NavLink
                   to={item.path}
+                  onClick={handleNavLinkClick}
                   className={({ isActive }) =>
                     `px-3 py-2 text-sm md:text-base lg:text-lg font-bold transition-colors ${
                       isActive

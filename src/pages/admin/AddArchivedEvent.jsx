@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import archivedEventsService from '../../services/archivedEventsService';
 import { validateImage, compressImage, createImagePreview, revokeImagePreview } from '../../utils/imageUtils';
 import { showToast } from '../../components/Toast';
+import { scrollToTop } from '../../utils/scrollUtils';
 
 const AddArchivedEvent = () => {
   const navigate = useNavigate();
@@ -234,6 +235,16 @@ const AddArchivedEvent = () => {
     };
   }, []);
 
+  const handleBackToManageClick = () => {
+    navigate('/admin/archived-events');
+    scrollToTop();
+  };
+
+  const handleCancelClick = () => {
+    navigate('/admin/archived-events');
+    scrollToTop();
+  };
+
   return (
     <>
       <Helmet>
@@ -248,7 +259,7 @@ const AddArchivedEvent = () => {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <button
-                  onClick={() => navigate('/admin/archived-events')}
+                  onClick={handleBackToManageClick}
                   className="inline-flex items-center text-[#BC3612] dark:text-[#F47930] hover:text-[#ff725e] dark:hover:text-[#ff725e] mb-4 transition-colors"
                 >
                   <FaArrowLeft className="w-4 h-4 mr-2" />
@@ -525,7 +536,7 @@ const AddArchivedEvent = () => {
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
-                  onClick={() => navigate('/admin/archived-events')}
+                  onClick={handleCancelClick}
                   className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   Cancel

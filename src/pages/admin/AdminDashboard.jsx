@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { scrollToTop } from '../../utils/scrollUtils';
 
 const AdminDashboard = () => {
   const [isExporting, setIsExporting] = useState(false);
@@ -31,6 +32,10 @@ const AdminDashboard = () => {
     }
   }
 
+  const handleAdminNavClick = () => {
+    scrollToTop();
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -38,24 +43,28 @@ const AdminDashboard = () => {
         <div className="space-y-4 flex flex-col justify-center items-center">
           <Link
             to="/admin/edit-carousel"
+            onClick={handleAdminNavClick}
             className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
           >
             Edit Carousel Images
           </Link>
           <Link
             to="/admin/edit-upcoming-events"
+            onClick={handleAdminNavClick}
             className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
           >
             Edit Upcoming Events
           </Link>
           <Link
             to="/admin/edit-featured-events"
+            onClick={handleAdminNavClick}
             className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
           >
             Edit Featured Events
           </Link>
           <Link
             to="/admin/archived-events"
+            onClick={handleAdminNavClick}
             className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
           >
             Manage Archived Events
