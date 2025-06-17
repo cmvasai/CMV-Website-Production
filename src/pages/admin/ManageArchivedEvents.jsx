@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import archivedEventsService from '../../services/archivedEventsService';
 import { ArchivedEventsListSkeleton } from '../../components/LoadingSkeletons';
 import { showToast } from '../../components/Toast';
+import { scrollToTop } from '../../utils/scrollUtils';
 
 const ManageArchivedEvents = () => {
   const [events, setEvents] = useState([]);
@@ -92,6 +93,10 @@ const ManageArchivedEvents = () => {
     setEventToDelete(null);
   };
 
+  const handleAddNewEventClick = () => {
+    scrollToTop();
+  };
+
   if (loading) {
     return <ArchivedEventsListSkeleton />;
   }
@@ -118,6 +123,7 @@ const ManageArchivedEvents = () => {
               </div>
               <Link
                 to="/admin/archived-events/add"
+                onClick={handleAddNewEventClick}
                 className="inline-flex items-center px-6 py-3 bg-[#BC3612] dark:bg-[#F47930] hover:bg-[#ff725e] dark:hover:bg-[#ff725e] text-white rounded-lg transition-colors"
               >
                 <FaPlus className="w-5 h-5 mr-2" />

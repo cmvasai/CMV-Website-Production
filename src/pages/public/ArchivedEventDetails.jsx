@@ -7,6 +7,7 @@ import { ArchivedEventDetailsSkeleton } from '../../components/LoadingSkeletons'
 import ImageLightbox from '../../components/ImageLightbox';
 import Breadcrumb from '../../components/Breadcrumb';
 import { showToast } from '../../components/Toast';
+import { scrollToTop } from '../../utils/scrollUtils';
 
 const ArchivedEventDetails = () => {
   const { id } = useParams();
@@ -76,6 +77,10 @@ const ArchivedEventDetails = () => {
     }
   };
 
+  const handleBackToEventsClick = () => {
+    scrollToTop();
+  };
+
   if (loading) {
     return <ArchivedEventDetailsSkeleton />;
   }
@@ -139,6 +144,7 @@ const ArchivedEventDetails = () => {
             {/* Back Button */}
             <Link
               to="/archived-events"
+              onClick={handleBackToEventsClick}
               className="inline-flex items-center text-[#BC3612] dark:text-[#F47930] hover:text-[#ff725e] dark:hover:text-[#ff725e] mb-6 transition-colors"
             >
               <FaArrowLeft className="w-4 h-4 mr-2" />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
+import { scrollToTop } from "../../utils/scrollUtils";
 import EventsModal from "../../modals/EventsModal";
 
 const Events = ({ featuredEvents }) => {
@@ -14,6 +15,10 @@ const Events = ({ featuredEvents }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedEvent(null);
+  };
+
+  const handleViewPastEventsClick = () => {
+    scrollToTop();
   };
 
   return (
@@ -69,6 +74,7 @@ const Events = ({ featuredEvents }) => {
           <div className="bg-white dark:bg-gray-900 py-8 sm:py-12 flex justify-center">
             <Link
               to="/events/archived"
+              onClick={handleViewPastEventsClick}
               className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
             >
               View Past Events

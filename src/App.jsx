@@ -25,7 +25,9 @@ import ArchivedEventDetails from './pages/public/ArchivedEventDetails';
 import AddArchivedEvent from './pages/admin/AddArchivedEvent';
 import ManageArchivedEvents from './pages/admin/ManageArchivedEvents';
 import ArchivedEventsDebug from './components/ArchivedEventsDebug';
+import ScrollToTopButton from './components/ScrollToTopButton';
 import { ToastContainer } from './components/Toast';
+import { scrollToTop } from './utils/scrollUtils';
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(function CarouselSkeleton() {
@@ -125,6 +127,10 @@ function App() {
     setDarkMode(!darkMode);
   };
 
+  const handleViewMoreEventsClick = () => {
+    scrollToTop();
+  };
+
   return (
     <HelmetProvider>
       <div className={darkMode ? 'dark' : ''}>
@@ -182,6 +188,7 @@ function App() {
                   <div className="bg-white dark:bg-gray-900 py-4 sm:py-6 flex justify-center">
                     <Link
                       to="/events#featured-events"
+                      onClick={handleViewMoreEventsClick}
                       className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
                     >
                       View More Events
@@ -266,6 +273,7 @@ function App() {
             <Route path="/pledge" element={<OurPledge />} />
           </Routes>
           <Footer />
+          <ScrollToTopButton />
           <ToastContainer />
         </BrowserRouter>
       </div>

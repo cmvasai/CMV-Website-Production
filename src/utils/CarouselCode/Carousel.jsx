@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { scrollToTop } from "../scrollUtils";
 
 const SPRING_OPTIONS = { type: "spring", stiffness: 300, damping: 30 };
 
@@ -35,8 +36,12 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 3000 
   }, [autoplay, autoplayDelay, items.length]);
 
   const handleCarouselClick = () => {
-    // Navigate to events page with a hash to scroll to featured events
-    navigate("/events#featured-events");
+    // Navigate to events page and scroll to top
+    navigate("/events");
+    // Small delay to allow navigation to complete
+    setTimeout(() => {
+      scrollToTop();
+    }, 100);
   };
 
   return (
