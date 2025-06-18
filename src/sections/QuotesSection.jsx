@@ -23,7 +23,7 @@ const QuotesSection = () => {
     <div className="bg-gray-100 dark:bg-gray-800">
       <div className="relative w-full text-center">
         {/* Quote Card */}
-        <div className="bg-gradient-to-r from-white to-orange-100 dark:from-gray-700 dark:to-gray-500 rounded-lg shadow-lg dark:shadow-[0_10px_15px_-3px_rgba(255,165,0,0.2)] transition-all duration-500 w-full border-l-6 border-[#BC3612] dark:border-[#F47930] hover:scale-[1.01] group overflow-visible">
+        <div className="bg-gradient-to-r from-white to-orange-100 dark:from-gray-700 dark:to-gray-500 shadow-lg dark:shadow-[0_10px_15px_-3px_rgba(255,165,0,0.2)] transition-all duration-500 w-full border-l-6 border-[#BC3612] dark:border-[#F47930] hover:scale-[1.01] group relative">
           <div
             key={currentQuoteIndex}
             className="transition-opacity duration-500 opacity-0 animate-slide-up"
@@ -82,13 +82,27 @@ const QuotesSection = () => {
           }
           @media (min-width: 1024px) {
             .quote-text::before {
-              left: -40px;
+              left: 20px;
               top: -10px;
               font-size: 40px;
               z-index: 20;
             }
             .quote-text::after {
-              right: -40px;
+              right: 20px;
+              bottom: -10px;
+              font-size: 40px;
+              z-index: 20;
+            }
+          }
+          @media (min-width: 1280px) {
+            .quote-text::before {
+              left: 40px;
+              top: -10px;
+              font-size: 40px;
+              z-index: 20;
+            }
+            .quote-text::after {
+              right: 40px;
               bottom: -10px;
               font-size: 40px;
               z-index: 20;
