@@ -1,33 +1,38 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, lazy, Suspense } from 'react';
 import './styles/App.css';
 import { Navbar } from './layout/Navbar';
 import Footer from './layout/Footer';
 import ImageCarousel from './modals/Carousel';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
-import About from './pages/public/About';
-import Activities from './pages/public/Activities';
-import Events from './pages/public/Events';
 import { UpcomingEvents } from './sections/UpcomingEvents';
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import EditCarousel from './pages/admin/EditCarousel';
-import EditUpcomingEvents from './pages/admin/EditUpcomingEvents';
-import EditFeaturedEvents from './pages/admin/EditFeaturedEvents';
-import ContactUs from './pages/public/ContactUs';
 import axios from 'axios';
-import Volunteer from './pages/public/Volunteer';
 import UtilityButtons from './utils/UtilityButtons';
-import OurPledge from './pages/public/OurPledge';
 import QuotesSection from './sections/QuotesSection';
-import ArchivedEvents from './pages/public/ArchivedEvents';
-import ArchivedEventDetails from './pages/public/ArchivedEventDetails';
-import AddArchivedEvent from './pages/admin/AddArchivedEvent';
-import ManageArchivedEvents from './pages/admin/ManageArchivedEvents';
-import ArchivedEventsDebug from './components/ArchivedEventsDebug';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import { ToastContainer } from './components/Toast';
 import { scrollToTop } from './utils/scrollUtils';
+import ErrorBoundary from './components/ErrorBoundary';
+
+// Lazy load components for better performance
+const About = lazy(() => import('./pages/public/About'));
+const Activities = lazy(() => import('./pages/public/Activities'));
+const Events = lazy(() => import('./pages/public/Events'));
+const ContactUs = lazy(() => import('./pages/public/ContactUs'));
+const Volunteer = lazy(() => import('./pages/public/Volunteer'));
+const OurPledge = lazy(() => import('./pages/public/OurPledge'));
+const ArchivedEvents = lazy(() => import('./pages/public/ArchivedEvents'));
+const ArchivedEventDetails = lazy(() => import('./pages/public/ArchivedEventDetails'));
+
+// Admin components - lazy loaded
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const EditCarousel = lazy(() => import('./pages/admin/EditCarousel'));
+const EditUpcomingEvents = lazy(() => import('./pages/admin/EditUpcomingEvents'));
+const EditFeaturedEvents = lazy(() => import('./pages/admin/EditFeaturedEvents'));
+const AddArchivedEvent = lazy(() => import('./pages/admin/AddArchivedEvent'));
+const ManageArchivedEvents = lazy(() => import('./pages/admin/ManageArchivedEvents'));
+const ArchivedEventsDebug = lazy(() => import('./components/ArchivedEventsDebug'));
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(function CarouselSkeleton() {
@@ -133,7 +138,8 @@ function App() {
 
   return (
     <HelmetProvider>
-      <div className={darkMode ? 'dark' : ''}>
+      <ErrorBoundary>
+        <div className={darkMode ? 'dark' : ''}>
         <Helmet>
           <title>Chinmaya Mission Vasai | Spiritual Events & Community</title>
           <meta name="description" content="Chinmaya Mission Vasai offers spiritual events, Bala Vihar youth programs, and community activities in Vasai, Mumbai. Join us for Vedantic wisdom and cultural programs." />
@@ -169,7 +175,12 @@ function App() {
         </Helmet>
         <BrowserRouter>
           <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-          <Routes>
+          <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+            </div>
+          }>
+            <Routes>
             <Route
               path="/"
               element={
@@ -272,11 +283,13 @@ function App() {
             />
             <Route path="/pledge" element={<OurPledge />} />
           </Routes>
+          </Suspense>
           <Footer />
           <ScrollToTopButton />
           <ToastContainer />
         </BrowserRouter>
       </div>
+      </ErrorBoundary>
     </HelmetProvider>
   );
 }

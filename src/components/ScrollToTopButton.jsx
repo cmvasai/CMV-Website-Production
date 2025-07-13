@@ -1,29 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
 import { scrollToTop } from '../utils/scrollUtils';
+import { useThrottle } from '../hooks/usePerformance';
 
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Show button when page is scrolled down 300px
-  const toggleVisibility = () => {
-    if (window.pageYOffset > 300) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', toggleVisibility);
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility);
-    };
+  const toggleVisibility = useCallback(() => {
+    setIsVisible(window.pageYOffset > 300);
   }, []);
 
-  const handleScrollToTop = () => {
+  const throttledToggleVisibility = useThrottle(toggleVisibility, 100);
+
+  useEffect(() => {
+    window.addEventListener('scroll', throttledToggleVisibility);
+    return () => {
+      window.removeEventListener('scroll', throttledToggleVisibility);
+    };
+  }, [throttledToggleVisibility]);
+
+  const handleScrollToTop = useCallback(() => {
     scrollToTop();
-  };
+  }, []);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">

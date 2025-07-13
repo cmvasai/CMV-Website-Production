@@ -1,12 +1,14 @@
 import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useCallback } from 'react';
+import { scrollToTop as utilScrollToTop } from '../utils/scrollUtils';
 
 const Footer = () => {
   // Function to scroll to top with smooth behavior
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const scrollToTop = useCallback(() => {
+    utilScrollToTop();
+  }, []);
 
   return (
     <footer className="bg-[#ffe4d6] dark:bg-gray-800 text-gray-800 dark:text-gray-200 py-8 sm:py-12 shadow-inner">

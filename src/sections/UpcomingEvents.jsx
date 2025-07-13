@@ -1,38 +1,76 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { FaChevronRight } from "react-icons/fa";
 import UpcomingEventsModal from "../modals/UpcomingEventsModal";
 import PropTypes from "prop-types";
-
-const SPRING_OPTIONS = { type: "spring", stiffness: 200, damping: 20 };
+import { useMediaQuery, useThrottle } from "../hooks/usePerformance";
+import OptimizedImage from "../components/OptimizedImage";
 
 export const UpcomingEvents = ({ upcomingEvents }) => {
   const [selectedUpcomingEvent, setSelectedUpcomingEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isTablet, setIsTablet] = useState(window.innerWidth >= 768 && window.innerWidth < 1024);
-  const [isLaptop, setIsLaptop] = useState(window.innerWidth >= 1024);
-  const [isLandscape, setIsLandscape] = useState(window.innerHeight < window.innerWidth);
+  
+  // Use media queries for better performance
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isLaptop = useMediaQuery('(min-width: 1024px)');
+  const isLandscape = useMediaQuery('(orientation: landscape)');
+  
   const carouselRef = useRef(null);
   const autoplayRef = useRef(null);
 
-  // Update container width and screen size detection
+  // Throttled resize handler
+  const throttledResize = useThrottle(useCallback(() => {
+    if (carouselRef.current) {
+      setContainerWidth(carouselRef.current.offsetWidth);
+    }
+  }, []), 150);
+
+  // Memoize event handlers for better performance
+  const handleEventClick = useCallback((event) => {
+    setSelectedUpcomingEvent(event);
+    setIsModalOpen(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedUpcomingEvent(null);
+    setIsModalOpen(false);
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    if ((isLaptop && upcomingEvents.length > 3) || !isLaptop) {
+      clearInterval(autoplayRef.current);
+    }
+  }, [isLaptop, upcomingEvents.length]);
+  
+  const handleMouseLeave = useCallback(() => {
+    if (isLaptop && upcomingEvents.length > 3) {
+      autoplayRef.current = setInterval(() => {
+        setCurrentIndex((prev) => {
+          const nextIndex = prev + 1;
+          return nextIndex >= upcomingEvents.length ? 0 : nextIndex;
+        });
+      }, 3000);
+    } else if (!isLaptop) {
+      autoplayRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % upcomingEvents.length);
+      }, isTablet ? 4000 : 3000);
+    }
+  }, [isLaptop, isTablet, upcomingEvents.length]);
+
+  // Update container width
   useEffect(() => {
     const updateWidth = () => {
       if (carouselRef.current) {
         setContainerWidth(carouselRef.current.offsetWidth);
       }
-      setIsMobile(window.innerWidth < 768);
-      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
-      setIsLaptop(window.innerWidth >= 1024);
-      setIsLandscape(window.innerHeight < window.innerWidth);
     };
     updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
+    window.addEventListener("resize", throttledResize);
+    return () => window.removeEventListener("resize", throttledResize);
+  }, [throttledResize]);
 
   // Autoplay effect with endless loop logic
   useEffect(() => {
@@ -61,38 +99,12 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     }
   }, [upcomingEvents.length, isLaptop, isTablet]);
 
-  const handleMouseEnter = () => {
-    if ((isLaptop && upcomingEvents.length > 3) || !isLaptop) {
-      clearInterval(autoplayRef.current);
-    }
-  };
-  
-  const handleMouseLeave = () => {
-    if (isLaptop && upcomingEvents.length > 3) {
-      // Restart autoplay for laptop grid carousel
-      autoplayRef.current = setInterval(() => {
-        setCurrentIndex((prev) => {
-          const nextIndex = prev + 1;
-          return nextIndex >= upcomingEvents.length ? 0 : nextIndex;
-        });
-      }, 3000);
-    } else if (!isLaptop) {
-      // Restart autoplay for mobile/tablet
-      autoplayRef.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % upcomingEvents.length);
-      }, isTablet ? 4000 : 3000);
-    }
-  };
-
-  const handleEventClick = (event) => {
-    setSelectedUpcomingEvent(event);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedUpcomingEvent(null);
-    setIsModalOpen(false);
-  };
+  // Memoize constants for better performance
+  const SPRING_OPTIONS = useMemo(() => ({ 
+    type: "spring", 
+    stiffness: 200, 
+    damping: 20 
+  }), []);
 
   return (
     <div className="bg-white dark:bg-gray-900 py-2 sm:py-8 md:py-6">
@@ -109,10 +121,12 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   onClick={() => handleEventClick(event)}
                 >
                   <div className="relative w-full rounded-lg overflow-hidden mb-6 group">
-                    <img
+                    <OptimizedImage
                       src={event.image}
                       alt={event.name}
-                      className="w-full h-80 object-contain bg-white dark:bg-gray-900"
+                      className="w-full h-80 bg-white dark:bg-gray-900"
+                      objectFit="contain"
+                      loading="lazy"
                     />
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300" />
