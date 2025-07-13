@@ -56,47 +56,47 @@ const FiguresSection = () => {
   }, [hasAnimated, figures]);
 
   return (
-    <div ref={sectionRef} className="bg-white dark:bg-gray-700 py-1 sm:py-4 sm:px-2 figures-section">
+    <div ref={sectionRef} className="bg-white dark:bg-gray-700 py-1 sm:py-2 sm:px-2 figures-section">
       <style>
         {`
           @media (min-width: 640px) {
             .figures-section {
-              padding: 1rem 1rem !important;
+              padding: 0.5rem 1rem !important;
             }
             .figures-container {
               display: grid !important;
               grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-              gap: 1rem !important;
+              gap: 0.5rem !important;
               justify-items: center !important;
             }
             .figures-card {
-              padding: 0.5rem !important;
+              padding: 0.25rem !important;
               min-width: unset !important;
-              max-width: 200px !important;
+              max-width: 120px !important;
             }
             .figures-icon {
-              font-size: 1.25rem !important;
-              margin-bottom: 0.5rem !important;
+              font-size: 1rem !important;
+              margin-bottom: 0.25rem !important;
             }
             .figures-count {
-              font-size: 1rem !important;
+              font-size: 0.875rem !important;
             }
             .figures-name {
-              font-size: 0.75rem !important;
+              font-size: 0.625rem !important;
             }
           }
           @media (min-width: 768px) {
             .figures-section {
-              padding: 1rem 1rem !important;
+              padding: 0.5rem 1rem !important;
             }
             .figures-container {
               grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-              gap: 0.75rem !important;
+              gap: 0.5rem !important;
               justify-items: center !important;
             }
             .figures-card {
-              padding: 0.5rem !important;
-              max-width: 140px !important;
+              padding: 0.25rem !important;
+              max-width: 100px !important;
               background: linear-gradient(to bottom right, rgba(255, 229, 204, 0.8), rgba(255, 255, 255, 0.8)) !important;
               backdrop-filter: blur(8px) !important;
               border: 1px solid rgba(255, 165, 0, 0.3) !important;
@@ -107,14 +107,14 @@ const FiguresSection = () => {
               box-shadow: 0 0 15px rgba(255, 165, 0, 0.5) !important;
             }
             .figures-icon {
-              font-size: 1.25rem !important;
-              margin-bottom: 0.5rem !important;
+              font-size: 1rem !important;
+              margin-bottom: 0.25rem !important;
             }
             .figures-count {
-              font-size: 1rem !important;
+              font-size: 0.875rem !important;
             }
             .figures-name {
-              font-size: 0.75rem !important;
+              font-size: 0.625rem !important;
             }
             .dark .figures-card {
               background: linear-gradient(to bottom right, rgba(75, 85, 99, 0.8), rgba(31, 41, 55, 55, 0.8)) !important;
@@ -126,25 +126,25 @@ const FiguresSection = () => {
           }
           @media (min-width: 1024px) {
             .figures-section {
-              padding: 1rem !important;
+              padding: 0.5rem !important;
             }
             .figures-container {
               grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-              gap: 2rem !important;
+              gap: 1rem !important;
             }
             .figures-card {
-              padding: 0.5rem !important;
-              max-width: 200px !important;
+              padding: 0.25rem !important;
+              max-width: 120px !important;
             }
             .figures-icon {
-              font-size: 2rem !important;
-              margin-bottom: 0.75rem !important;
+              font-size: 1.25rem !important;
+              margin-bottom: 0.5rem !important;
             }
             .figures-count {
-              font-size: 1.5rem !important;
+              font-size: 1rem !important;
             }
             .figures-name {
-              font-size: 0.875rem !important;
+              font-size: 0.75rem !important;
             }
           }
           @keyframes fadeInStagger {
