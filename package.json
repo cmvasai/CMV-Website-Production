@@ -7,13 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "npx vite-bundle-analyzer dist",
+    "build:analyze": "npm run build && npm run analyze"
   },
   "dependencies": {
     "@cloudinary/url-gen": "^1.21.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "axios": "^1.8.4",
     "framer-motion": "^12.4.7",
+    "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
@@ -33,7 +36,9 @@
     "globals": "^15.14.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "vite": "^6.0.5"
+    "terser": "^5.43.1",
+    "vite": "^6.0.5",
+    "vite-bundle-analyzer": "^1.1.0"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",

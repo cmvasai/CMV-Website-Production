@@ -1,22 +1,29 @@
-import { useState, useMemo } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { useState, useMemo, useCallback } from "react";
+import { Link, NavLink } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion"; // For mobile menu animation
+import { motion, AnimatePresence } from "framer-motion";
 import { scrollToTop } from '../utils/scrollUtils';
+import { useMediaQuery, useScrollDirection } from '../hooks/usePerformance';
+import PropTypes from 'prop-types';
 
 export const Navbar = ({ toggleDarkMode, darkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  // const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTabletOrMobile = useMediaQuery('(max-width: 1024px)');
+  const scrollDirection = useScrollDirection(10);
+  
+  // Only enable auto-hide on tablets and phones, always show on desktop
+  const isNavbarVisible = isTabletOrMobile ? scrollDirection : true;
 
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
     setIsOpen(!isOpen);
-  };
+  }, [isOpen]);
 
   // Close menu after clicking a link (auto-collapse)
-  const handleLinkClick = () => {
+  const handleLinkClick = useCallback(() => {
     setIsOpen(false);
     scrollToTop();
-  };
+  }, []);
 
   const handleNavLinkClick = () => {
     scrollToTop();
@@ -37,7 +44,17 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
 
   return (
     <>
-      <div className="sticky top-0 z-50 h-auto px-4 lg:px-5 flex justify-between items-center shadow-lg bg-white dark:bg-gray-800">
+      <motion.div 
+        className="sticky top-0 z-50 h-auto px-4 lg:px-5 flex justify-between items-center shadow-lg bg-white dark:bg-gray-800"
+        initial={{ y: 0 }}
+        animate={{ 
+          y: isNavbarVisible ? 0 : "-100%"
+        }}
+        transition={{ 
+          duration: 0.3,
+          ease: "easeInOut"
+        }}
+      >
         {/* Logo Section */}
         <div className="flex items-center space-x-4">
           <div className="pt-1">
@@ -131,17 +148,20 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
             {darkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Dropdown Menu for Mobile with Animation */}
       <AnimatePresence>
         {isOpen && (
           <motion.nav
-            className="custom1250:hidden px-4 py-4 bg-white dark:bg-gray-900 shadow-md sticky top-[height-of-main-navbar] z-40"
+            className={`custom1250:hidden px-4 py-4 bg-white dark:bg-gray-900 shadow-md fixed z-40 w-full transition-all duration-300 ${
+              isTabletOrMobile && !isNavbarVisible ? 'top-0' : 'top-[var(--navbar-height)]'
+            }`}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{ '--navbar-height': '80px' }}
           >
             <ul className="space-y-2">
               {navItems.map((item, index) => (
@@ -167,4 +187,9 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
       </AnimatePresence>
     </>
   );
+};
+
+Navbar.propTypes = {
+  toggleDarkMode: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool.isRequired,
 };
