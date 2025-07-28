@@ -23,6 +23,7 @@ const Volunteer = lazy(() => import('./pages/public/Volunteer'));
 const OurPledge = lazy(() => import('./pages/public/OurPledge'));
 const ArchivedEvents = lazy(() => import('./pages/public/ArchivedEvents'));
 const ArchivedEventDetails = lazy(() => import('./pages/public/ArchivedEventDetails'));
+const Donate = lazy(() => import('./pages/public/Donate'));
 
 // Admin components - lazy loaded
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -32,7 +33,6 @@ const EditUpcomingEvents = lazy(() => import('./pages/admin/EditUpcomingEvents')
 const EditFeaturedEvents = lazy(() => import('./pages/admin/EditFeaturedEvents'));
 const AddArchivedEvent = lazy(() => import('./pages/admin/AddArchivedEvent'));
 const ManageArchivedEvents = lazy(() => import('./pages/admin/ManageArchivedEvents'));
-const ArchivedEventsDebug = lazy(() => import('./components/ArchivedEventsDebug'));
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(function CarouselSkeleton() {
@@ -141,7 +141,7 @@ function App() {
       <ErrorBoundary>
         <div className={darkMode ? 'dark' : ''}>
         <Helmet>
-          <title>Chinmaya Mission Vasai | Spiritual Events & Community</title>
+          <title>Chinmaya Mission | Vasai</title>
           <meta name="description" content="Chinmaya Mission Vasai offers spiritual events, Bala Vihar youth programs, and community activities in Vasai, Mumbai. Join us for Vedantic wisdom and cultural programs." />
           <meta name="keywords" content="Chinmaya Mission Vasai, Vasai spirituality, Vedanta, Bala Vihar, spiritual events Mumbai" />
           <meta name="robots" content="index, follow" />
@@ -211,11 +211,11 @@ function App() {
             <Route path="/about-us" element={<About />} />
             <Route path="/archived-events" element={<ArchivedEvents />} />
             <Route path="/archived-events/:id" element={<ArchivedEventDetails />} />
-            <Route path="/archived-events-debug" element={<ArchivedEventsDebug />} />
             <Route path="/events/archived" element={<ArchivedEvents />} />
             <Route path="/activities" element={<Activities />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/volunteer" element={<Volunteer />} />
+            <Route path="/donate" element={<Donate />} />
             <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
             <Route path="/admin/login" element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
             <Route

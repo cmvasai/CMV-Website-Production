@@ -3,9 +3,17 @@ import { GoPersonFill } from "react-icons/go";
 import { LiaBookSolid } from "react-icons/lia";
 import { BsPersonArmsUp } from "react-icons/bs";
 import { MdContacts } from "react-icons/md";
+import { FaHeart } from "react-icons/fa";
 
 const UtilityButtons = () => {
   const buttons = [
+    {
+      name: "Donate",
+      icon: <FaHeart className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />,
+      path: "/donate",
+      description: "Support our mission",
+      isExternal: false,
+    },
     {
       name: "Join Us",
       icon: <GoPersonFill className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />,
@@ -51,9 +59,8 @@ const UtilityButtons = () => {
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
-                  shadow-md group-hover:shadow-lg transition-all duration-300">
+                  shadow-md transition-all duration-300">
                   {button.icon}
-                  <div className="absolute inset-0 bg-orange-500 dark:bg-orange-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-full ripple"></div>
                 </div>
                 <span className="mt-2 text-xs sm:text-sm md:text-base lg:text-base text-center font-medium text-gray-900 dark:text-gray-100 max-w-[80px] sm:max-w-none">
                   {button.name}
@@ -70,9 +77,8 @@ const UtilityButtons = () => {
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
-                  shadow-md group-hover:shadow-lg transition-all duration-300">
+                  shadow-md transition-all duration-300">
                   {button.icon}
-                  <div className="absolute inset-0 bg-orange-500 dark:bg-orange-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-full ripple"></div>
                 </div>
                 <span className="mt-2 text-xs sm:text-sm md:text-base lg:text-base text-center font-medium text-gray-900 dark:text-gray-100 max-w-[80px] sm:max-w-none">
                   {button.name}
