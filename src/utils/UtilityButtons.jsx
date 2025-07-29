@@ -94,7 +94,7 @@ const UtilityButtons = () => {
         {/* Scrollable Row */}
         <div
           ref={scrollRef}
-          className="flex flex-nowrap justify-center items-center gap-3 sm:gap-4 md:gap-6 lg:gap-10 overflow-x-auto scrollbar-hide w-full px-8"
+          className="flex flex-nowrap justify-center items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 overflow-x-auto scrollbar-hide w-full px-8"
           style={{ scrollBehavior: 'smooth' }}
         >
           {buttons.map((button, index) => (
@@ -104,17 +104,17 @@ const UtilityButtons = () => {
                 key={index}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="utility-btn flex flex-col items-center justify-center group transition-transform hover:scale-105 relative overflow-hidden w-20 sm:w-24 md:w-28 h-20 sm:h-24 md:h-28 px-0"
+                className="utility-btn flex flex-col items-center justify-center group transition-transform hover:scale-105 relative w-24 sm:w-28 md:w-32 h-20 sm:h-24 md:h-28 px-0"
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
                   shadow-md transition-all duration-300 mx-auto">
                   {button.icon}
                 </div>
-                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base text-center font-medium text-gray-900 dark:text-gray-100 w-full truncate block">
+                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base font-medium text-gray-900 dark:text-gray-100 w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
                   {button.name}
                 </span>
-                <span className="text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block text-center w-full truncate block">
+                <span className="text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
                   {button.description}
                 </span>
               </a>
@@ -122,17 +122,17 @@ const UtilityButtons = () => {
               <Link
                 to={button.path}
                 key={index}
-                className="utility-btn flex flex-col items-center justify-center group transition-transform hover:scale-105 relative overflow-hidden w-20 sm:w-24 md:w-28 h-20 sm:h-24 md:h-28 px-0"
+                className="utility-btn flex flex-col items-center justify-center group transition-transform hover:scale-105 relative w-24 sm:w-28 md:w-32 h-20 sm:h-24 md:h-28 px-0"
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
                   shadow-md transition-all duration-300 mx-auto">
                   {button.icon}
                 </div>
-                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base text-center font-medium text-gray-900 dark:text-gray-100 w-full truncate block">
+                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base font-medium text-gray-900 dark:text-gray-100 w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
                   {button.name}
                 </span>
-                <span className="text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block text-center w-full truncate block">
+                <span className="text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
                   {button.description}
                 </span>
               </Link>
