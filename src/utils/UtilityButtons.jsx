@@ -47,7 +47,7 @@ const UtilityButtons = () => {
   return (
     <div className="bg-white dark:bg-gray-900 py-3 px-4 sm:py-6 md:py-4 lg:py-6 shadow-md dark:shadow-[0_4px_6px_-1px_rgba(255,255,255,0.1)]">
       <div className="container mx-auto max-w-4xl">
-        <div className="flex flex-nowrap justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 overflow-x-auto">
+        <div className="flex flex-nowrap sm:flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 overflow-x-auto sm:overflow-visible px-2 sm:px-0 scrollbar-hide sm:scrollbar-default">
           {buttons.map((button, index) => (
             button.isExternal ? (
               <a
@@ -55,7 +55,7 @@ const UtilityButtons = () => {
                 key={index}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center group transition-transform hover:scale-110 relative overflow-hidden min-w-0"
+                className="flex flex-col items-center group transition-transform hover:scale-110 relative overflow-hidden min-w-[90px] sm:min-w-0 px-2 sm:px-0"
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
@@ -73,7 +73,7 @@ const UtilityButtons = () => {
               <Link
                 to={button.path}
                 key={index}
-                className="flex flex-col items-center group transition-transform hover:scale-110 relative overflow-hidden min-w-0"
+                className="flex flex-col items-center group transition-transform hover:scale-110 relative overflow-hidden min-w-[90px] sm:min-w-0 px-2 sm:px-0"
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
@@ -105,6 +105,16 @@ const UtilityButtons = () => {
           }
           .ripple {
             animation: ripple 600ms ease-out;
+          }
+          /* Hide scrollbar for horizontal scroll area only on small screens */
+          @media (max-width: 639px) {
+            .scrollbar-hide::-webkit-scrollbar {
+              display: none;
+            }
+            .scrollbar-hide {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
           }
         `}
       </style>
