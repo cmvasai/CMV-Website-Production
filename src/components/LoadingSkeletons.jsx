@@ -110,3 +110,14 @@ export const ArchivedEventsListSkeleton = () => {
     </div>
   );
 };
+
+// Default export for general loading
+const LoadingSkeletons = () => {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-4 border-[#BC3612] border-t-transparent"></div>
+    </div>
+  );
+};
+
+export default LoadingSkeletons;

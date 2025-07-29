@@ -3,7 +3,7 @@ import './styles/App.css';
 import { Navbar } from './layout/Navbar';
 import Footer from './layout/Footer';
 import ImageCarousel from './modals/Carousel';
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { UpcomingEvents } from './sections/UpcomingEvents';
 import axios from 'axios';
@@ -13,6 +13,8 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 import { ToastContainer } from './components/Toast';
 import { scrollToTop } from './utils/scrollUtils';
 import ErrorBoundary from './components/ErrorBoundary';
+import ComingSoon from './components/ComingSoon';
+import LoadingSkeletons from './components/LoadingSkeletons';
 
 // Lazy load components for better performance
 const About = lazy(() => import('./pages/public/About'));
@@ -24,6 +26,7 @@ const OurPledge = lazy(() => import('./pages/public/OurPledge'));
 const ArchivedEvents = lazy(() => import('./pages/public/ArchivedEvents'));
 const ArchivedEventDetails = lazy(() => import('./pages/public/ArchivedEventDetails'));
 const Donate = lazy(() => import('./pages/public/Donate'));
+const RegisterCGCC2025 = lazy(() => import('./pages/public/RegisterCGCC2025'));
 
 // Admin components - lazy loaded
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -33,6 +36,7 @@ const EditUpcomingEvents = lazy(() => import('./pages/admin/EditUpcomingEvents')
 const EditFeaturedEvents = lazy(() => import('./pages/admin/EditFeaturedEvents'));
 const AddArchivedEvent = lazy(() => import('./pages/admin/AddArchivedEvent'));
 const ManageArchivedEvents = lazy(() => import('./pages/admin/ManageArchivedEvents'));
+const ManageDonations = lazy(() => import('./pages/admin/ManageDonations'));
 
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(function CarouselSkeleton() {
@@ -136,158 +140,156 @@ function App() {
     scrollToTop();
   };
 
+  // Set this to true to show coming soon page, false to show normal website
+  const showComingSoon = false;
+
+  if (showComingSoon) {
+    return (
+      <HelmetProvider>
+        <ErrorBoundary>
+          <Helmet>
+            <title>Chinmaya Mission | Vasai - Coming Soon</title>
+            <meta name="description" content="Chinmaya Mission Vasai website launching soon. Join our spiritual community for events, resources, and spiritual growth." />
+            <meta name="keywords" content="Chinmaya Mission, Vasai, Spiritual Community, Coming Soon, Launch" />
+          </Helmet>
+          <ComingSoon />
+        </ErrorBoundary>
+      </HelmetProvider>
+    );
+  }
+
   return (
     <HelmetProvider>
       <ErrorBoundary>
         <div className={darkMode ? 'dark' : ''}>
         <Helmet>
           <title>Chinmaya Mission | Vasai</title>
-          <meta name="description" content="Chinmaya Mission Vasai offers spiritual events, Bala Vihar youth programs, and community activities in Vasai, Mumbai. Join us for Vedantic wisdom and cultural programs." />
-          <meta name="keywords" content="Chinmaya Mission Vasai, Vasai spirituality, Vedanta, Bala Vihar, spiritual events Mumbai" />
-          <meta name="robots" content="index, follow" />
-          <link rel="canonical" href="https://chinmayamissionvasai.com" />
-          <script type="application/ld+json">
-            {`
-              {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "Chinmaya Mission Vasai",
-                "url": "https://chinmayamissionvasai.com",
-                "logo": "https://chinmayamissionvasai.com/images/lamp.png",
-                "address": {
-                  "@type": "PostalAddress",
-                  "streetAddress": "Sai Tower, Ambadi Rd",
-                  "addressLocality": "Vasai West",
-                  "addressRegion": "Maharashtra",
-                  "postalCode": "401202",
-                  "addressCountry": "IN"
-                },
-                "email": "vasai@chinmayamission.com",
-                "sameAs": [
-                  "https://www.facebook.com/share/18uKZokgN6/",
-                  "https://www.instagram.com/cm_vasai?igsh=MWwyMjdlcHJ3dWJvNw==",
-                  "https://www.youtube.com/@chinmayamissionvasai730",
-                  "https://x.com/Chinmaya_Vasai"
-                ]
-              }
-            `}
-          </script>
+          <meta name="description" content="Chinmaya Mission Vasai - Join us for spiritual events, community service, and spiritual growth in Vasai" />
         </Helmet>
-        <BrowserRouter>
+        
+        <Router>
           <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-          <Suspense fallback={
-            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
-            </div>
-          }>
-            <Routes>
-            <Route
-              path="/"
-              element={
-                <div className="flex flex-col gap-0">
-                  <QuotesSection />
-                  <UpcomingEvents upcomingEvents={upcomingEvents} />
-                  <UtilityButtons />
-                  {/* "Our Events" Heading */}
-                  <div className="bg-white dark:bg-gray-900 py-4 sm:py-6">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center">
-                      Our Events
-                    </h2>
-                  </div>
-                  {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
-                  {/* "View More Events" Link */}
-                  <div className="bg-white dark:bg-gray-900 py-4 sm:py-6 flex justify-center">
-                    <Link
-                      to="/events#featured-events"
-                      onClick={handleViewMoreEventsClick}
-                      className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
-                    >
-                      View More Events
-                    </Link>
-                  </div>
-                </div>
-              }
-            />
-            <Route path="/about-us" element={<About />} />
-            <Route path="/archived-events" element={<ArchivedEvents />} />
-            <Route path="/archived-events/:id" element={<ArchivedEventDetails />} />
-            <Route path="/events/archived" element={<ArchivedEvents />} />
-            <Route path="/activities" element={<Activities />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/volunteer" element={<Volunteer />} />
-            <Route path="/donate" element={<Donate />} />
-            <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
-            <Route path="/admin/login" element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
-            <Route
-              path="/admin/dashboard"
-              element={adminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin/login" />}
-            />
-            <Route
-              path="/admin/archived-events"
-              element={
-                adminLoggedIn ? (
-                  <ManageArchivedEvents />
-                ) : (
-                  <Navigate to="/admin/login" />
-                )
-              }
-            />
-            <Route
-              path="/admin/archived-events/add"
-              element={
-                adminLoggedIn ? (
-                  <AddArchivedEvent />
-                ) : (
-                  <Navigate to="/admin/login" />
-                )
-              }
-            />
-            <Route
-              path="/admin/edit-carousel"
-              element={
-                adminLoggedIn ? (
-                  <EditCarousel
-                    carouselItems={Array.isArray(carouselItems) ? carouselItems : []}
-                    setCarouselItems={setCarouselItems}
-                  />
-                ) : (
-                  <Navigate to="/admin/login" />
-                )
-              }
-            />
-            <Route
-              path="/admin/edit-upcoming-events"
-              element={
-                adminLoggedIn ? (
-                  <EditUpcomingEvents
-                    upcomingEvents={Array.isArray(upcomingEvents) ? upcomingEvents : []}
-                    setUpcomingEvents={setUpcomingEvents}
-                  />
-                ) : (
-                  <Navigate to="/admin/login" />
-                )
-              }
-            />
-            <Route
-              path="/admin/edit-featured-events"
-              element={
-                adminLoggedIn ? (
-                  <EditFeaturedEvents
-                    featuredEvents={Array.isArray(featuredEvents) ? featuredEvents : []}
-                    setFeaturedEvents={setFeaturedEvents}
-                  />
-                ) : (
-                  <Navigate to="/admin/login" />
-                )
-              }
-            />
-            <Route path="/pledge" element={<OurPledge />} />
-          </Routes>
-          </Suspense>
+          <main>
+            <Suspense fallback={<LoadingSkeletons />}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <div className="flex flex-col gap-0">
+                      <QuotesSection />
+                      <UpcomingEvents upcomingEvents={upcomingEvents} />
+                      <UtilityButtons />
+                      {/* "Our Events" Heading */}
+                      <div className="bg-white dark:bg-gray-900 py-4 sm:py-6">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center">
+                          Our Events
+                        </h2>
+                      </div>
+                      {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
+                      {/* "View More Events" Link */}
+                      <div className="bg-white dark:bg-gray-900 py-4 sm:py-6 flex justify-center">
+                        <Link
+                          to="/events#featured-events"
+                          onClick={handleViewMoreEventsClick}
+                          className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                        >
+                          View More Events
+                        </Link>
+                      </div>
+                    </div>
+                  }
+                />
+                <Route path="/about-us" element={<About />} />
+                <Route path="/archived-events" element={<ArchivedEvents />} />
+                <Route path="/archived-events/:id" element={<ArchivedEventDetails />} />
+                <Route path="/events/archived" element={<ArchivedEvents />} />
+                <Route path="/activities" element={<Activities />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/volunteer" element={<Volunteer />} />
+                <Route path="/donate" element={<Donate />} />
+                <Route path="/register/cgcc2025" element={<RegisterCGCC2025 />} />
+                <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
+                <Route path="/admin/login" element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
+                <Route
+                  path="/admin/dashboard"
+                  element={adminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin/login" />}
+                />
+                <Route
+                  path="/admin/archived-events"
+                  element={
+                    adminLoggedIn ? (
+                      <ManageArchivedEvents />
+                    ) : (
+                      <Navigate to="/admin/login" />
+                    )
+                  }
+                />
+                <Route
+                  path="/admin/archived-events/add"
+                  element={
+                    adminLoggedIn ? (
+                      <AddArchivedEvent />
+                    ) : (
+                      <Navigate to="/admin/login" />
+                    )
+                  }
+                />
+                <Route
+                  path="/admin/donations"
+                  element={
+                    adminLoggedIn ? (
+                      <ManageDonations />
+                    ) : (
+                      <Navigate to="/admin/login" />
+                    )
+                  }
+                />
+                <Route
+                  path="/admin/edit-carousel"
+                  element={
+                    adminLoggedIn ? (
+                      <EditCarousel
+                        carouselItems={Array.isArray(carouselItems) ? carouselItems : []}
+                        setCarouselItems={setCarouselItems}
+                      />
+                    ) : (
+                      <Navigate to="/admin/login" />
+                    )
+                  }
+                />
+                <Route
+                  path="/admin/edit-upcoming-events"
+                  element={
+                    adminLoggedIn ? (
+                      <EditUpcomingEvents
+                        upcomingEvents={Array.isArray(upcomingEvents) ? upcomingEvents : []}
+                        setUpcomingEvents={setUpcomingEvents}
+                      />
+                    ) : (
+                      <Navigate to="/admin/login" />
+                    )
+                  }
+                />
+                <Route
+                  path="/admin/edit-featured-events"
+                  element={
+                    adminLoggedIn ? (
+                      <EditFeaturedEvents
+                        featuredEvents={Array.isArray(featuredEvents) ? featuredEvents : []}
+                        setFeaturedEvents={setFeaturedEvents}
+                      />
+                    ) : (
+                      <Navigate to="/admin/login" />
+                    )
+                  }
+                />
+                <Route path="/pledge" element={<OurPledge />} />
+              </Routes>
+            </Suspense>
+          </main>
           <Footer />
           <ScrollToTopButton />
-          <ToastContainer />
-        </BrowserRouter>
+        </Router>
       </div>
       </ErrorBoundary>
     </HelmetProvider>

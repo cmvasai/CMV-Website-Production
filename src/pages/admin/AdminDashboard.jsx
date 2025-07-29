@@ -69,6 +69,13 @@ const AdminDashboard = () => {
           >
             Manage Archived Events
           </Link>
+          <Link
+            to="/admin/donations"
+            onClick={handleAdminNavClick}
+            className="block text-center bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 w-full"
+          >
+            Manage Donations
+          </Link>
           <button 
             className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
             onClick={handleExportClick}
