@@ -154,14 +154,11 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.nav
-            className={`custom1250:hidden px-4 py-4 bg-white dark:bg-gray-900 shadow-md fixed z-40 w-full transition-all duration-300 ${
-              isTabletOrMobile && !isNavbarVisible ? 'top-0' : 'top-[var(--navbar-height)]'
-            }`}
+            className="custom1250:hidden px-4 pt-[80px] pb-4 bg-white dark:bg-gray-900 shadow-md fixed z-40 w-full top-0 left-0 transition-all duration-300"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{ '--navbar-height': '80px' }}
           >
             <ul className="space-y-2">
               {navItems.map((item, index) => (
