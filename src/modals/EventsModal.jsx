@@ -9,6 +9,8 @@ const EventsModal = ({ isOpen, onClose, event }) => {
   if (!isOpen || !event) return null;
 
   const handleImageClick = (index) => {
+    console.log('Opening lightbox at index:', index, 'Total images:', allImages.length);
+    console.log('Image at index:', allImages[index]);
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
@@ -33,6 +35,9 @@ const EventsModal = ({ isOpen, onClose, event }) => {
       });
     });
   }
+
+  // Debug logging
+  console.log('AllImages array:', allImages.map((img, i) => ({ index: i, caption: img.caption })));
 
   return (
     <>
@@ -133,7 +138,19 @@ const EventsModal = ({ isOpen, onClose, event }) => {
                         <div
                           key={index}
                           className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square"
-                          onClick={() => handleImageClick(index + 1)} // +1 because cover image is at index 0
+                          onClick={() => {
+                            // Calculate the correct index in allImages array
+                            // If coverImage exists, gallery images start at index 1, otherwise at index 0
+                            const lightboxIndex = event.coverImage ? index + 1 : index;
+                            console.log('Gallery image clicked:', {
+                              galleryIndex: index,
+                              hasCoverImage: !!event.coverImage,
+                              calculatedLightboxIndex: lightboxIndex,
+                              totalImages: allImages.length,
+                              clickedImageUrl: typeof image === 'string' ? image : (image.url || image)
+                            });
+                            handleImageClick(lightboxIndex);
+                          }}
                         >
                           <img
                             src={typeof image === 'string' ? image : (image.url || image)}
@@ -164,7 +181,7 @@ const EventsModal = ({ isOpen, onClose, event }) => {
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
         images={allImages}
-        currentIndex={lightboxIndex}
+        initialIndex={lightboxIndex}
       />
     </>
   );

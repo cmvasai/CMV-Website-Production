@@ -175,12 +175,32 @@ const RegisterCGCC2025 = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            CGCC 2025 Registration
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-2">
-            Chinmaya Gita Chanting Competition 2025
-          </p>
+          {/* Mobile and Tablet Layout */}
+          <div className="block md:hidden">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              Chinmaya
+            </h1>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Gita Chanting Competition 2025
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-4">
+              (Only for regions between Naigaon to Saphale)
+            </p>
+          </div>
+          
+          {/* Desktop Layout */}
+          <div className="hidden md:block">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              CGCC 2025 Registration
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-2">
+              Chinmaya Gita Chanting Competition 2025
+            </p>
+            <p className="text-gray-500 dark:text-gray-400 mb-2">
+              (Only for regions between Naigaon to Saphale)
+            </p>
+          </div>
+          
           <p className="text-gray-500 dark:text-gray-400">
             Fill in all the required details to complete your registration
           </p>
