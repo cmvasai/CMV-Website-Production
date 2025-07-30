@@ -26,9 +26,14 @@ body.dark {
   will-change: transform;
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling for user interactions only, not programmatic scrolls */
 html {
   scroll-behavior: smooth;
+}
+
+/* Disable smooth scrolling for instant programmatic scrolls */
+html.scroll-instant {
+  scroll-behavior: auto !important;
 }
 
 /* Optimized transitions */

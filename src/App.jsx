@@ -10,6 +10,7 @@ import axios from 'axios';
 import UtilityButtons from './utils/UtilityButtons';
 import QuotesSection from './sections/QuotesSection';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import ScrollToTop from './components/ScrollToTop';
 import { ToastContainer } from './components/Toast';
 import { scrollToTop } from './utils/scrollUtils';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -27,6 +28,7 @@ const ArchivedEvents = lazy(() => import('./pages/public/ArchivedEvents'));
 const ArchivedEventDetails = lazy(() => import('./pages/public/ArchivedEventDetails'));
 const Donate = lazy(() => import('./pages/public/Donate'));
 const RegisterCGCC2025 = lazy(() => import('./pages/public/RegisterCGCC2025'));
+const NotFound = lazy(() => import('./pages/public/NotFound'));
 
 // Admin components - lazy loaded
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -168,6 +170,7 @@ function App() {
         </Helmet>
         
         <Router>
+          <ScrollToTop />
           <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
           <main>
             <Suspense fallback={<LoadingSkeletons />}>
@@ -284,6 +287,9 @@ function App() {
                   }
                 />
                 <Route path="/pledge" element={<OurPledge />} />
+                
+                {/* Catch-all route for 404 - must be last */}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </main>
