@@ -47,7 +47,7 @@ const UtilityButtons = () => {
   return (
     <div className="bg-white dark:bg-gray-900 py-3 px-2 sm:px-4 sm:py-6 md:py-4 lg:py-6 shadow-md dark:shadow-[0_4px_6px_-1px_rgba(255,255,255,0.1)]">
       <div className="container mx-auto max-w-4xl">
-        <div className="flex items-start sm:justify-center sm:gap-6 md:gap-8 lg:gap-12 overflow-x-auto">
+        <div className="flex items-start justify-center gap-2 sm:gap-6 md:gap-8 lg:gap-12">
           {buttons.map((button, index) => (
             button.isExternal ? (
               <a
