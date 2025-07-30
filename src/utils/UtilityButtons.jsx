@@ -4,7 +4,6 @@ import { LiaBookSolid } from "react-icons/lia";
 import { BsPersonArmsUp } from "react-icons/bs";
 import { MdContacts } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
-import { useRef, useEffect, useState } from "react";
 
 const UtilityButtons = () => {
   const buttons = [
@@ -45,58 +44,10 @@ const UtilityButtons = () => {
     },
   ];
 
-  const scrollRef = useRef(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  // Scroll to leftmost on mount
-  useEffect(() => {
-    const scrollEl = scrollRef.current;
-    if (scrollEl) {
-      scrollEl.scrollLeft = 0;
-      updateArrows();
-    }
-    window.addEventListener('resize', updateArrows);
-    return () => window.removeEventListener('resize', updateArrows);
-    // eslint-disable-next-line
-  }, []);
-
-  // Update arrow visibility
-  const updateArrows = () => {
-    const scrollEl = scrollRef.current;
-    if (!scrollEl) return;
-    setCanScrollLeft(scrollEl.scrollLeft > 0);
-    setCanScrollRight(scrollEl.scrollLeft + scrollEl.clientWidth < scrollEl.scrollWidth - 1);
-  };
-
-  // Scroll by one button width
-  const scrollByButton = (dir) => {
-    const scrollEl = scrollRef.current;
-    if (!scrollEl) return;
-    const button = scrollEl.querySelector('.utility-btn');
-    const scrollAmount = button ? button.offsetWidth + 8 : 80; // 8px gap fallback
-    scrollEl.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
-    setTimeout(updateArrows, 350);
-  };
-
-  // Listen to scroll events
-  useEffect(() => {
-    const scrollEl = scrollRef.current;
-    if (!scrollEl) return;
-    scrollEl.addEventListener('scroll', updateArrows);
-    updateArrows();
-    return () => scrollEl.removeEventListener('scroll', updateArrows);
-  }, []);
-
   return (
-    <div className="bg-white dark:bg-gray-900 py-3 px-4 sm:py-6 md:py-4 lg:py-6 shadow-md dark:shadow-[0_4px_6px_-1px_rgba(255,255,255,0.1)]">
-      <div className="container mx-auto max-w-4xl relative flex items-center">
-        {/* Scrollable Row */}
-        <div
-          ref={scrollRef}
-          className="flex flex-nowrap justify-center items-center gap-2 sm:gap-4 md:gap-6 lg:gap-10 overflow-x-auto scrollbar-hide w-full px-8"
-          style={{ scrollBehavior: 'smooth' }}
-        >
+    <div className="bg-white dark:bg-gray-900 py-3 px-2 sm:px-4 sm:py-6 md:py-4 lg:py-6 shadow-md dark:shadow-[0_4px_6px_-1px_rgba(255,255,255,0.1)]">
+      <div className="container mx-auto max-w-4xl">
+        <div className="flex items-start sm:justify-center sm:gap-6 md:gap-8 lg:gap-12 overflow-x-auto">
           {buttons.map((button, index) => (
             button.isExternal ? (
               <a
@@ -104,17 +55,17 @@ const UtilityButtons = () => {
                 key={index}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="utility-btn flex flex-col items-center justify-center group transition-transform hover:scale-105 relative w-24 sm:w-28 md:w-32 h-20 sm:h-24 md:h-28 px-0"
+                className="flex flex-col items-center group transition-transform hover:scale-110 relative overflow-hidden flex-1 sm:flex-initial sm:flex-shrink-0"
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center 
+                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
                   shadow-md transition-all duration-300 mx-auto">
                   {button.icon}
                 </div>
-                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base font-medium text-gray-900 dark:text-gray-100 w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
+                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base text-center font-medium text-gray-900 dark:text-gray-100 max-w-[60px] sm:max-w-none leading-tight">
                   {button.name}
                 </span>
-                <span className="text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
+                <span className="text-xs sm:text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block text-center">
                   {button.description}
                 </span>
               </a>
@@ -122,48 +73,41 @@ const UtilityButtons = () => {
               <Link
                 to={button.path}
                 key={index}
-                className="utility-btn flex flex-col items-center justify-center group transition-transform hover:scale-105 relative w-24 sm:w-28 md:w-32 h-20 sm:h-24 md:h-28 px-0"
+                className="flex flex-col items-center group transition-transform hover:scale-110 relative overflow-hidden flex-1 sm:flex-initial sm:flex-shrink-0"
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center 
+                <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full flex items-center justify-center 
                   bg-gradient-to-r from-orange-100 to-orange-50 dark:from-gray-600 dark:to-gray-800 text-[#BC3612] dark:text-[#F47930] 
                   shadow-md transition-all duration-300 mx-auto">
                   {button.icon}
                 </div>
-                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base font-medium text-gray-900 dark:text-gray-100 w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
+                <span className="mt-1 text-xs sm:text-sm md:text-base lg:text-base text-center font-medium text-gray-900 dark:text-gray-100 max-w-[60px] sm:max-w-none leading-tight">
                   {button.name}
                 </span>
-                <span className="text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block w-full block whitespace-normal break-words text-center min-h-[2.5em] leading-tight">
+                <span className="text-xs sm:text-xs md:text-sm lg:text-sm text-gray-600 dark:text-gray-400 hidden md:block text-center">
                   {button.description}
                 </span>
               </Link>
             )
           ))}
         </div>
-        <style>
-          {`
-            @keyframes ripple {
-              0% {
-                transform: scale(0);
-                opacity: 0.3;
-              }
-              100% {
-                transform: scale(4);
-                opacity: 0;
-              }
-            }
-            .ripple {
-              animation: ripple 600ms ease-out;
-            }
-            .scrollbar-hide::-webkit-scrollbar {
-              display: none;
-            }
-            .scrollbar-hide {
-              -ms-overflow-style: none;
-              scrollbar-width: none;
-            }
-          `}
-        </style>
       </div>
+      <style>
+        {`
+          @keyframes ripple {
+            0% {
+              transform: scale(0);
+              opacity: 0.3;
+            }
+            100% {
+              transform: scale(4);
+              opacity: 0;
+            }
+          }
+          .ripple {
+            animation: ripple 600ms ease-out;
+          }
+        `}
+      </style>
     </div>
   );
 };
