@@ -52,7 +52,7 @@ const Events = ({ featuredEvents }) => {
               >
                 <div className="relative w-full h-64 md:h-72 rounded-lg overflow-hidden shadow-lg">
                   <img
-                    src={event.image}
+                    src={event.coverImage}
                     alt={event.name}
                     className="w-full h-full object-cover transition-opacity group-hover:opacity-90"
                   />
