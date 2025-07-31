@@ -1,4 +1,4 @@
-import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useCallback } from 'react';
@@ -15,13 +15,18 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         {/* Top Section: Mission Statement */}
         <div className="text-center mb-8">
-          <p className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">
+          <p className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-3">
             Chinmaya Mission Vasai
           </p>
+          <div className="max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base italic text-[#BC3612] dark:text-[#F47930] font-medium">
+              "Maximum happiness to maximum people for maximum time"
+            </p>
+          </div>
         </div>
 
-        {/* Middle Section: Quick Links, Contact, Newsletter */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+        {/* Middle Section: Enhanced Navigation */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Quick Links */}
           <div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -33,13 +38,61 @@ const Footer = () => {
                 { name: "About Us", path: "/about-us" },
                 { name: "Events", path: "/events" },
                 { name: "Contact Us", path: "/contact-us" },
-                { name: "Volunteer", path: "/volunteer" },
-                { name: "Our Pledge", path: "/pledge" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    onClick={scrollToTop} // Scroll to top on click
+                    onClick={scrollToTop}
+                    className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Activities & Programs */}
+          <div>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Activities
+            </h3>
+            <ul className="space-y-2">
+              {[
+                { name: "Bala Vihar", path: "/activities" },
+                { name: "Yuva Kendra", path: "/activities" },
+                { name: "Study Groups", path: "/activities" },
+                { name: "Volunteer", path: "/volunteer" },
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    onClick={scrollToTop}
+                    className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              Resources
+            </h3>
+            <ul className="space-y-2">
+              {[
+                { name: "Our Pledge", path: "/pledge" },
+                { name: "Archived Events", path: "/archived-events" },
+                { name: "Gallery", path: "/events" },
+                { name: "Register CGCC 2025", path: "/register/cgcc2025" },
+              ].map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
+                    onClick={scrollToTop}
                     className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors"
                   >
                     {link.name}
@@ -54,18 +107,32 @@ const Footer = () => {
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
               Contact Us
             </h3>
-            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
-              Sai Tower, Ambadi Rd, Vasai West,<br />
-              Maharashtra 401202, India
-            </p>
-            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mt-2">
-              Email: <a href="mailto:vasai@chinmayamission.com" className="hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors">
-                vasai@chinmayamission.com
-              </a>
-            </p>
-            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mt-2">
-              Phone: +91 123-456-7890
-            </p>
+            <div className="space-y-3">
+              {/* Address */}
+              <div className="flex items-start space-x-3">
+                <FaMapMarkerAlt className="text-[#BC3612] dark:text-[#F47930] mt-1 flex-shrink-0" size={16} />
+                <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                  Sai Tower, Ambadi Rd, Vasai West,<br />
+                  Maharashtra 401202, India
+                </p>
+              </div>
+              
+              {/* Email */}
+              <div className="flex items-center space-x-3">
+                <FaEnvelope className="text-[#BC3612] dark:text-[#F47930] flex-shrink-0" size={16} />
+                <a href="mailto:vasai@chinmayamission.com" className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors">
+                  vasai@chinmayamission.com
+                </a>
+              </div>
+              
+              {/* Phone */}
+              <div className="flex items-center space-x-3">
+                <FaPhone className="text-[#BC3612] dark:text-[#F47930] flex-shrink-0" size={16} />
+                <a href="tel:+917303717177" className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors">
+                  +91 7303717177
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -96,7 +163,6 @@ const Footer = () => {
           {/* Copyright */}
           <div className="text-sm">
             <p>© 2025 Chinmaya Mission Vasai. All Rights Reserved.</p>
-            <p className="text-xs mt-1">Hari Om!</p>
           </div>
         </div>
       </div>
