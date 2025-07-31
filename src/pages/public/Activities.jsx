@@ -14,7 +14,7 @@ const activities = [
       "Development of leadership qualities",
       "Building confidence and public speaking skills"
     ],
-    contact: "For registration: +91 XXXXXXXXXX or email: balavihar@chinmayavasai.org"
+    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com"
   },
   {
     id: 2,
@@ -28,7 +28,7 @@ const activities = [
       "Building a strong value system",
       "Networking with like-minded youth"
     ],
-    contact: "Join our WhatsApp group: +91 XXXXXXXXXX"
+    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com"
   },
 ];
 

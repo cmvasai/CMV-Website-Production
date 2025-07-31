@@ -35,7 +35,7 @@ const ContactUs = () => {
             </div>
             <div className="flex items-center gap-2">
               <TiMail className="text-xl md:text-2xl text-black dark:text-white flex-shrink-0" />
-              <a href="mailto:vasai@chinmayamission.com" className="text-sm md:text-base hover:underline">vasai@chinmayamission.com</a>
+              <a href="mailto:vasai@chinmayamission.com" className="text-sm md:text-base hover:underline">info@chinmayamissionvasai.com</a>
             </div>
           </div>
         </div>
