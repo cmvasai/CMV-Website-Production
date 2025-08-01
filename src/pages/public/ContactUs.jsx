@@ -3,6 +3,7 @@ import { IoIosCall } from "react-icons/io";
 import { TiMail } from "react-icons/ti";
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { IoLogoWhatsapp } from 'react-icons/io';
 
 const ContactUs = () => {
   return (
@@ -33,6 +34,33 @@ const ContactUs = () => {
               <IoIosCall className="text-xl md:text-2xl text-black dark:text-white flex-shrink-0" />
               <a href="tel:+917303717177" className="text-sm md:text-base hover:underline">+91 7303717177</a>
             </div>
+            {/* Whatsapp contact try */}
+            {/* <div className="flex items-center gap-2">
+              <IoLogoWhatsapp className="text-xl md:text-2xl text-green-500 flex-shrink-0" />
+              <a
+                href="https://wa.me/917303717177"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm md:text-base hover:underline"
+              >
+                +91 7303717177
+              </a>
+            </div> */}
+            {/* whatsapp try end */}
+
+            {/* Floating WhatsApp Button - Mobile Only  */}
+            <div className="fixed bottom-20 right-6 z-50 md:hidden">
+              <a
+                href="https://wa.me/917303717177"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+              >
+                <IoLogoWhatsapp className="text-2xl text-white" />
+              </a>
+            </div>
+            {/* floating button end */}
+
             <div className="flex items-center gap-2">
               <TiMail className="text-xl md:text-2xl text-black dark:text-white flex-shrink-0" />
               <a href="mailto:vasai@chinmayamission.com" className="text-sm md:text-base hover:underline">info@chinmayamissionvasai.com</a>
@@ -78,6 +106,15 @@ const ContactUs = () => {
               aria-label="Visit our X page"
             >
               <FaXTwitter size={24} />
+            </a>
+            <a
+              href="https://wa.me/917303717177"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-500 hover:text-green-400 dark:text-green-500 dark:hover:text-green-400"
+              aria-label="Contact us on WhatsApp"
+            >
+              <IoLogoWhatsapp size={24} />
             </a>
           </div>
         </div>
