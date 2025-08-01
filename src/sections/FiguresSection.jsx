@@ -117,11 +117,21 @@ const FiguresSection = () => {
               font-size: 0.625rem !important;
             }
             .dark .figures-card {
-              background: linear-gradient(to bottom right, rgba(75, 85, 99, 0.8), rgba(31, 41, 55, 55, 0.8)) !important;
+              background: linear-gradient(to bottom right, rgba(75, 85, 99, 0.9), rgba(31, 41, 55, 0.9)) !important;
               border: 1px solid rgba(244, 121, 48, 0.5) !important;
             }
             .dark .figures-card:hover {
               box-shadow: 0 0 15px rgba(244, 121, 48, 0.5) !important;
+            }
+            .dark .figures-name {
+              color: #f3f4f6 !important;
+              font-weight: 600 !important;
+            }
+            .dark .figures-count {
+              color: #F47930 !important;
+            }
+            .dark .figures-icon {
+              color: #F47930 !important;
             }
           }
           @media (min-width: 1024px) {
@@ -145,6 +155,20 @@ const FiguresSection = () => {
             }
             .figures-name {
               font-size: 0.75rem !important;
+            }
+            .dark .figures-card {
+              background: linear-gradient(to bottom right, rgba(75, 85, 99, 0.9), rgba(31, 41, 55, 0.9)) !important;
+              border: 1px solid rgba(244, 121, 48, 0.5) !important;
+            }
+            .dark .figures-name {
+              color: #f3f4f6 !important;
+              font-weight: 600 !important;
+            }
+            .dark .figures-count {
+              color: #F47930 !important;
+            }
+            .dark .figures-icon {
+              color: #F47930 !important;
             }
           }
           @keyframes fadeInStagger {
