@@ -16,6 +16,7 @@ import { scrollToTop } from './utils/scrollUtils';
 import ErrorBoundary from './components/ErrorBoundary';
 import ComingSoon from './components/ComingSoon';
 import LoadingSkeletons from './components/LoadingSkeletons';
+import { IoLogoWhatsapp } from 'react-icons/io';
 
 // Lazy load components for better performance
 const About = lazy(() => import('./pages/public/About'));
@@ -77,6 +78,23 @@ const CarouselSkeleton = memo(function CarouselSkeleton() {
 });
 CarouselSkeleton.displayName = "CarouselSkeleton";
 
+// WhatsApp Floating Button Component
+const WhatsAppButton = memo(function WhatsAppButton() {
+  return (
+    <div className="fixed bottom-20 right-6 z-50 md:hidden">
+      <a
+        href="https://wa.me/917303717177"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+        aria-label="Contact us on WhatsApp"
+      >
+        <IoLogoWhatsapp className="text-2xl text-white" />
+      </a>
+    </div>
+  );
+});
+
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
@@ -106,7 +124,7 @@ function App() {
           axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/upcoming-events`),
           axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/featured-events`),
         ]);
-        
+
         // Ensure we always set arrays
         setCarouselItems(Array.isArray(carouselRes.data) ? carouselRes.data : []);
         setUpcomingEvents(Array.isArray(upcomingRes.data) ? upcomingRes.data : []);
@@ -120,7 +138,7 @@ function App() {
       } finally {
         const elapsedTime = Date.now() - startTime;
         const minDisplayTime = 500; // Minimum 500ms for skeleton
-        
+
         if (elapsedTime < minDisplayTime) {
           setTimeout(() => {
             setLoading(false);
@@ -164,139 +182,141 @@ function App() {
     <HelmetProvider>
       <ErrorBoundary>
         <div className={darkMode ? 'dark' : ''}>
-        <Helmet>
-          <title>Chinmaya Mission | Vasai</title>
-          <meta name="description" content="Chinmaya Mission Vasai - Join us for spiritual events, community service, and spiritual growth in Vasai" />
-        </Helmet>
-        
-        <Router>
-          <ScrollToTop />
-          <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-          <main>
-            <Suspense fallback={<LoadingSkeletons />}>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <div className="flex flex-col gap-0">
-                      <QuotesSection />
-                      <UpcomingEvents upcomingEvents={upcomingEvents} />
-                      <UtilityButtons />
-                      {/* "Our Events" Heading */}
-                      <div className="bg-white dark:bg-gray-900 py-4 sm:py-6">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center">
-                          Our Events
-                        </h2>
+          <Helmet>
+            <title>Chinmaya Mission | Vasai</title>
+            <meta name="description" content="Chinmaya Mission Vasai - Join us for spiritual events, community service, and spiritual growth in Vasai" />
+          </Helmet>
+
+          <Router>
+            <ScrollToTop />
+            <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+            <main>
+              <Suspense fallback={<LoadingSkeletons />}>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <div className="flex flex-col gap-0">
+                        <QuotesSection />
+                        <UpcomingEvents upcomingEvents={upcomingEvents} />
+                        <UtilityButtons />
+                        {/* "Our Events" Heading */}
+                        <div className="bg-white dark:bg-gray-900 py-4 sm:py-6">
+                          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center">
+                            Our Events
+                          </h2>
+                        </div>
+                        {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
+                        {/* "View More Events" Link */}
+                        <div className="bg-white dark:bg-gray-900 py-4 sm:py-6 flex justify-center">
+                          <Link
+                            to="/events#featured-events"
+                            onClick={handleViewMoreEventsClick}
+                            className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
+                          >
+                            View More Events
+                          </Link>
+                        </div>
+                        {/* WhatsApp Floating Button */}
+                        <WhatsAppButton />
                       </div>
-                      {loading ? <CarouselSkeleton /> : <ImageCarousel carouselItems={carouselItems} />}
-                      {/* "View More Events" Link */}
-                      <div className="bg-white dark:bg-gray-900 py-4 sm:py-6 flex justify-center">
-                        <Link
-                          to="/events#featured-events"
-                          onClick={handleViewMoreEventsClick}
-                          className="px-6 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
-                        >
-                          View More Events
-                        </Link>
-                      </div>
-                    </div>
-                  }
-                />
-                <Route path="/about-us" element={<About />} />
-                <Route path="/archived-events" element={<ArchivedEvents />} />
-                <Route path="/archived-events/:id" element={<ArchivedEventDetails />} />
-                <Route path="/events/archived" element={<ArchivedEvents />} />
-                <Route path="/activities" element={<Activities />} />
-                <Route path="/contact-us" element={<ContactUs />} />
-                <Route path="/volunteer" element={<Volunteer />} />
-                <Route path="/donate" element={<Donate />} />
-                <Route path="/register/cgcc2025" element={<RegisterCGCC2025 />} />
-                <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
-                <Route path="/admin/login" element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
-                <Route
-                  path="/admin/dashboard"
-                  element={adminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin/login" />}
-                />
-                <Route
-                  path="/admin/archived-events"
-                  element={
-                    adminLoggedIn ? (
-                      <ManageArchivedEvents />
-                    ) : (
-                      <Navigate to="/admin/login" />
-                    )
-                  }
-                />
-                <Route
-                  path="/admin/archived-events/add"
-                  element={
-                    adminLoggedIn ? (
-                      <AddArchivedEvent />
-                    ) : (
-                      <Navigate to="/admin/login" />
-                    )
-                  }
-                />
-                <Route
-                  path="/admin/donations"
-                  element={
-                    adminLoggedIn ? (
-                      <ManageDonations />
-                    ) : (
-                      <Navigate to="/admin/login" />
-                    )
-                  }
-                />
-                <Route
-                  path="/admin/edit-carousel"
-                  element={
-                    adminLoggedIn ? (
-                      <EditCarousel
-                        carouselItems={Array.isArray(carouselItems) ? carouselItems : []}
-                        setCarouselItems={setCarouselItems}
-                      />
-                    ) : (
-                      <Navigate to="/admin/login" />
-                    )
-                  }
-                />
-                <Route
-                  path="/admin/edit-upcoming-events"
-                  element={
-                    adminLoggedIn ? (
-                      <EditUpcomingEvents
-                        upcomingEvents={Array.isArray(upcomingEvents) ? upcomingEvents : []}
-                        setUpcomingEvents={setUpcomingEvents}
-                      />
-                    ) : (
-                      <Navigate to="/admin/login" />
-                    )
-                  }
-                />
-                <Route
-                  path="/admin/edit-featured-events"
-                  element={
-                    adminLoggedIn ? (
-                      <EditFeaturedEvents
-                        featuredEvents={Array.isArray(featuredEvents) ? featuredEvents : []}
-                        setFeaturedEvents={setFeaturedEvents}
-                      />
-                    ) : (
-                      <Navigate to="/admin/login" />
-                    )
-                  }
-                />
-                <Route path="/pledge" element={<OurPledge />} />
-                
-                {/* Catch-all route for 404 - must be last */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </main>
-          <Footer />
-          <ScrollToTopButton />
-        </Router>
-      </div>
+                    }
+                  />
+                  <Route path="/about-us" element={<About />} />
+                  <Route path="/archived-events" element={<ArchivedEvents />} />
+                  <Route path="/archived-events/:id" element={<ArchivedEventDetails />} />
+                  <Route path="/events/archived" element={<ArchivedEvents />} />
+                  <Route path="/activities" element={<Activities />} />
+                  <Route path="/contact-us" element={<ContactUs />} />
+                  <Route path="/volunteer" element={<Volunteer />} />
+                  <Route path="/donate" element={<Donate />} />
+                  <Route path="/register/cgcc2025" element={<RegisterCGCC2025 />} />
+                  <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
+                  <Route path="/admin/login" element={<AdminLogin setAdminLoggedIn={setAdminLoggedIn} />} />
+                  <Route
+                    path="/admin/dashboard"
+                    element={adminLoggedIn ? <AdminDashboard /> : <Navigate to="/admin/login" />}
+                  />
+                  <Route
+                    path="/admin/archived-events"
+                    element={
+                      adminLoggedIn ? (
+                        <ManageArchivedEvents />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/admin/archived-events/add"
+                    element={
+                      adminLoggedIn ? (
+                        <AddArchivedEvent />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/admin/donations"
+                    element={
+                      adminLoggedIn ? (
+                        <ManageDonations />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/admin/edit-carousel"
+                    element={
+                      adminLoggedIn ? (
+                        <EditCarousel
+                          carouselItems={Array.isArray(carouselItems) ? carouselItems : []}
+                          setCarouselItems={setCarouselItems}
+                        />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/admin/edit-upcoming-events"
+                    element={
+                      adminLoggedIn ? (
+                        <EditUpcomingEvents
+                          upcomingEvents={Array.isArray(upcomingEvents) ? upcomingEvents : []}
+                          setUpcomingEvents={setUpcomingEvents}
+                        />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/admin/edit-featured-events"
+                    element={
+                      adminLoggedIn ? (
+                        <EditFeaturedEvents
+                          featuredEvents={Array.isArray(featuredEvents) ? featuredEvents : []}
+                          setFeaturedEvents={setFeaturedEvents}
+                        />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route path="/pledge" element={<OurPledge />} />
+
+                  {/* Catch-all route for 404 - must be last */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </main>
+            <Footer />
+            <ScrollToTopButton />
+          </Router>
+        </div>
       </ErrorBoundary>
     </HelmetProvider>
   );
