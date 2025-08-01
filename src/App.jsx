@@ -11,6 +11,7 @@ import UtilityButtons from './utils/UtilityButtons';
 import QuotesSection from './sections/QuotesSection';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import ScrollToTop from './components/ScrollToTop';
+import FloatingDonationCard from './components/FloatingDonationCard';
 import { ToastContainer } from './components/Toast';
 import { scrollToTop } from './utils/scrollUtils';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -315,6 +316,8 @@ function App() {
             </main>
             <Footer />
             <ScrollToTopButton />
+            <FloatingDonationCard />
+            <WhatsAppButton />
           </Router>
         </div>
       </ErrorBoundary>
