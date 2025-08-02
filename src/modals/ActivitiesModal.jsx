@@ -41,6 +41,15 @@ const ActivitiesModal = ({ isOpen, onClose, activity }) => {
               </p>
             </div>
 
+            {/* Additional Information */}
+            {activity.additionalInfo && (
+              <div className="prose max-w-none dark:prose-dark mt-4">
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm md:text-base text-justify">
+                  {activity.additionalInfo}
+                </p>
+              </div>
+            )}
+
             {/* Additional Details */}
             <div className="mt-6 space-y-4 w-full">
               {activity.schedule && (

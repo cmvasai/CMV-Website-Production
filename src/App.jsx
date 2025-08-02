@@ -11,13 +11,11 @@ import UtilityButtons from './utils/UtilityButtons';
 import QuotesSection from './sections/QuotesSection';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import ScrollToTop from './components/ScrollToTop';
-import FloatingDonationCard from './components/FloatingDonationCard';
 import { ToastContainer } from './components/Toast';
 import { scrollToTop } from './utils/scrollUtils';
 import ErrorBoundary from './components/ErrorBoundary';
 import ComingSoon from './components/ComingSoon';
 import LoadingSkeletons from './components/LoadingSkeletons';
-import { IoLogoWhatsapp } from 'react-icons/io';
 
 // Lazy load components for better performance
 const About = lazy(() => import('./pages/public/About'));
@@ -78,23 +76,6 @@ const CarouselSkeleton = memo(function CarouselSkeleton() {
   );
 });
 CarouselSkeleton.displayName = "CarouselSkeleton";
-
-// WhatsApp Floating Button Component
-const WhatsAppButton = memo(function WhatsAppButton() {
-  return (
-    <div className="fixed bottom-20 right-6 z-50 md:hidden">
-      <a
-        href="https://wa.me/917303717177"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
-        aria-label="Contact us on WhatsApp"
-      >
-        <IoLogoWhatsapp className="text-2xl text-white" />
-      </a>
-    </div>
-  );
-});
 
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -218,8 +199,6 @@ function App() {
                             View More Events
                           </Link>
                         </div>
-                        {/* WhatsApp Floating Button */}
-                        <WhatsAppButton />
                       </div>
                     }
                   />
@@ -316,8 +295,6 @@ function App() {
             </main>
             <Footer />
             <ScrollToTopButton />
-            <FloatingDonationCard />
-            <WhatsAppButton />
           </Router>
         </div>
       </ErrorBoundary>
