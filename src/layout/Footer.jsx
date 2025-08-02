@@ -52,17 +52,19 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Activities & Programs */}
+          {/* Activities & Programs - Shortened Version */}
           <div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
-              Activities
+              Programs
             </h3>
             <ul className="space-y-2">
               {[
-                { name: "Bala Vihar", path: "/activities" },
-                { name: "Yuva Kendra", path: "/activities" },
+                { name: "Children's Programs", path: "/activities" },
+                { name: "Youth Programs", path: "/activities" },
+                { name: "Family Programs", path: "/activities" },
+                { name: "Adult Programs", path: "/activities" },
+                { name: "Spiritual Camps", path: "/activities" },
                 { name: "Study Groups", path: "/activities" },
-                { name: "Volunteer", path: "/volunteer" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
@@ -74,6 +76,15 @@ const Footer = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  to="/activities"
+                  onClick={scrollToTop}
+                  className="text-sm sm:text-base text-[#BC3612] dark:text-[#F47930] hover:text-orange-500 dark:hover:text-orange-500 font-medium transition-colors"
+                >
+                  View All Activities →
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -116,7 +127,7 @@ const Footer = () => {
                   Maharashtra 401202, India
                 </p>
               </div>
-              
+
               {/* Email */}
               <div className="flex items-center space-x-3">
                 <FaEnvelope className="text-[#BC3612] dark:text-[#F47930] flex-shrink-0" size={16} />
@@ -124,7 +135,7 @@ const Footer = () => {
                   vasai@chinmayamission.com
                 </a>
               </div>
-              
+
               {/* Phone */}
               <div className="flex items-center space-x-3">
                 <FaPhone className="text-[#BC3612] dark:text-[#F47930] flex-shrink-0" size={16} />
