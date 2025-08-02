@@ -74,7 +74,7 @@ const activities = [
       "Connects with ancient wisdom experientially",
       "Spiritual discipline (sadhana) practice"
     ],
-    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
+    contact: "For registration: WhatsApp us at https://wa.me/917303717177 or email: info@chinmayamissionvasai.com",
     additionalInfo: "These practices cultivate discipline, concentration and devotion, guiding individuals towards greater self-awareness. Chanting is not merely a ritual – it is a sadhana, a spiritual discipline that refines the mind and opens the heart."
   },
   {
@@ -90,7 +90,7 @@ const activities = [
       "Community gathering in warm atmosphere",
       "Living eternal wisdom of Vedanta"
     ],
-    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
+    contact: "For registration: WhatsApp us at https://wa.me/917303717177 or email: info@chinmayamissionvasai.com",
     additionalInfo: "Participants spend about an hour each week reading and listening about various Scriptures. These gatherings offer a space for collective reflection, spiritual growth and living the eternal wisdom of Vedanta in a warm and uplifting atmosphere. Satsang is an opportunity to empower the entire family with knowledge on living a value-based life, deepening spiritual understanding and growing together in truth and harmony."
   },
   {
@@ -105,7 +105,7 @@ const activities = [
       "Comprehensive four-module teaching",
       "Interactive workshops and learning"
     ],
-    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
+    contact: "For registration: WhatsApp us at https://wa.me/917303717177 or email: info@chinmayamissionvasai.com",
     additionalInfo: "CGS Motto: Happy parents make happy babies, Happy babies make a happy world. The programme began in 2019 by Kanchan Daswani in Dubai as a prenatal course rooted in Vedic teachings, specially crafted for expectant Bala Vihar sevikas and their friends. After receiving an enthusiastic response and increasing demand, with the blessings of Swami Tejomayananda and Swami Swaroopananda, the course was formally structured. Featuring a comprehensive four-module teaching manual and interactive workshops, the programme has since expanded globally, inspiring young couples to embrace the richness of Hindu culture and the spiritual depth of conscious parenting."
   },
   {
@@ -120,7 +120,7 @@ const activities = [
       "Revelation of true Self",
       "Open to all backgrounds"
     ],
-    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
+    contact: "For registration: WhatsApp us at https://wa.me/917303717177 or email: info@chinmayamissionvasai.com",
     additionalInfo: "Swami Chinmayananda introduced this concept in his first talks in Pune in 1951, addressing just five seekers. The thirst for accessible and inspiring teachings on the Upanishads and Bhagavad Gita quickly grew. By the 1960s, his discourses were drawing tens of thousands, making Vedantic knowledge available to all, regardless of background."
   },
   {
@@ -135,7 +135,7 @@ const activities = [
       "Science of sound and vibration",
       "Spreading positivity through music"
     ],
-    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
+    contact: "For registration: WhatsApp us at https://wa.me/917303717177 or email: info@chinmayamissionvasai.com",
     additionalInfo: "Swami Chinmayananda's deep love for classical music and dance was well known. When renowned musicians performed to support Chinmaya Mission projects, he swayed and tapped in rhythm, fully immersed in the divine vibrations. He regarded listening to Indian classical music as a form of meditation. He observed, \"Music is an ornamentation of Silence and should be used by seekers to experience the silence within, in our quest towards Oneness with our Divine Self.\" Rooted in the Samaveda and Natyashastra, Indian classical music is more than an art—it is a science of sound and vibration. Through carefully composed shlokas and stutis, it uplifts the spirit and spreads positivity."
   },
   {
@@ -150,7 +150,7 @@ const activities = [
       "Systematic reflection (Mananam) practice",
       "Global network of seekers"
     ],
-    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
+    contact: "For registration: WhatsApp us at https://wa.me/917303717177 or email: info@chinmayamissionvasai.com",
     additionalInfo: "Study Groups began in 1952 when inspired listeners from Swami Chinmayananda's early Jnana Yajnas in Pune and Chennai started meeting regularly to reflect on the Scriptures. Emphasising the importance of systematic reflection (Mananam), Gurudev encouraged this practice to internalise spiritual knowledge. A year later, the first formal Study Group was formed in Chennai, marking the beginning of Chinmaya Mission as an organised movement. Today, these groups have grown into a global network of seekers, united in the pursuit of self-knowledge. Devi Groups, introduced in 1958, are Study Groups exclusively for women. Created with Gurudev's blessings, they offer a nurturing space for scriptural study, devotional practices and cultural upliftment. Together, Study Groups and Devi Groups serve as the grassroots foundation of Chinmaya Mission's enduring vision: a spiritually awakened society, grounded in timeless values."
   },
   {
@@ -165,7 +165,7 @@ const activities = [
       "Financial planning and personal safety",
       "Daily sadhana and spiritual mentoring"
     ],
-    contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
+    contact: "For registration: WhatsApp us at https://wa.me/917303717177 or email: info@chinmayamissionvasai.com",
     additionalInfo: "Established as the Senior Citizens' wing of Chinmaya Mission, the Central Chinmaya Vanaprastha Sansthan (CCVS) unites individuals over sixty across the globe. While stepping back from worldly roles, Vanaprasthis are guided towards deeper self-enquiry and lasting fulfilment. CCVS programmes support a smooth transition from the householder (Grihastha) stage to Vanaprastha through practical and spiritual resources, including guidance on health, emotional well-being, financial planning, personal safety and daily sadhana. These offerings are thoughtfully adapted to diverse cultural and regional contexts, yet firmly rooted in the unchanging vision of Vedanta. Chinmaya Mission sees later years of life not as a decline, but as an opportunity to shift awareness towards inner growth. As put by Swami Tejomayananda, \"Ageing is not decaying; it is maturing for the inward journey. It is the birth into empowerment - leaving the world of dependency on objects and relationships.\" CCVS programmes offer practical tools and answers to the real-life questions of the elderly through workshops, study groups, Vedanta classes, retreats, spiritual mentoring and community engagement. They empower Seniors to: Balance action and rest with inner wisdom, Cultivate meaningful relationships within a like-minded community, Embrace spiritual growth as the central goal of life's final chapters."
   }
 ];
@@ -178,12 +178,12 @@ const Activities = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto mb-16">
           <h1 className="text-3xl font-bold text-center mb-8">Activities</h1>
-          
+
           <div className="prose max-w-none text-gray-800 dark:text-gray-300">
             <p className="text-lg leading-relaxed mb-6 text-justify">
               Chinmaya Mission Vasai conducts various spiritual and cultural activities aimed at inner transformation and character development for all age groups. Our activities are designed to promote the understanding of Vedantic knowledge and its practical application in daily life.
             </p>
-            
+
             <p className="text-lg leading-relaxed mb-6 text-justify">
               Through regular study groups, workshops, cultural programs, and community service initiatives, we provide platforms for individuals to grow spiritually while serving society. Our activities include Vedanta classes, meditation sessions, youth programs, children's cultural education, and various community outreach programs.
             </p>
@@ -194,7 +194,7 @@ const Activities = () => {
           </div>
 
           <h2 className="text-2xl font-bold text-center mb-12">Our Regular Activities</h2>
-          
+
           {/* Children Section */}
           <div className="mb-16">
             <h3 className="text-xl font-semibold text-center mb-8 text-[#BC3612] dark:text-[#F47930]">
@@ -202,7 +202,7 @@ const Activities = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {activities.filter(activity => activity.id === 1 || activity.id === 2).map((activity) => (
-                <div 
+                <div
                   key={activity.id}
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
@@ -227,7 +227,7 @@ const Activities = () => {
             </h3>
             <div className="grid grid-cols-1 gap-8 max-w-2xl mx-auto">
               {activities.filter(activity => activity.id === 3).map((activity) => (
-                <div 
+                <div
                   key={activity.id}
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
@@ -267,7 +267,7 @@ const Activities = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {activities.filter(activity => activity.id >= 4 && activity.id <= 9).map((activity) => (
-                <div 
+                <div
                   key={activity.id}
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
@@ -292,7 +292,7 @@ const Activities = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {activities.filter(activity => activity.id === 10 || activity.id === 11).map((activity) => (
-                <div 
+                <div
                   key={activity.id}
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
