@@ -132,7 +132,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <FaEnvelope className="text-[#BC3612] dark:text-[#F47930] flex-shrink-0" size={16} />
                 <a href="mailto:vasai@chinmayamission.com" className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-[#BC3612] dark:hover:text-[#F47930] transition-colors">
-                  vasai@chinmayamission.com
+                  info@chinmayamissionvasai.com
                 </a>
               </div>
 
