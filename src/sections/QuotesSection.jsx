@@ -24,16 +24,19 @@ const QuotesSection = () => {
       <div className="relative w-full text-center">
         {/* Quote Card */}
         <div className="bg-gradient-to-r from-white to-orange-100 dark:from-gray-800 dark:to-gray-700 shadow-lg dark:shadow-[0_20px_25px_-5px_rgba(245,121,48,0.15),0_10px_10px_-5px_rgba(245,121,48,0.05)] transition-all duration-500 w-full border-l-6 border-[#BC3612] dark:border-[#F47930] hover:scale-[1.01] group relative dark:ring-1 dark:ring-orange-500/20">
-          <div
-            key={currentQuoteIndex}
-            className="transition-opacity duration-500 opacity-0 animate-slide-up"
-          >
-            <p className="text-[13px] sm:text-lg md:text-xl font-serif italic tracking-wide text-gray-700 dark:text-gray-100 p-1 sm:p-6 relative quote-text">
-              {quotes[currentQuoteIndex].text}
-            </p>
-            <p className="text-[10px] sm:text-base md:text-lg italic font-medium tracking-wide text-[#BC3612] dark:text-[#F47930] px-1 sm:px-6 pb-1 sm:pb-6">
-              — {quotes[currentQuoteIndex].author}
-            </p>
+          {/* Fixed height container for quotes */}
+          <div className="min-h-[80px] sm:min-h-[120px] md:min-h-[140px] lg:min-h-[160px] flex flex-col justify-center">
+            <div
+              key={currentQuoteIndex}
+              className="transition-opacity duration-500 opacity-0 animate-slide-up flex flex-col justify-center h-full"
+            >
+              <p className="text-[13px] sm:text-lg md:text-xl font-serif italic tracking-wide text-gray-700 dark:text-gray-100 p-1 sm:p-6 relative quote-text">
+                {quotes[currentQuoteIndex].text}
+              </p>
+              <p className="text-[10px] sm:text-base md:text-lg italic font-medium tracking-wide text-[#BC3612] dark:text-[#F47930] px-1 sm:px-6 pb-1 sm:pb-6">
+                — {quotes[currentQuoteIndex].author}
+              </p>
+            </div>
           </div>
           <hr className="border-t-1 border-gray-300 dark:border-gray-500/50 my-1 sm:hidden" />
           <FiguresSection />

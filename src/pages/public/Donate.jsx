@@ -36,8 +36,8 @@ const Donate = () => {
     "Gurudakshina",
     "General Donation",
     "Event Sponsorship",
-    "Building Fund",
-    "Educational Support",
+    // "Building Fund",
+    // "Educational Support",
     "Community Service",
     "Special Occasion",
     "Other"
@@ -57,7 +57,7 @@ const Donate = () => {
     setError('');
 
     // Basic validation
-    const requiredFields = ['fullName', 'email', 'phoneNumber', 'state', 'city', 'pinCode', 'address', 'amount', 'transactionId', 'reasonForDonation'];
+    const requiredFields = ['fullName', 'email', 'phoneNumber', 'panCardNumber', 'state', 'city', 'pinCode', 'address', 'amount', 'transactionId', 'reasonForDonation'];
     const emptyFields = requiredFields.filter(field => !formData[field]);
     
     if (emptyFields.length > 0) {
@@ -229,7 +229,7 @@ const Donate = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    PAN Card Number
+                    PAN Card Number *
                   </label>
                   <div className="relative">
                     <FaIdCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -238,7 +238,8 @@ const Donate = () => {
                       name="panCardNumber"
                       value={formData.panCardNumber}
                       onChange={handleInputChange}
-                      placeholder="Optional"
+                      placeholder="Enter PAN Card Number"
+                      required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
                   </div>
@@ -296,20 +297,12 @@ const Donate = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    80G Exemption
-                  </label>
-                  <select
-                    name="seek80G"
-                    value={formData.seek80G}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930] focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  >
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                  </select>
-                </div>
+                {/* Hidden 80G field - always set to "no" */}
+                <input
+                  type="hidden"
+                  name="seek80G"
+                  value="no"
+                />
               </div>
 
               <div>

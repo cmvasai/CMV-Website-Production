@@ -16,6 +16,7 @@ import { scrollToTop } from './utils/scrollUtils';
 import ErrorBoundary from './components/ErrorBoundary';
 import ComingSoon from './components/ComingSoon';
 import LoadingSkeletons from './components/LoadingSkeletons';
+import { IoLogoWhatsapp } from 'react-icons/io';
 
 // Lazy load components for better performance
 const About = lazy(() => import('./pages/public/About'));
@@ -40,9 +41,30 @@ const AddArchivedEvent = lazy(() => import('./pages/admin/AddArchivedEvent'));
 const ManageArchivedEvents = lazy(() => import('./pages/admin/ManageArchivedEvents'));
 const ManageDonations = lazy(() => import('./pages/admin/ManageDonations'));
 
+// WhatsApp Floating Button Component
+
+const WhatsAppButton = memo(function WhatsAppButton() {
+  return (
+    <div className="fixed bottom-20 right-6 z-50 md:hidden">
+      <a
+        href="https://wa.me/917303717177"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+        aria-label="Contact us on WhatsApp"
+      >
+        <IoLogoWhatsapp className="text-2xl text-white" />
+      </a>
+    </div>
+  );
+});
+
 // Enhanced Skeleton Component with Full-Width Shimmering Bar Effect
 const CarouselSkeleton = memo(function CarouselSkeleton() {
   const isMobile = window.innerWidth < 768;
+
+
+
 
   return (
     <>
@@ -199,6 +221,9 @@ function App() {
                             View More Events
                           </Link>
                         </div>
+                                                
+
+
                       </div>
                     }
                   />
@@ -295,6 +320,7 @@ function App() {
             </main>
             <Footer />
             <ScrollToTopButton />
+            <WhatsAppButton />
           </Router>
         </div>
       </ErrorBoundary>

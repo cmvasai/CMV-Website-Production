@@ -16,7 +16,7 @@ const activities = [
       "Social connection in a warm and joyful setting"
     ],
     contact: "For registration: +91 7303717177 or email: info@chinmayamissionvasai.com",
-    additionalInfo: "Shishu Vihar was first introduced in Hong Kong through the vision of Swamini Supriyananda, a Psychologist by profession. It has since expanded to Centres worldwide. She notes, \"Little ones have a strong retentive power and learn quickly. The added benefit is that parents also absorb the teachings, reinforcing values at home. Even 3-year-olds can chant the Hanuman Chalisa!\" Shishu Vihar is designed to introduce infants and toddlers to spiritual education in a fun, engaging and age-appropriate manner. Classes follow a modern structure of playgroups where babies and toddlers are accompanied by one or both parents. Children are immersed in simple scriptural stories, sing bhajans and nursery rhymes, play games to develop motor skills and engage in arts and crafts that foster social connection in a warm and joyful setting."
+    additionalInfo: "Shishu Vihar was first introduced in Hong Kong. \"Little ones have a strong retentive power and learn quickly. The added benefit is that parents also absorb the teachings, reinforcing values at home. Even 3-year-olds can chant the Hanuman Chalisa!\" Shishu Vihar is designed to introduce infants and toddlers to spiritual education in a fun, engaging and age-appropriate manner. Classes follow a modern structure of playgroups where babies and toddlers are accompanied by one or both parents. Children are immersed in simple scriptural stories, sing bhajans and nursery rhymes, play games to develop motor skills and engage in arts and crafts that foster social connection in a warm and joyful setting."
   },
   {
     id: 2,
