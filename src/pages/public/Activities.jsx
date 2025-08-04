@@ -5,7 +5,7 @@ const activities = [
   {
     id: 1,
     name: "Shishu Vihar",
-    image: "/shishu-vihar.png",
+    image: "/shishu2.png",
     description: "Shishu Vihar, Chinmaya Mission's early childhood programme, nurtures children aged 1-5 years. It lays a lasting foundation of spiritual and moral values that will guide them throughout life.",
     // schedule: "Every Sunday, 9:30 AM - 10:30 AM",
     benefits: [
@@ -21,7 +21,7 @@ const activities = [
   {
     id: 2,
     name: "Bala Vihar",
-    image: "/bala_vihar.png",
+    image: "/bv.png",
     description: "Bala Vihar is a weekly cultural and spiritual education program for children. Through stories, shlokas, bhajans, games, and other creative activities, children learn values and principles from our rich cultural heritage.",
     schedule: "Every Sunday, 10:30 AM - 12:00 PM",
     benefits: [
@@ -50,7 +50,7 @@ const activities = [
   {
     id: 4,
     name: "Spiritual Camps",
-    image: "/spiritual-camps.png",
+    image: "/camp.png",
     description: "Chinmaya Mission devotees often choose to take a solitary retreat and stay at our Ashrams. The Centres worldwide host spiritual camps and intensive Residential Courses not only for individuals, but also for families and children.",
     benefits: [
       "Break from daily routines in a sacred space",
@@ -65,7 +65,7 @@ const activities = [
   {
     id: 5,
     name: "Vedic and Gita Chanting",
-    image: "vedic_gita_chanting.png",
+    image: "/vedic&gita.png",
     description: "Chinmaya Mission regards chanting as a powerful and transformative path to inner stillness, clarity of thought and spiritual growth. Through the sacred vibrations of Vedic and Gita chanting, aspirants connect with ancient wisdom in a deeply experiential way.",
     benefits: [
       "Cultivates discipline and concentration",
@@ -80,7 +80,7 @@ const activities = [
   {
     id: 6,
     name: "Satsang",
-    image: "/satsang.png",
+    image: "/satsang2.png",
     description: "At Chinmaya Mission, regular Satsangs, mostly held every Sunday, welcome entire families to come together in devotion and learning. Each session typically features prayers and invocations, soulful bhajans and an inspiring discourse by our Swamiji or Acharya.",
     // schedule: "Every Sunday",
     benefits: [
@@ -96,7 +96,7 @@ const activities = [
   {
     id: 7,
     name: "Garbha Samskara",
-    image: "/garbha_sanskar.png",
+    image: "/garbha-samskara.png",
     description: "Chinmaya Garbha Samskara (CGS) is a four-module Vedic prenatal course for couples on their journey to conception and parenthood. This programme blends ancient Hindu wisdom with modern life, offering parents deep insights on spiritually nurturing their babies during pregnancy and early parenting.",
     benefits: [
       "Spiritual preparation for parenthood",
@@ -111,7 +111,7 @@ const activities = [
   {
     id: 8,
     name: "Jnana Yajna",
-    image: "/jnana_yajnas.png",
+    image: "/jnana-yajna.png",
     description: "Swami Chinmayananda coined the term 'Jnana Yajna' for Chinmaya Mission's free public discourses on the scriptures. Traditionally, a yajna is a fire ritual where offerings are burned to invoke divine blessings. In a Jnana Yajna, ignorance of our true nature is symbolically burned in the fire of Vedantic wisdom, revealing the Self.",
     benefits: [
       "Free public discourses on scriptures",
@@ -126,7 +126,7 @@ const activities = [
   {
     id: 9,
     name: "Swaranjali",
-    image: "/swaranjali.png",
+    image: "/swaranjali2.png",
     description: "Swaranjali, the music wing of Chinmaya Mission, was established in 2003, following Gurudev's deep love for music, and to honor the birthday of Swami Tejomayananda, a devoted singer and composer of devotional music.",
     benefits: [
       "Classical music as meditation practice",
@@ -141,7 +141,7 @@ const activities = [
   {
     id: 10,
     name: "Study Groups",
-    image: "/Study_Groups.png",
+    image: "/study-grp.png",
     description: "Study Groups and Devi Groups - Chinmaya Mission Study Groups are small, dedicated gatherings of spiritual seekers who meet regularly to study, reflect and live the timeless wisdom of Vedanta. These groups that typically consist of 5 to 15 members, foster collective enquiry and inner transformation through the study of scriptural texts.",
     benefits: [
       "Small dedicated gatherings of spiritual seekers",
@@ -156,7 +156,7 @@ const activities = [
   {
     id: 11,
     name: "Chinmaya Vanaprastha",
-    image: "/vanprasta.png",
+    image: "/vanaprashta.png",
     description: "In a world where ageing is often seen as a phase of decline or retreat, Chinmaya Mission offers a compelling alternative - a time for inner renewal, higher purpose and joyful contribution. Through Chinmaya Vanaprastha, the later years are seen as one of inner resilience.",
     benefits: [
       "Inner renewal and higher purpose for seniors",

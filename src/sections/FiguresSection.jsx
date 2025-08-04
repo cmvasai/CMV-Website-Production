@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 
 const FiguresSection = () => {
   const figures = useMemo(() => [
-    { name: "Monks", count: 301, icon: "fas fa-user" },
-    { name: "Ashrams", count: 300, icon: "fas fa-building" },
-    { name: "Schools", count: 300, icon: "fas fa-school" },
+    { name: "Monks", count: 250, icon: "fas fa-user" },
+    { name: "Ashrams", count: 350, icon: "fas fa-building" },
+    { name: "Schools", count: 100, icon: "fas fa-school" },
   ], []);
 
   const [counters, setCounters] = useState(figures.map(() => 0));
