@@ -36,7 +36,7 @@ export const Navbar = ({ toggleDarkMode, darkMode }) => {
       { name: "About Us", path: "/about-us" },
       { name: "Activities", path: "/activities" },
       { name: "Events", path: "/events" },
-      { name: "Volunteer / Join Us", path: "/volunteer" },
+      { name: "Join Us", path: "/volunteer" },
       { name: "Contact Us", path: "/contact-us" },
     ],
     []
