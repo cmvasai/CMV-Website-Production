@@ -156,7 +156,7 @@ const activities = [
   {
     id: 11,
     name: "Chinmaya Vanaprastha",
-    image: "/vanaprashta.png",
+    image: "/vanaprastha.png",
     description: "In a world where ageing is often seen as a phase of decline or retreat, Chinmaya Mission offers a compelling alternative - a time for inner renewal, higher purpose and joyful contribution. Through Chinmaya Vanaprastha, the later years are seen as one of inner resilience.",
     benefits: [
       "Inner renewal and higher purpose for seniors",
@@ -207,11 +207,11 @@ const Activities = () => {
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
                 >
-                  <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
+                  <div className="w-64 h-64 rounded-full overflow-hidden shadow-lg bg-white">
                     <img
                       src={activity.image}
                       alt={activity.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <h4 className="mt-4 text-xl font-semibold text-center dark:text-white">{activity.name}</h4>
@@ -232,27 +232,12 @@ const Activities = () => {
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
                 >
-                  <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
-                    {activity.darkImage ? (
-                      <>
-                        <img
-                          src={activity.image}
-                          alt={activity.name}
-                          className="w-full h-full object-cover dark:hidden"
-                        />
-                        <img
-                          src={activity.darkImage}
-                          alt={activity.name}
-                          className="w-full h-full object-cover hidden dark:block"
-                        />
-                      </>
-                    ) : (
-                      <img
-                        src={activity.image}
-                        alt={activity.name}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
+                  <div className="w-64 h-64 rounded-full overflow-hidden shadow-lg bg-white">
+                    <img
+                      src={activity.image}
+                      alt={activity.name}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   <h4 className="mt-4 text-xl font-semibold text-center dark:text-white">{activity.name}</h4>
                 </div>
@@ -272,11 +257,11 @@ const Activities = () => {
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
                 >
-                  <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
+                  <div className="w-64 h-64 rounded-full overflow-hidden shadow-lg bg-white">
                     <img
                       src={activity.image}
                       alt={activity.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <h4 className="mt-4 text-xl font-semibold text-center dark:text-white">{activity.name}</h4>
@@ -297,11 +282,11 @@ const Activities = () => {
                   className="flex flex-col items-center cursor-pointer transform transition-transform hover:scale-105"
                   onClick={() => setSelectedActivity(activity)}
                 >
-                  <div className="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
+                  <div className="w-64 h-64 rounded-full overflow-hidden shadow-lg bg-white">
                     <img
                       src={activity.image}
                       alt={activity.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <h4 className="mt-4 text-xl font-semibold text-center dark:text-white">{activity.name}</h4>
