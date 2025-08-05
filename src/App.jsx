@@ -38,6 +38,7 @@ const EditCarousel = lazy(() => import('./pages/admin/EditCarousel'));
 const EditUpcomingEvents = lazy(() => import('./pages/admin/EditUpcomingEvents'));
 const EditFeaturedEvents = lazy(() => import('./pages/admin/EditFeaturedEvents'));
 const AddArchivedEvent = lazy(() => import('./pages/admin/AddArchivedEvent'));
+const EditArchivedEvent = lazy(() => import('./pages/admin/EditArchivedEvent'));
 const ManageArchivedEvents = lazy(() => import('./pages/admin/ManageArchivedEvents'));
 const ManageDonations = lazy(() => import('./pages/admin/ManageDonations'));
 
@@ -257,6 +258,16 @@ function App() {
                     element={
                       adminLoggedIn ? (
                         <AddArchivedEvent />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/admin/archived-events/edit/:id"
+                    element={
+                      adminLoggedIn ? (
+                        <EditArchivedEvent />
                       ) : (
                         <Navigate to="/admin/login" />
                       )

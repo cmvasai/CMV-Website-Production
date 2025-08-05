@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaPlus, FaEdit, FaTrash, FaEye, FaCalendarAlt, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaEye, FaCalendarAlt, FaMapMarkerAlt, FaSearch, FaFilter, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 import archivedEventsService from '../../services/archivedEventsService';
 import { ArchivedEventsListSkeleton } from '../../components/LoadingSkeletons';
@@ -9,39 +9,34 @@ import { scrollToTop } from '../../utils/scrollUtils';
 
 const ManageArchivedEvents = () => {
   const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [sortBy, setSortBy] = useState('date_desc');
+  const [showFilters, setShowFilters] = useState(false);
+  const [availableYears, setAvailableYears] = useState([]);
   const [deleteLoading, setDeleteLoading] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [eventToDelete, setEventToDelete] = useState(null);
 
   useEffect(() => {
     fetchArchivedEvents();
+    fetchAvailableYears();
   }, []);
 
   useEffect(() => {
-    const filterEventsInternal = () => {
-      if (!searchQuery.trim()) {
-        setFilteredEvents(events);
-        return;
-      }
-
-      const filtered = events.filter(event =>
-        event.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.location?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredEvents(filtered);
-    };
-
-    filterEventsInternal();
-  }, [events, searchQuery]);
+    fetchArchivedEvents();
+  }, [searchQuery, selectedYear, sortBy]);
 
   const fetchArchivedEvents = async () => {
     try {
       setLoading(true);
-      const data = await archivedEventsService.getAll();
+      const params = {};
+      if (searchQuery.trim()) params.search = searchQuery.trim();
+      if (selectedYear) params.year = selectedYear;
+      if (sortBy) params.sortBy = sortBy;
+
+      const data = await archivedEventsService.getAll(params);
       setEvents(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching archived events:', err);
@@ -50,6 +45,41 @@ const ManageArchivedEvents = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchAvailableYears = async () => {
+    try {
+      const years = await archivedEventsService.getAvailableYears();
+      // Handle both array of years and array of objects with year/count
+      const processedYears = Array.isArray(years) ? years : [];
+      setAvailableYears(processedYears);
+    } catch (err) {
+      console.error('Error fetching available years:', err);
+      setAvailableYears([]);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
+
+  const handleSortChange = (newSortBy) => {
+    setSortBy(newSortBy);
+  };
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedYear('');
+    setSortBy('date_desc');
+  };
+
+  const getSortIcon = (sortType) => {
+    if (sortBy !== sortType) return <FaSort className="w-3 h-3 opacity-50" />;
+    return sortBy.includes('_asc') ? <FaSortUp className="w-3 h-3" /> : <FaSortDown className="w-3 h-3" />;
   };
 
   const formatDate = (dateString) => {
@@ -134,8 +164,9 @@ const ManageArchivedEvents = () => {
         </div>
 
         <div className="container mx-auto px-4 py-8">
-          {/* Search and Stats */}
-          <div className="mb-8">
+          {/* Search, Filters, and Stats */}
+          <div className="mb-8 space-y-4">
+            {/* Search Bar and Toggle Filters */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="relative max-w-md w-full">
                 <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" />
@@ -143,30 +174,145 @@ const ManageArchivedEvents = () => {
                   type="text"
                   placeholder="Search events..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={handleSearchChange}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930] focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 />
               </div>
-              <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                <span>Total Events: {events.length}</span>
-                {searchQuery && (
-                  <span>Found: {filteredEvents.length}</span>
-                )}
+              
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="md:hidden inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <FaFilter className="w-4 h-4 mr-2" />
+                  Filters
+                </button>
+                
+                <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                  <span>Total Events: {events.length}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Filters Section */}
+            <div className={`${showFilters ? 'block' : 'hidden'} md:block`}>
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                  {/* Year Filter */}
+                  <div className="flex-1 min-w-0">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Filter by Year
+                    </label>
+                    <select
+                      value={selectedYear}
+                      onChange={handleYearChange}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930] focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    >
+                      <option value="">All Years</option>
+                      {availableYears
+                        .filter(yearData => {
+                          const year = typeof yearData === 'object' ? yearData.year : yearData;
+                          return year !== null && year !== undefined;
+                        })
+                        .map((yearData) => {
+                          const yearValue = typeof yearData === 'object' ? yearData.year : yearData;
+                          const yearCount = typeof yearData === 'object' ? yearData.count : '';
+                          return (
+                            <option key={yearValue} value={yearValue}>
+                              {yearValue} {yearCount ? `(${yearCount} events)` : ''}
+                            </option>
+                          );
+                        })}
+                    </select>
+                  </div>
+
+                  {/* Sort Options */}
+                  <div className="flex-1 min-w-0">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Sort By
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => handleSortChange('date_desc')}
+                        className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          sortBy === 'date_desc'
+                            ? 'bg-[#BC3612] dark:bg-[#F47930] text-white'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        Date (Newest)
+                        {getSortIcon('date_desc')}
+                      </button>
+                      <button
+                        onClick={() => handleSortChange('date_asc')}
+                        className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          sortBy === 'date_asc'
+                            ? 'bg-[#BC3612] dark:bg-[#F47930] text-white'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        Date (Oldest)
+                        {getSortIcon('date_asc')}
+                      </button>
+                      <button
+                        onClick={() => handleSortChange('title_asc')}
+                        className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          sortBy === 'title_asc'
+                            ? 'bg-[#BC3612] dark:bg-[#F47930] text-white'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        Title (A-Z)
+                        {getSortIcon('title_asc')}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Clear Filters */}
+                  {(searchQuery || selectedYear || sortBy !== 'date_desc') && (
+                    <div className="flex-shrink-0">
+                      <label className="block text-sm font-medium text-transparent mb-2">
+                        Clear
+                      </label>
+                      <button
+                        onClick={clearFilters}
+                        className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline"
+                      >
+                        Clear Filters
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Events Grid */}
-          {filteredEvents.length === 0 ? (
+          {events.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-gray-500 dark:text-gray-400">
-                {searchQuery ? (
+                {searchQuery || selectedYear ? (
                   <>
+                    <div className="text-6xl mb-4">🔍</div>
                     <p className="text-xl mb-2">No events found</p>
-                    <p>Try adjusting your search terms</p>
+                    <p className="mb-4">
+                      {searchQuery && selectedYear
+                        ? `No events found matching "${searchQuery}" in ${selectedYear}`
+                        : searchQuery
+                        ? `No events found matching "${searchQuery}"`
+                        : `No events found for ${selectedYear}`
+                      }
+                    </p>
+                    <button
+                      onClick={clearFilters}
+                      className="inline-flex items-center px-4 py-2 bg-[#BC3612] dark:bg-[#F47930] hover:bg-[#ff725e] dark:hover:bg-[#ff725e] text-white rounded-lg transition-colors"
+                    >
+                      Clear Filters
+                    </button>
                   </>
                 ) : (
                   <>
+                    <div className="text-6xl mb-4">📅</div>
                     <p className="text-xl mb-4">No archived events yet</p>
                     <Link
                       to="/admin/archived-events/add"
@@ -181,7 +327,7 @@ const ManageArchivedEvents = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEvents.map((event) => (
+              {events.map((event) => (
                 <div
                   key={event._id}
                   className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
@@ -189,7 +335,7 @@ const ManageArchivedEvents = () => {
                   {/* Event Image */}
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src={event.heroImage || '/images/default-event.jpg'}
+                      src={event.coverImage || '/images/default-event.jpg'}
                       alt={event.title}
                       className="w-full h-full object-cover"
                       loading="lazy"
@@ -200,6 +346,15 @@ const ManageArchivedEvents = () => {
                         {event.title}
                       </h3>
                     </div>
+                    
+                    {/* Year Badge */}
+                    {event.year && (
+                      <div className="absolute top-4 right-4">
+                        <span className="bg-black/60 text-white px-2 py-1 rounded-full text-xs font-medium">
+                          {event.year}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Event Content */}

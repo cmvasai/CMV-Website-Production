@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaArrowLeft, FaShareAlt, FaDownload } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaArrowLeft, FaShareAlt, FaDownload, FaSpinner } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 import archivedEventsService from '../../services/archivedEventsService';
 import { ArchivedEventDetailsSkeleton } from '../../components/LoadingSkeletons';
@@ -16,6 +16,7 @@ const ArchivedEventDetails = () => {
   const [error, setError] = useState(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => {
     const fetchEventDetailsInternal = async () => {
@@ -56,24 +57,83 @@ const ArchivedEventDetails = () => {
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
+    console.log('Share button clicked');
+    setSharing(true);
+    
+    const shareData = {
+      title: event.name || event.title || 'Chinmaya Mission Event',
+      text: event.description ? event.description.substring(0, 200) + (event.description.length > 200 ? '...' : '') : 'Check out this event from Chinmaya Mission Vasai',
+      url: window.location.href
+    };
+
+    console.log('Share data:', shareData);
+    console.log('Navigator.share available:', !!navigator.share);
+    console.log('Navigator.canShare available:', !!navigator.canShare);
+
+    // Check if Web Share API is supported (mainly mobile browsers)
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      console.log('Using Web Share API');
       try {
-        await navigator.share({
-          title: event.title,
-          text: event.description,
-          url: window.location.href
-        });
+        await navigator.share(shareData);
+        console.log('Event shared successfully via Web Share API');
       } catch (error) {
-        console.error('Error sharing:', error);
+        // User cancelled the share or there was an error
+        if (error.name !== 'AbortError') {
+          console.error('Error sharing via Web Share API:', error);
+          // Fallback to clipboard
+          await copyToClipboard();
+        } else {
+          console.log('User cancelled sharing');
+        }
       }
     } else {
-      try {
+      console.log('Web Share API not available, using clipboard fallback');
+      // Fallback for desktop browsers or when Web Share API is not available
+      await copyToClipboard();
+    }
+    
+    setSharing(false);
+  };
+
+  const copyToClipboard = async () => {
+    console.log('Attempting to copy to clipboard');
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        console.log('Using modern clipboard API');
+        // Modern clipboard API (requires HTTPS)
         await navigator.clipboard.writeText(window.location.href);
-        showToast('Link copied to clipboard!', 'success');
-      } catch (error) {
-        console.error('Error copying to clipboard:', error);
-        showToast('Failed to copy link', 'error');
+        console.log('Successfully copied to clipboard via modern API');
+        showToast('Event link copied to clipboard!', 'success');
+      } else {
+        console.log('Using fallback clipboard method');
+        // Fallback for older browsers or non-HTTPS
+        const textArea = document.createElement('textarea');
+        textArea.value = window.location.href;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          const success = document.execCommand('copy');
+          console.log('Fallback copy success:', success);
+          if (success) {
+            showToast('Event link copied to clipboard!', 'success');
+          } else {
+            showToast('Could not copy link. Please copy manually from the address bar.', 'error');
+          }
+        } catch (err) {
+          console.error('Fallback copy failed:', err);
+          showToast('Could not copy link. Please copy manually from the address bar.', 'error');
+        } finally {
+          document.body.removeChild(textArea);
+        }
       }
+    } catch (error) {
+      console.error('Error copying to clipboard:', error);
+      showToast('Could not copy link. Please copy manually from the address bar.', 'error');
     }
   };
 
@@ -191,10 +251,15 @@ const ArchivedEventDetails = () => {
                   {/* Share Button */}
                   <button
                     onClick={handleShare}
-                    className="absolute top-6 right-6 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
-                    aria-label="Share event"
+                    disabled={sharing}
+                    className="absolute top-6 right-6 bg-black/50 hover:bg-black/70 disabled:opacity-50 disabled:cursor-not-allowed text-white p-3 rounded-full transition-colors"
+                    aria-label={sharing ? "Sharing event..." : "Share event"}
                   >
-                    <FaShareAlt className="w-5 h-5" />
+                    {sharing ? (
+                      <FaSpinner className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <FaShareAlt className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               )}

@@ -10,6 +10,8 @@ const EditFeaturedEvents = ({ featuredEvents = [], setFeaturedEvents }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    date: '',
+    time: '',
     schedule: '',
     highlights: [''],
     contact: ''
@@ -180,6 +182,10 @@ const EditFeaturedEvents = ({ featuredEvents = [], setFeaturedEvents }) => {
       newErrors.description = 'Event description is required';
     }
 
+    if (!formData.date) {
+      newErrors.date = 'Event date is required';
+    }
+
     if (!heroImage) {
       newErrors.heroImage = 'Hero image is required';
     }
@@ -217,6 +223,8 @@ const EditFeaturedEvents = ({ featuredEvents = [], setFeaturedEvents }) => {
       const newEvent = {
         name: formData.name,
         description: formData.description,
+        date: formData.date,
+        time: formData.time,
         schedule: formData.schedule,
         highlights: formData.highlights.filter(h => h.trim() !== ''),
         contact: formData.contact,
@@ -266,6 +274,8 @@ const EditFeaturedEvents = ({ featuredEvents = [], setFeaturedEvents }) => {
     setFormData({
       name: '',
       description: '',
+      date: '',
+      time: '',
       schedule: '',
       highlights: [''],
       contact: ''
@@ -293,6 +303,17 @@ const EditFeaturedEvents = ({ featuredEvents = [], setFeaturedEvents }) => {
       showToast('Failed to remove featured event.', 'error');
     }
   };
+
+  // Sort featured events by date (newest first) for consistent display in admin
+  const sortedFeaturedEvents = featuredEvents ? [...featuredEvents].sort((a, b) => {
+    // Handle cases where date might be missing
+    if (!a.date && !b.date) return 0;
+    if (!a.date) return 1; // Put events without dates at the end
+    if (!b.date) return -1;
+    
+    // Sort by date (newest first)
+    return new Date(b.date) - new Date(a.date);
+  }) : [];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
@@ -330,13 +351,30 @@ const EditFeaturedEvents = ({ featuredEvents = [], setFeaturedEvents }) => {
               </h2>
               
               <div className="space-y-4 max-h-96 overflow-y-auto">
-                {Array.isArray(featuredEvents) && featuredEvents.length > 0 ? (
-                  featuredEvents.map((event, index) => (
+                {Array.isArray(sortedFeaturedEvents) && sortedFeaturedEvents.length > 0 ? (
+                  sortedFeaturedEvents.map((event, index) => (
                     <div key={event._id || index} className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <h3 className="font-semibold text-gray-900 dark:text-white">{event.name}</h3>
                           <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{event.description}</p>
+                          
+                          {/* Date and Time Display */}
+                          {(event.date || event.time) && (
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {event.date && (
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                  📅 {new Date(event.date).toLocaleDateString()}
+                                </span>
+                              )}
+                              {event.time && (
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                  🕒 {event.time}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          
                           {event.coverImage && (
                             <div className="mt-3">
                               <img
@@ -411,6 +449,38 @@ const EditFeaturedEvents = ({ featuredEvents = [], setFeaturedEvents }) => {
                   {errors.description && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.description}</p>
                   )}
+                </div>
+
+                {/* Date and Time Fields */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      name="date"
+                      value={formData.date}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      required
+                    />
+                    {errors.date && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.date}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Time
+                    </label>
+                    <input
+                      type="time"
+                      name="time"
+                      value={formData.time}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    />
+                  </div>
                 </div>
 
                 {/* Schedule */}

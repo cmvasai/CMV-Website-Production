@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaUpload, FaTimes, FaPlus, FaSave, FaArrowLeft } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 import archivedEventsService from '../../services/archivedEventsService';
@@ -7,8 +7,9 @@ import { validateImage, compressImage, createImagePreview, revokeImagePreview } 
 import { showToast } from '../../components/Toast';
 import { scrollToTop } from '../../utils/scrollUtils';
 
-const AddArchivedEvent = () => {
+const EditArchivedEvent = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   
   // Form state
   const [formData, setFormData] = useState({
@@ -28,10 +29,54 @@ const AddArchivedEvent = () => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryPreviews, setGalleryPreviews] = useState([]);
   
+  // Existing images from database
+  const [existingHeroImage, setExistingHeroImage] = useState(null);
+  const [existingGalleryImages, setExistingGalleryImages] = useState([]);
+  
   // UI states
   const [loading, setLoading] = useState(false);
+  const [loadingEvent, setLoadingEvent] = useState(true);
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    fetchEventData();
+  }, [id]);
+
+  const fetchEventData = async () => {
+    try {
+      setLoadingEvent(true);
+      const event = await archivedEventsService.getById(id);
+      
+      // Populate form data
+      setFormData({
+        title: event.title || '',
+        description: event.description || '',
+        date: event.date ? event.date.split('T')[0] : '',
+        time: event.time || '',
+        location: event.location || '',
+        organizer: event.organizer || '',
+        attendees: event.attendees || '',
+        highlights: event.highlights && event.highlights.length > 0 ? event.highlights : ['']
+      });
+
+      // Set existing images
+      if (event.coverImage) {
+        setExistingHeroImage(event.coverImage);
+      }
+      
+      if (event.images && event.images.length > 0) {
+        setExistingGalleryImages(event.images);
+      }
+
+    } catch (error) {
+      console.error('Error fetching event:', error);
+      showToast('Failed to load event details', 'error');
+      navigate('/admin/archived-events');
+    } finally {
+      setLoadingEvent(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -90,6 +135,9 @@ const AddArchivedEvent = () => {
       
       const preview = createImagePreview(compressedFile);
       setHeroImagePreview(preview);
+      
+      // Clear existing hero image when new one is selected
+      setExistingHeroImage(null);
     } catch (error) {
       console.error('Error processing hero image:', error);
       showToast('Error processing image', 'error');
@@ -129,6 +177,10 @@ const AddArchivedEvent = () => {
     setGalleryPreviews(prev => prev.filter((_, i) => i !== index));
   };
 
+  const removeExistingGalleryImage = (index) => {
+    setExistingGalleryImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -165,11 +217,13 @@ const AddArchivedEvent = () => {
       newErrors.date = 'Event date is required';
     }
 
-    if (!heroImage) {
+    // Check if we have either existing hero image or new hero image
+    if (!existingHeroImage && !heroImage) {
       newErrors.heroImage = 'Hero image is required';
     }
 
-    if (galleryImages.length === 0) {
+    // Check if we have either existing gallery images or new gallery images
+    if (existingGalleryImages.length === 0 && galleryImages.length === 0) {
       newErrors.galleryImages = 'At least one gallery image is required';
     }
 
@@ -188,11 +242,11 @@ const AddArchivedEvent = () => {
     setLoading(true);
 
     try {
-      // Convert hero image to base64
+      // Convert new hero image to base64 if provided
       const heroImageBase64 = heroImage ? await convertToBase64(heroImage) : null;
       
-      // Convert gallery images to base64
-      const galleryImagesBase64 = await Promise.all(
+      // Convert new gallery images to base64
+      const newGalleryImagesBase64 = await Promise.all(
         galleryImages.map(img => convertToBase64(img))
       );
 
@@ -200,24 +254,26 @@ const AddArchivedEvent = () => {
       const eventData = {
         title: formData.title,
         description: formData.description,
-        date: formData.date || null,
-        time: formData.time || '',
-        location: formData.location || '',
-        organizer: formData.organizer || '',
+        date: formData.date,
+        time: formData.time,
+        location: formData.location,
+        organizer: formData.organizer,
         attendees: formData.attendees ? parseInt(formData.attendees) : undefined,
-        highlights: formData.highlights.filter(h => h.trim()),
-        coverImageBase64: heroImageBase64,
-        imagesBase64: galleryImagesBase64
+        highlights: formData.highlights.filter(h => h.trim() !== ''),
+        // Use new hero image if provided, otherwise keep existing
+        coverImageBase64: heroImageBase64 || existingHeroImage,
+        // Combine existing gallery images with new ones
+        imagesBase64: [...existingGalleryImages, ...newGalleryImagesBase64]
       };
 
-      // Create event
-      await archivedEventsService.create(eventData);
+      // Update event
+      await archivedEventsService.update(id, eventData);
       
-      showToast('Archived event created successfully!', 'success');
+      showToast('Archived event updated successfully!', 'success');
       navigate('/admin/archived-events');
     } catch (error) {
-      console.error('Error creating archived event:', error);
-      showToast('Failed to create archived event', 'error');
+      console.error('Error updating archived event:', error);
+      showToast('Failed to update archived event', 'error');
     } finally {
       setLoading(false);
     }
@@ -234,12 +290,12 @@ const AddArchivedEvent = () => {
   };
 
   // Cleanup on unmount
-  useState(() => {
+  useEffect(() => {
     return () => {
       if (heroImagePreview) revokeImagePreview(heroImagePreview);
       galleryPreviews.forEach(revokeImagePreview);
     };
-  }, []);
+  }, [heroImagePreview, galleryPreviews]);
 
   const handleBackToManageClick = () => {
     navigate('/admin/archived-events');
@@ -251,10 +307,21 @@ const AddArchivedEvent = () => {
     scrollToTop();
   };
 
+  if (loadingEvent) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#BC3612] dark:border-[#F47930] mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading event details...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Helmet>
-        <title>Add Archived Event | Admin | Chinmaya Mission Vasai</title>
+        <title>Edit Archived Event | Admin | Chinmaya Mission Vasai</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -272,10 +339,10 @@ const AddArchivedEvent = () => {
                   Back to Manage Events
                 </button>
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  Add Archived Event
+                  Edit Archived Event
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 mt-2">
-                  Create a new archived event entry with images and details
+                  Update the archived event details and images
                 </p>
               </div>
             </div>
@@ -442,6 +509,27 @@ const AddArchivedEvent = () => {
                 </h2>
                 
                 <div className="space-y-4">
+                  {/* Show existing hero image if no new one is selected */}
+                  {existingHeroImage && !heroImage && (
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Current hero image:</p>
+                      <div className="relative inline-block">
+                        <img
+                          src={existingHeroImage}
+                          alt="Current hero image"
+                          className="w-64 h-40 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setExistingHeroImage(null)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors"
+                        >
+                          <FaTimes className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   <input
                     type="file"
                     accept="image/*"
@@ -453,7 +541,7 @@ const AddArchivedEvent = () => {
                     <div className="relative inline-block">
                       <img
                         src={heroImagePreview}
-                        alt="Hero preview"
+                        alt="New hero image preview"
                         className="w-64 h-40 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
                       />
                       <button
@@ -481,7 +569,32 @@ const AddArchivedEvent = () => {
                 </h2>
                 
                 <div className="space-y-6">
-                  {/* Drag & Drop Zone */}
+                  {/* Show existing gallery images */}
+                  {existingGalleryImages.length > 0 && (
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Current gallery images:</p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        {existingGalleryImages.map((image, index) => (
+                          <div key={`existing-${index}`} className="relative group">
+                            <img
+                              src={typeof image === 'string' ? image : (image.url || image)}
+                              alt={`Current gallery image ${index + 1}`}
+                              className="w-full h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeExistingGalleryImage(index)}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
+                            >
+                              <FaTimes className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Drag & Drop Zone for new images */}
                   <div
                     onDragEnter={handleDrag}
                     onDragLeave={handleDrag}
@@ -495,7 +608,7 @@ const AddArchivedEvent = () => {
                   >
                     <FaUpload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-600 dark:text-gray-400 mb-4">
-                      Drag & drop images here, or{' '}
+                      Drag & drop new images here, or{' '}
                       <label className="text-[#BC3612] dark:text-[#F47930] hover:underline cursor-pointer">
                         browse files
                         <input
@@ -512,25 +625,28 @@ const AddArchivedEvent = () => {
                     </p>
                   </div>
                   
-                  {/* Gallery Previews */}
+                  {/* New Gallery Image Previews */}
                   {galleryPreviews.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {galleryPreviews.map((preview, index) => (
-                        <div key={index} className="relative group">
-                          <img
-                            src={preview}
-                            alt={`Gallery preview ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => removeGalleryImage(index)}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
-                          >
-                            <FaTimes className="w-3 h-3" />
-                          </button>
-                        </div>
-                      ))}
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">New images to be added:</p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {galleryPreviews.map((preview, index) => (
+                          <div key={`new-${index}`} className="relative group">
+                            <img
+                              src={preview}
+                              alt={`New gallery preview ${index + 1}`}
+                              className="w-full h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeGalleryImage(index)}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors opacity-0 group-hover:opacity-100"
+                            >
+                              <FaTimes className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                   
@@ -538,7 +654,7 @@ const AddArchivedEvent = () => {
                 </div>
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Buttons */}
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
@@ -555,12 +671,12 @@ const AddArchivedEvent = () => {
                   {loading ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      Creating...
+                      Updating...
                     </>
                   ) : (
                     <>
                       <FaSave className="w-5 h-5 mr-2" />
-                      Create Event
+                      Update Event
                     </>
                   )}
                 </button>
@@ -573,4 +689,4 @@ const AddArchivedEvent = () => {
   );
 };
 
-export default AddArchivedEvent;
+export default EditArchivedEvent;
