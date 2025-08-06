@@ -11,6 +11,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
   // Use media queries for better performance
   const isMobile = useMediaQuery('(max-width: 767px)');
@@ -20,13 +21,28 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   
   const carouselRef = useRef(null);
   const autoplayRef = useRef(null);
+  const orientationTimeoutRef = useRef(null);
 
-  // Throttled resize handler
+  // Enhanced throttled resize handler with orientation change detection
   const throttledResize = useThrottle(useCallback(() => {
     if (carouselRef.current) {
-      setContainerWidth(carouselRef.current.offsetWidth);
+      // Set transitioning flag to prevent animation glitches
+      setIsTransitioning(true);
+      
+      const newWidth = carouselRef.current.offsetWidth;
+      setContainerWidth(newWidth);
+      
+      // Clear any existing timeout
+      if (orientationTimeoutRef.current) {
+        clearTimeout(orientationTimeoutRef.current);
+      }
+      
+      // Reset transitioning flag after a short delay
+      orientationTimeoutRef.current = setTimeout(() => {
+        setIsTransitioning(false);
+      }, 300); // Slightly longer delay to ensure layout stability
     }
-  }, []), 150);
+  }, []), 200); // Increased throttle delay for orientation changes
 
   // Memoize event handlers for better performance
   const handleEventClick = useCallback((event) => {
@@ -60,7 +76,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     }
   }, [isLaptop, isTablet, upcomingEvents.length]);
 
-  // Update container width
+  // Update container width with better cleanup
   useEffect(() => {
     const updateWidth = () => {
       if (carouselRef.current) {
@@ -69,8 +85,35 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     };
     updateWidth();
     window.addEventListener("resize", throttledResize);
-    return () => window.removeEventListener("resize", throttledResize);
+    
+    return () => {
+      window.removeEventListener("resize", throttledResize);
+      // Clear orientation timeout on cleanup
+      if (orientationTimeoutRef.current) {
+        clearTimeout(orientationTimeoutRef.current);
+      }
+    };
   }, [throttledResize]);
+
+  // Handle orientation changes specifically  
+  useEffect(() => {
+    // Reset carousel position on orientation change to prevent layout jumps
+    const handleOrientationChange = () => {
+      setIsTransitioning(true);
+      setCurrentIndex(0); // Reset to first slide
+      
+      // Force a layout recalculation after orientation change
+      setTimeout(() => {
+        if (carouselRef.current) {
+          setContainerWidth(carouselRef.current.offsetWidth);
+        }
+        setIsTransitioning(false);
+      }, 300);
+    };
+
+    window.addEventListener('orientationchange', handleOrientationChange);
+    return () => window.removeEventListener('orientationchange', handleOrientationChange);
+  }, []);
 
   // Autoplay effect with endless loop logic
   useEffect(() => {
@@ -99,12 +142,14 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     }
   }, [upcomingEvents.length, isLaptop, isTablet]);
 
-  // Memoize constants for better performance
+  // Enhanced spring options with better stability during orientation changes
   const SPRING_OPTIONS = useMemo(() => ({ 
     type: "spring", 
-    stiffness: 200, 
-    damping: 20 
-  }), []);
+    stiffness: isTransitioning ? 100 : 200,  // Reduce stiffness during transitions
+    damping: isTransitioning ? 30 : 20,      // Increase damping during transitions
+    mass: 1,
+    restDelta: 0.01
+  }), [isTransitioning]);
 
   return (
     <div className="bg-white dark:bg-gray-900 py-2 sm:py-8 md:py-6">
@@ -306,33 +351,50 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
         /* Mobile/Tablet: Carousel Layout */
         <div
           ref={carouselRef}
-          className="relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900"
+          className={`relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900 ${
+            isTransitioning ? 'transition-none' : ''
+          }`}
+          style={{
+            // Prevent layout shifts during orientation changes
+            minHeight: isTransitioning ? 'auto' : undefined,
+          }}
         >
           <motion.div
             className="flex w-full bg-white dark:bg-gray-900"
-            animate={{ 
+            animate={!isTransitioning ? { 
               x: isMobile && isLandscape 
                 ? -(currentIndex * (containerWidth / 2)) 
                 : -(currentIndex * containerWidth) 
-            }}
-            transition={SPRING_OPTIONS}
+            } : {}}
+            transition={isTransitioning ? { duration: 0 } : SPRING_OPTIONS}
             style={{ 
-              width: isMobile && isLandscape 
-                ? `${upcomingEvents.length * (containerWidth / 2)}px` 
-                : `${upcomingEvents.length * containerWidth}px` 
+              width: containerWidth > 0 ? (
+                isMobile && isLandscape 
+                  ? `${upcomingEvents.length * (containerWidth / 2)}px` 
+                  : `${upcomingEvents.length * containerWidth}px`
+              ) : '100%',
+              transform: isTransitioning ? 'translateX(0)' : undefined // Reset transform during transition
             }}
           >
             {upcomingEvents.map((event) => (
               <motion.div
                 key={event._id}
-                className="relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl"
+                className={`relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl ${
+                  isTransitioning ? 'transition-none' : ''
+                }`}
                 style={{ 
-                  width: isMobile && isLandscape 
-                    ? `${containerWidth / 2}px` 
-                    : `${containerWidth}px` 
+                  width: containerWidth > 0 ? (
+                    isMobile && isLandscape 
+                      ? `${containerWidth / 2}px` 
+                      : `${containerWidth}px`
+                  ) : '100%',
+                  // Prevent shrinking during transitions
+                  minWidth: isTransitioning ? (
+                    isMobile && isLandscape ? '50%' : '100%'
+                  ) : undefined
                 }}
                 onClick={() => handleEventClick(event)}
-                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                whileHover={!isTransitioning ? { scale: 1.05, transition: { duration: 0.2 } } : {}}
               >
                 <div
                   className="relative w-full rounded-lg overflow-hidden mb-1 sm:mb-4 group bg-white dark:bg-gray-900"
