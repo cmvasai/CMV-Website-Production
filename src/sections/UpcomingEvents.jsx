@@ -103,26 +103,35 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     };
   }, [throttledResize]);
 
-  // Enhanced orientation change detection with CSS class-based freeze
+  // Enhanced orientation change detection with a multi-stage freeze/thaw process
   useEffect(() => {
     const handleOrientationChange = () => {
-      setIsOrientationChanging(true); // Trigger the CSS class to hide the element
-      setCurrentIndex(0); // Reset to first slide
+      // Stage 1: Freeze and Hide
+      setIsOrientationChanging(true); // Hides the component via CSS
+      setIsTransitioning(true);       // Disables animations in JS
+      setCurrentIndex(0);
 
       if (orientationTimeoutRef.current) {
         clearTimeout(orientationTimeoutRef.current);
       }
 
-      // Wait for the orientation change to complete before showing the carousel again
+      // Stage 2: Wait for orientation to complete, then recalculate layout
       orientationTimeoutRef.current = setTimeout(() => {
         if (carouselRef.current) {
           setContainerWidth(carouselRef.current.offsetWidth);
         }
-        setIsOrientationChanging(false); // Remove the CSS class
-      }, 400); // A more generous timeout for stability
+        
+        // Stage 3: Reveal the statically rendered component
+        setIsOrientationChanging(false);
+
+        // Stage 4: Wait for the layout to settle, then unfreeze animations
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 150); // A brief "settling" delay
+      }, 400); // A generous timeout for the physical orientation change
     };
 
-    // Use a simple debounce to avoid rapid firing on some devices
+    // Use a simple debounce on resize to reliably detect orientation changes
     let resizeTimeout;
     const handleResize = () => {
       const currentOrientation = window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
