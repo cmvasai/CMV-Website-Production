@@ -103,35 +103,47 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     };
   }, [throttledResize]);
 
-  // Enhanced orientation change detection with a multi-stage freeze/thaw process
+  // Enhanced orientation change detection with complete state reset
   useEffect(() => {
     const handleOrientationChange = () => {
-      // Stage 1: Freeze and Hide
-      setIsOrientationChanging(true); // Hides the component via CSS
-      setIsTransitioning(true);       // Disables animations in JS
+      // Stage 1: Immediate freeze and reset
+      setIsOrientationChanging(true);
+      setIsTransitioning(true);
       setCurrentIndex(0);
+      setContainerWidth(0); // Force width reset
 
       if (orientationTimeoutRef.current) {
         clearTimeout(orientationTimeoutRef.current);
       }
 
-      // Stage 2: Wait for orientation to complete, then recalculate layout
+      // Stage 2: Wait for orientation change and recalculate
       orientationTimeoutRef.current = setTimeout(() => {
-        if (carouselRef.current) {
-          setContainerWidth(carouselRef.current.offsetWidth);
-        }
-        
-        // Stage 3: Reveal the statically rendered component
-        setIsOrientationChanging(false);
+        // Force multiple layout recalculations to ensure stability
+        const updateDimensions = () => {
+          if (carouselRef.current) {
+            const rect = carouselRef.current.getBoundingClientRect();
+            const newWidth = rect.width;
+            setContainerWidth(newWidth);
+          }
+        };
 
-        // Stage 4: Wait for the layout to settle, then unfreeze animations
+        // Multiple dimension updates with small delays
+        updateDimensions();
+        setTimeout(updateDimensions, 50);
+        setTimeout(updateDimensions, 100);
+        
+        // Stage 3: Reveal component but keep animations frozen
         setTimeout(() => {
-          setIsTransitioning(false);
-        }, 150); // A brief "settling" delay
-      }, 400); // A generous timeout for the physical orientation change
+          setIsOrientationChanging(false);
+          
+          // Stage 4: Wait much longer before unfreezing animations
+          setTimeout(() => {
+            setIsTransitioning(false);
+          }, 300); // Much longer settling time
+        }, 100);
+      }, 500); // Longer wait for orientation completion
     };
 
-    // Use a simple debounce on resize to reliably detect orientation changes
     let resizeTimeout;
     const handleResize = () => {
       const currentOrientation = window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
@@ -395,77 +407,116 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
             isOrientationChanging ? 'orientation-change-active' : ''
           }`}
         >
-          <motion.div
-            className="flex w-full bg-white dark:bg-gray-900"
-            animate={{ 
-              x: isMobile && isLandscape 
-                ? -(currentIndex * (containerWidth / 2)) 
-                : -(currentIndex * containerWidth) 
-            }}
-            transition={SPRING_OPTIONS}
-            style={{ 
-              width: containerWidth > 0 ? (
-                isMobile && isLandscape 
-                  ? `${upcomingEvents.length * (containerWidth / 2)}px` 
-                  : `${upcomingEvents.length * containerWidth}px`
-              ) : '100%',
-            }}
-          >
-            {upcomingEvents.map((event) => (
-              <motion.div
-                key={event._id}
-                className={`relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl ${
-                  (isTransitioning || isOrientationChanging) ? 'transition-none' : ''
-                }`}
-                style={{ 
-                  width: containerWidth > 0 ? (
-                    isMobile && isLandscape 
-                      ? `${containerWidth / 2}px` 
-                      : `${containerWidth}px`
-                  ) : '100%',
-                  // Prevent any scaling or transformation during orientation changes
-                  transform: (isTransitioning || isOrientationChanging) ? 'scale(1)' : undefined,
-                  transition: isOrientationChanging ? 'none' : undefined,
-                  // Prevent shrinking during transitions
-                  minWidth: isTransitioning ? (
-                    isMobile && isLandscape ? '50%' : '100%'
-                  ) : undefined
-                }}
-                onClick={() => handleEventClick(event)}
-                whileHover={!isTransitioning ? { scale: 1.05, transition: { duration: 0.2 } } : {}}
-              >
+          {/* Use regular div instead of motion.div during orientation changes */}
+          {isOrientationChanging || isTransitioning ? (
+            <div
+              className="flex w-full bg-white dark:bg-gray-900"
+              style={{ 
+                width: '100%',
+                transform: 'translateX(0px)',
+                transition: 'none'
+              }}
+            >
+              {upcomingEvents.map((event) => (
                 <div
-                  className="relative w-full rounded-lg overflow-hidden mb-1 sm:mb-4 group bg-white dark:bg-gray-900"
-                  onMouseEnter={!isMobile ? handleMouseEnter : undefined}
-                  onMouseLeave={!isMobile ? handleMouseLeave : undefined}
+                  key={event._id}
+                  className="relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl transition-none"
+                  style={{ 
+                    width: containerWidth > 0 ? (
+                      isMobile && isLandscape 
+                        ? `${containerWidth / 2}px` 
+                        : `${containerWidth}px`
+                    ) : '100%',
+                    transform: 'scale(1)',
+                    transition: 'none'
+                  }}
+                  onClick={() => handleEventClick(event)}
                 >
-                  <img
-                    src={event.image}
-                    alt={event.name}
-                    className="w-full h-88 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
-                  />
-                  {/* Hover Overlay (Tablet only) */}
-                  <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300 hidden sm:block" />
-                  {/* Learn More Button */}
-                  <motion.div
-                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 sm:group-hover:-translate-y-2 transition-transform duration-300 sm:opacity-0 sm:group-hover:opacity-100 opacity-90"
-                    initial={{ opacity: isMobile ? 0.9 : 0, translateY: 0 }}
-                    whileHover={{ translateY: -8, opacity: 1 }}
-                    animate={{ opacity: isMobile ? 0.9 : 0 }}
-                    transition={{ duration: 0.3 }}
+                  <div
+                    className="relative w-full rounded-lg overflow-hidden mb-1 sm:mb-4 group bg-white dark:bg-gray-900"
                   >
-                    <button className="flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all">
-                      Learn More
-                      <FaChevronRight className="ml-2 w-4 h-4" />
-                    </button>
-                  </motion.div>
+                    <img
+                      src={event.image}
+                      alt={event.name}
+                      className="w-full h-88 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
+                    />
+                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-90">
+                      <button className="flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md">
+                        Learn More
+                        <FaChevronRight className="ml-2 w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
+                    {event.name}
+                  </h3>
                 </div>
-                <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
-                  {event.name}
-                </h3>
-              </motion.div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          ) : (
+            /* Normal motion.div when not transitioning */
+            <motion.div
+              key={`carousel-${containerWidth}-${isLandscape ? 'landscape' : 'portrait'}`}
+              className="flex w-full bg-white dark:bg-gray-900"
+              animate={{ 
+                x: isMobile && isLandscape 
+                  ? -(currentIndex * (containerWidth / 2)) 
+                  : -(currentIndex * containerWidth) 
+              }}
+              transition={SPRING_OPTIONS}
+              style={{ 
+                width: containerWidth > 0 ? (
+                  isMobile && isLandscape 
+                    ? `${upcomingEvents.length * (containerWidth / 2)}px` 
+                    : `${upcomingEvents.length * containerWidth}px`
+                ) : '100%'
+              }}
+            >
+              {upcomingEvents.map((event) => (
+                <motion.div
+                  key={event._id}
+                  className="relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl"
+                  style={{ 
+                    width: containerWidth > 0 ? (
+                      isMobile && isLandscape 
+                        ? `${containerWidth / 2}px` 
+                        : `${containerWidth}px`
+                    ) : '100%'
+                  }}
+                  onClick={() => handleEventClick(event)}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                >
+                  <div
+                    className="relative w-full rounded-lg overflow-hidden mb-1 sm:mb-4 group bg-white dark:bg-gray-900"
+                    onMouseEnter={!isMobile ? handleMouseEnter : undefined}
+                    onMouseLeave={!isMobile ? handleMouseLeave : undefined}
+                  >
+                    <img
+                      src={event.image}
+                      alt={event.name}
+                      className="w-full h-88 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
+                    />
+                    <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300 hidden sm:block" />
+                    <motion.div
+                      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 sm:group-hover:-translate-y-2 transition-transform duration-300 sm:opacity-0 sm:group-hover:opacity-100 opacity-90"
+                      initial={{ opacity: isMobile ? 0.9 : 0, translateY: 0 }}
+                      whileHover={{ translateY: -8, opacity: 1 }}
+                      animate={{ opacity: isMobile ? 0.9 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <button className="flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                        Learn More
+                        <FaChevronRight className="ml-2 w-4 h-4" />
+                      </button>
+                    </motion.div>
+                  </div>
+                  <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
+                    {event.name}
+                  </h3>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </div>
       )}
 
