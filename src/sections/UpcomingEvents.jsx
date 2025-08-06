@@ -20,6 +20,8 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   const isLaptop = useMediaQuery('(min-width: 1024px)');
   const isLandscape = useMediaQuery('(orientation: landscape)');
   
+  const carouselRef = useRef(null);
+  const autoplayRef = useRef(null);
   const lastOrientationRef = useRef(null);
   const orientationTimeoutRef = useRef(null);
   const resizeTimeoutRef = useRef(null);
