@@ -12,6 +12,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isOrientationChanging, setIsOrientationChanging] = useState(false);
   
   // Use media queries for better performance
   const isMobile = useMediaQuery('(max-width: 767px)');
@@ -22,27 +23,28 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   const carouselRef = useRef(null);
   const autoplayRef = useRef(null);
   const orientationTimeoutRef = useRef(null);
+  const resizeTimeoutRef = useRef(null);
 
-  // Enhanced throttled resize handler with orientation change detection
+  // Enhanced throttled resize handler with complete layout freeze during orientation changes
   const throttledResize = useThrottle(useCallback(() => {
-    if (carouselRef.current) {
+    if (carouselRef.current && !isOrientationChanging) {
+      // Clear any existing resize timeout
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+
       // Set transitioning flag to prevent animation glitches
       setIsTransitioning(true);
       
       const newWidth = carouselRef.current.offsetWidth;
       setContainerWidth(newWidth);
       
-      // Clear any existing timeout
-      if (orientationTimeoutRef.current) {
-        clearTimeout(orientationTimeoutRef.current);
-      }
-      
-      // Reset transitioning flag after a short delay
-      orientationTimeoutRef.current = setTimeout(() => {
+      // Reset transitioning flag after layout settles
+      resizeTimeoutRef.current = setTimeout(() => {
         setIsTransitioning(false);
-      }, 300); // Slightly longer delay to ensure layout stability
+      }, 150);
     }
-  }, []), 200); // Increased throttle delay for orientation changes
+  }, [isOrientationChanging]), 100);
 
   // Memoize event handlers for better performance
   const handleEventClick = useCallback((event) => {
@@ -95,25 +97,60 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     };
   }, [throttledResize]);
 
-  // Handle orientation changes specifically  
+  // Enhanced orientation change detection with complete layout freeze
   useEffect(() => {
-    // Reset carousel position on orientation change to prevent layout jumps
     const handleOrientationChange = () => {
+      // Immediately freeze all animations and transitions
+      setIsOrientationChanging(true);
       setIsTransitioning(true);
-      setCurrentIndex(0); // Reset to first slide
+      setCurrentIndex(0); // Reset to first slide to prevent layout issues
       
-      // Force a layout recalculation after orientation change
-      setTimeout(() => {
+      // Clear any existing timeouts
+      if (orientationTimeoutRef.current) {
+        clearTimeout(orientationTimeoutRef.current);
+      }
+      
+      // Wait longer for orientation change to complete
+      orientationTimeoutRef.current = setTimeout(() => {
+        // Force layout recalculation
         if (carouselRef.current) {
-          setContainerWidth(carouselRef.current.offsetWidth);
+          const newWidth = carouselRef.current.offsetWidth;
+          setContainerWidth(newWidth);
         }
-        setIsTransitioning(false);
-      }, 300);
+        
+        // Release orientation changing flag first
+        setIsOrientationChanging(false);
+        
+        // Keep transitioning flag longer to prevent flash
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 300);
+      }, 300); // Increased delay for better stability
+    };
+
+    // Also detect orientation changes through resize events
+    const handleResize = () => {
+      const currentOrientation = window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
+      if (currentOrientation !== lastOrientationRef.current) {
+        lastOrientationRef.current = currentOrientation;
+        handleOrientationChange();
+      } else if (!isOrientationChanging) {
+        // Regular resize, not orientation change
+        throttledResize();
+      }
     };
 
     window.addEventListener('orientationchange', handleOrientationChange);
-    return () => window.removeEventListener('orientationchange', handleOrientationChange);
-  }, []);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('orientationchange', handleOrientationChange);
+      window.removeEventListener('resize', handleResize);
+      if (orientationTimeoutRef.current) {
+        clearTimeout(orientationTimeoutRef.current);
+      }
+    };
+  }, [throttledResize, isOrientationChanging]);
 
   // Autoplay effect with endless loop logic
   useEffect(() => {
@@ -361,26 +398,29 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
         >
           <motion.div
             className="flex w-full bg-white dark:bg-gray-900"
-            animate={!isTransitioning ? { 
+            animate={!isTransitioning && !isOrientationChanging ? { 
               x: isMobile && isLandscape 
                 ? -(currentIndex * (containerWidth / 2)) 
                 : -(currentIndex * containerWidth) 
             } : {}}
-            transition={isTransitioning ? { duration: 0 } : SPRING_OPTIONS}
+            transition={isTransitioning || isOrientationChanging ? { duration: 0 } : SPRING_OPTIONS}
             style={{ 
               width: containerWidth > 0 ? (
                 isMobile && isLandscape 
                   ? `${upcomingEvents.length * (containerWidth / 2)}px` 
                   : `${upcomingEvents.length * containerWidth}px`
               ) : '100%',
-              transform: isTransitioning ? 'translateX(0)' : undefined // Reset transform during transition
+              // Complete layout freeze during orientation changes
+              transform: (isTransitioning || isOrientationChanging) ? 'translateX(0) scale(1)' : undefined,
+              visibility: isOrientationChanging ? 'hidden' : 'visible', // Hide during orientation change
+              transition: isOrientationChanging ? 'none' : undefined // Prevent CSS transitions too
             }}
           >
             {upcomingEvents.map((event) => (
               <motion.div
                 key={event._id}
                 className={`relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl ${
-                  isTransitioning ? 'transition-none' : ''
+                  (isTransitioning || isOrientationChanging) ? 'transition-none' : ''
                 }`}
                 style={{ 
                   width: containerWidth > 0 ? (
@@ -388,6 +428,9 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                       ? `${containerWidth / 2}px` 
                       : `${containerWidth}px`
                   ) : '100%',
+                  // Prevent any scaling or transformation during orientation changes
+                  transform: (isTransitioning || isOrientationChanging) ? 'scale(1)' : undefined,
+                  transition: isOrientationChanging ? 'none' : undefined,
                   // Prevent shrinking during transitions
                   minWidth: isTransitioning ? (
                     isMobile && isLandscape ? '50%' : '100%'
