@@ -20,3 +20,14 @@ html, body, #root {
   margin: 0;
   padding: 0;
 }
+
+/* Used to completely hide the carousel during orientation changes to prevent flashes */
+.orientation-change-active {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: none !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
