@@ -13,7 +13,7 @@ const ArchivedEvents = () => {
   const [error, setError] = useState(null);
   const [availableYears, setAvailableYears] = useState([]);
   const [yearsLoading, setYearsLoading] = useState(true);
-  
+
   // Filter and search states
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
@@ -36,7 +36,7 @@ const ArchivedEvents = () => {
       setYearsLoading(true);
       const years = await archivedEventsService.getAvailableYears();
       console.log('Fetched available years:', years);
-      
+
       // Ensure we have a valid array
       if (Array.isArray(years)) {
         setAvailableYears(years);
@@ -61,11 +61,11 @@ const ArchivedEvents = () => {
         ...(selectedYear && { year: selectedYear }),
         ...(searchQuery.trim() && { search: searchQuery.trim() })
       };
-      
+
       console.log('Fetching events with params:', params);
       const data = await archivedEventsService.getAll(params);
       console.log('Received events data:', data?.length, 'events');
-      
+
       setEvents(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
@@ -120,19 +120,19 @@ const ArchivedEvents = () => {
 
   const getResultsText = () => {
     if (loading) return '';
-    
+
     const totalEvents = events.length;
     let filterText = '';
-    
+
     if (selectedYear) filterText += `from ${selectedYear}`;
     if (searchQuery.trim()) {
       filterText += `${filterText ? ' ' : ''}matching "${searchQuery.trim()}"`;
     }
-    
+
     if (filterText) {
       return `Found ${totalEvents} event${totalEvents !== 1 ? 's' : ''} ${filterText}`;
     }
-    
+
     return `Showing ${totalEvents} event${totalEvents !== 1 ? 's' : ''}`;
   };
 
@@ -156,7 +156,7 @@ const ArchivedEvents = () => {
               Archived Events
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Explore our collection of past spiritual events, workshops, and community gatherings. 
+              Explore our collection of past spiritual events, workshops, and community gatherings.
               Relive the sacred moments and celebrations that have enriched our spiritual journey.
             </p>
           </div>
@@ -177,7 +177,7 @@ const ArchivedEvents = () => {
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#BC3612] dark:focus:ring-[#F47930] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
               </div>
-              
+
               {/* Filter Toggle Button for Mobile */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
@@ -227,11 +227,10 @@ const ArchivedEvents = () => {
                     <button
                       key={value}
                       onClick={() => handleSortChange(value)}
-                      className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                        sortBy === value
+                      className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${sortBy === value
                           ? 'bg-[#BC3612] dark:bg-[#F47930] text-white'
                           : 'bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500'
-                      }`}
+                        }`}
                     >
                       {getSortIcon(value)}
                       <span className="ml-1">{label}</span>
@@ -296,8 +295,8 @@ const ArchivedEvents = () => {
                           {searchQuery && selectedYear
                             ? `No events found matching "${searchQuery}" in ${selectedYear}`
                             : searchQuery
-                            ? `No events found matching "${searchQuery}"`
-                            : `No events found for ${selectedYear}`
+                              ? `No events found matching "${searchQuery}"`
+                              : `No events found for ${selectedYear}`
                           }
                         </p>
                         <button
@@ -317,7 +316,12 @@ const ArchivedEvents = () => {
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className={`grid gap-6 ${events.length === 1
+                    ? 'grid-cols-1 justify-center max-w-sm mx-auto'
+                    : events.length === 2
+                      ? 'grid-cols-1 md:grid-cols-2 justify-center'
+                      : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                  }`}>
                   {events.map((event) => (
                     <div
                       key={event._id}
@@ -337,7 +341,7 @@ const ArchivedEvents = () => {
                             {event.title}
                           </h3>
                         </div>
-                        
+
                         {/* Year Badge */}
                         {event.year && (
                           <div className="absolute top-4 right-4">

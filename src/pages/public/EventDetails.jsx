@@ -302,7 +302,12 @@ const EventDetails = ({ featuredEvents }) => {
                                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                                             Event Gallery ({event.images.length} photos)
                                         </h2>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        <div className={`grid gap-4 ${event.images.length === 1
+                                                ? 'grid-cols-1 justify-center max-w-md mx-auto'
+                                                : event.images.length === 2
+                                                    ? 'grid-cols-2 justify-center'
+                                                    : 'grid-cols-2 md:grid-cols-3'
+                                            }`}>
                                             {event.images.map((image, index) => (
                                                 <div
                                                     key={index}

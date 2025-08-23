@@ -295,7 +295,12 @@ const ArchivedEventDetails = () => {
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                       Event Gallery ({allImages.length} photos)
                     </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className={`grid gap-4 ${allImages.length === 1
+                        ? 'grid-cols-1 justify-center max-w-md mx-auto'
+                        : allImages.length === 2
+                          ? 'grid-cols-2 justify-center'
+                          : 'grid-cols-2 md:grid-cols-3'
+                      }`}>
                       {allImages.map((image, index) => (
                         <div
                           key={index}

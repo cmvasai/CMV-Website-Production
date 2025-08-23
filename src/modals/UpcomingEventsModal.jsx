@@ -246,7 +246,12 @@ const UpcomingEventsModal = ({ isOpen, onClose, event }) => {
                   <h3 className="font-semibold text-base md:text-lg mb-3 text-gray-900 dark:text-white">
                     Event Gallery ({event.gallery.length} photos)
                   </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  <div className={`grid gap-3 ${event.gallery.length === 1
+                      ? 'grid-cols-1 justify-center max-w-xs mx-auto'
+                      : event.gallery.length === 2
+                        ? 'grid-cols-2 justify-center'
+                        : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+                    }`}>
                     {event.gallery.map((photo, index) => (
                       <div key={index} className="aspect-square overflow-hidden rounded-lg">
                         <img
