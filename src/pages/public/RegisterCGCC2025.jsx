@@ -207,7 +207,7 @@ const RegisterCGCC2025 = () => {
           </p>
 
           {/* Important Notice for Gita Competitions */}
-          <div className="bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 border-l-4 border-orange-500 dark:border-orange-400 rounded-lg p-4 mb-6">
+          <div className="bg-gradient-to-r from-orange-100 to-yellow-100 dark:from-orange-900/20 dark:to-yellow-900/20 border-l-4 border-orange-500 dark:border-orange-400 rounded-lg p-4 mb-6 shadow-md">
             <div className="flex flex-col space-y-3">
               <p className="text-orange-800 dark:text-orange-200 font-medium text-sm sm:text-base text-center">
                 <span className="font-semibold">Important:</span> For Gita Painting & Gita Elocution competition contact:

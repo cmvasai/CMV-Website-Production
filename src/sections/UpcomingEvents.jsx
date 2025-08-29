@@ -13,13 +13,13 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isOrientationChanging, setIsOrientationChanging] = useState(false);
-  
+
   // Use media queries for better performance
   const isMobile = useMediaQuery('(max-width: 767px)');
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
   const isLaptop = useMediaQuery('(min-width: 1024px)');
   const isLandscape = useMediaQuery('(orientation: landscape)');
-  
+
   const carouselRef = useRef(null);
   const autoplayRef = useRef(null);
   const lastOrientationRef = useRef(null);
@@ -41,10 +41,10 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
 
       // Set transitioning flag to prevent animation glitches
       setIsTransitioning(true);
-      
+
       const newWidth = carouselRef.current.offsetWidth;
       setContainerWidth(newWidth);
-      
+
       // Reset transitioning flag after layout settles
       resizeTimeoutRef.current = setTimeout(() => {
         setIsTransitioning(false);
@@ -68,7 +68,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
       clearInterval(autoplayRef.current);
     }
   }, [isLaptop, upcomingEvents.length]);
-  
+
   const handleMouseLeave = useCallback(() => {
     if (isLaptop && upcomingEvents.length > 3) {
       autoplayRef.current = setInterval(() => {
@@ -93,7 +93,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     };
     updateWidth();
     window.addEventListener("resize", throttledResize);
-    
+
     return () => {
       window.removeEventListener("resize", throttledResize);
       // Clear orientation timeout on cleanup
@@ -131,11 +131,11 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
         updateDimensions();
         setTimeout(updateDimensions, 50);
         setTimeout(updateDimensions, 100);
-        
+
         // Stage 3: Reveal component but keep animations frozen
         setTimeout(() => {
           setIsOrientationChanging(false);
-          
+
           // Stage 4: Wait much longer before unfreezing animations
           setTimeout(() => {
             setIsTransitioning(false);
@@ -155,7 +155,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
     };
 
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
       if (orientationTimeoutRef.current) {
@@ -195,8 +195,8 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
   }, [upcomingEvents.length, isLaptop, isTablet]);
 
   // Enhanced spring options with better stability during orientation changes
-  const SPRING_OPTIONS = useMemo(() => ({ 
-    type: "spring", 
+  const SPRING_OPTIONS = useMemo(() => ({
+    type: "spring",
     stiffness: isTransitioning ? 100 : 200,  // Reduce stiffness during transitions
     damping: isTransitioning ? 30 : 20,      // Increase damping during transitions
     mass: 1,
@@ -210,7 +210,12 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
         <div className="max-w-7xl mx-auto px-4">
           {upcomingEvents.length <= 3 ? (
             /* Static Grid for 3 or fewer events */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            <div className={`grid gap-8 justify-items-center ${upcomingEvents.length === 1
+                ? 'grid-cols-1 justify-center'
+                : upcomingEvents.length === 2
+                  ? 'grid-cols-1 md:grid-cols-2 justify-center'
+                  : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+              }`}>
               {upcomingEvents.map((event) => (
                 <div
                   key={event._id}
@@ -247,12 +252,12 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
               <div className="flex gap-8 w-full">
                 <motion.div
                   className="flex gap-8"
-                  animate={{ 
-                    x: `${-(currentIndex * (100/3))}%`
+                  animate={{
+                    x: `${-(currentIndex * (100 / 3))}%`
                   }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  style={{ 
-                    width: `${upcomingEvents.length * (100/3)}%`
+                  style={{
+                    width: `${upcomingEvents.length * (100 / 3)}%`
                   }}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
@@ -287,17 +292,16 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   ))}
                 </motion.div>
               </div>
-              
+
               {/* Carousel Indicators */}
               <div className="flex justify-center mt-6 space-x-2">
                 {Array.from({ length: upcomingEvents.length }).map((_, index) => (
                   <button
                     key={index}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      currentIndex === index
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === index
                         ? 'bg-orange-500 dark:bg-orange-400'
                         : 'bg-gray-300 dark:bg-gray-600'
-                    }`}
+                      }`}
                     onClick={() => setCurrentIndex(index)}
                   />
                 ))}
@@ -309,8 +313,11 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
         /* Tablet: Clean 2-Image Carousel - Just like laptop but for 2 images */
         <div className="max-w-5xl mx-auto px-4">
           {upcomingEvents.length <= 2 ? (
-            /* Static 2-Column Grid for 1-2 events */
-            <div className="grid grid-cols-2 gap-8 justify-items-center">
+            /* Static Grid for 1-2 events */
+            <div className={`grid gap-8 justify-items-center ${upcomingEvents.length === 1
+                ? 'grid-cols-1 justify-center'
+                : 'grid-cols-2'
+              }`}>
               {upcomingEvents.map((event) => (
                 <div
                   key={event._id}
@@ -343,11 +350,11 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
               <div className="flex gap-8 w-full">
                 <motion.div
                   className="flex gap-8"
-                  animate={{ 
+                  animate={{
                     x: `${-(currentIndex * 50)}%`
                   }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  style={{ 
+                  style={{
                     width: `${upcomingEvents.length * 50}%`
                   }}
                   onMouseEnter={handleMouseEnter}
@@ -381,17 +388,16 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   ))}
                 </motion.div>
               </div>
-              
+
               {/* Carousel Indicators */}
               <div className="flex justify-center mt-6 space-x-2">
                 {Array.from({ length: upcomingEvents.length }).map((_, index) => (
                   <button
                     key={index}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      currentIndex === index
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === index
                         ? 'bg-orange-500 dark:bg-orange-400'
                         : 'bg-gray-300 dark:bg-gray-600'
-                    }`}
+                      }`}
                     onClick={() => setCurrentIndex(index)}
                   />
                 ))}
@@ -403,15 +409,14 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
         /* Mobile/Tablet: Carousel Layout */
         <div
           ref={carouselRef}
-          className={`relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900 ${
-            isOrientationChanging ? 'orientation-change-active' : ''
-          }`}
+          className={`relative w-full max-w-6xl mx-auto overflow-hidden bg-white dark:bg-gray-900 ${isOrientationChanging ? 'orientation-change-active' : ''
+            }`}
         >
           {/* Use regular div instead of motion.div during orientation changes */}
           {isOrientationChanging || isTransitioning ? (
             <div
               className="flex w-full bg-white dark:bg-gray-900"
-              style={{ 
+              style={{
                 width: '100%',
                 transform: 'translateX(0px)',
                 transition: 'none'
@@ -421,10 +426,10 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                 <div
                   key={event._id}
                   className="relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl transition-none"
-                  style={{ 
+                  style={{
                     width: containerWidth > 0 ? (
-                      isMobile && isLandscape 
-                        ? `${containerWidth / 2}px` 
+                      isMobile && isLandscape
+                        ? `${containerWidth / 2}px`
                         : `${containerWidth}px`
                     ) : '100%',
                     transform: 'scale(1)',
@@ -458,16 +463,16 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
             <motion.div
               key={`carousel-${containerWidth}-${isLandscape ? 'landscape' : 'portrait'}`}
               className="flex w-full bg-white dark:bg-gray-900"
-              animate={{ 
-                x: isMobile && isLandscape 
-                  ? -(currentIndex * (containerWidth / 2)) 
-                  : -(currentIndex * containerWidth) 
+              animate={{
+                x: isMobile && isLandscape
+                  ? -(currentIndex * (containerWidth / 2))
+                  : -(currentIndex * containerWidth)
               }}
               transition={SPRING_OPTIONS}
-              style={{ 
+              style={{
                 width: containerWidth > 0 ? (
-                  isMobile && isLandscape 
-                    ? `${upcomingEvents.length * (containerWidth / 2)}px` 
+                  isMobile && isLandscape
+                    ? `${upcomingEvents.length * (containerWidth / 2)}px`
                     : `${upcomingEvents.length * containerWidth}px`
                 ) : '100%'
               }}
@@ -476,10 +481,10 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                 <motion.div
                   key={event._id}
                   className="relative shrink-0 flex flex-col items-center cursor-pointer py-1 px-0 sm:p-6 bg-white dark:bg-gray-900 shadow-xl rounded-xl"
-                  style={{ 
+                  style={{
                     width: containerWidth > 0 ? (
-                      isMobile && isLandscape 
-                        ? `${containerWidth / 2}px` 
+                      isMobile && isLandscape
+                        ? `${containerWidth / 2}px`
                         : `${containerWidth}px`
                     ) : '100%'
                   }}
