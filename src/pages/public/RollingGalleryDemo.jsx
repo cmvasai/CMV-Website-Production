@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import RollingGallery from '../components/RollingGallery';
+import RollingGallery from '../../components/RollingGallery';
 
 // Demo images - you can replace these with your actual event images
 const DEMO_EVENTS = [
