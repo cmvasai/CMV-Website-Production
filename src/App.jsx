@@ -42,6 +42,7 @@ const AddArchivedEvent = lazy(() => import('./pages/admin/AddArchivedEvent'));
 const EditArchivedEvent = lazy(() => import('./pages/admin/EditArchivedEvent'));
 const ManageArchivedEvents = lazy(() => import('./pages/admin/ManageArchivedEvents'));
 const ManageDonations = lazy(() => import('./pages/admin/ManageDonations'));
+const ManageCGCCRegistrations = lazy(() => import('./pages/admin/ManageCGCCRegistrations'));
 
 // WhatsApp Floating Button Component
 
@@ -280,6 +281,16 @@ function App() {
                     element={
                       adminLoggedIn ? (
                         <ManageDonations />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
+                    path="/admin/cgcc-registrations"
+                    element={
+                      adminLoggedIn ? (
+                        <ManageCGCCRegistrations />
                       ) : (
                         <Navigate to="/admin/login" />
                       )

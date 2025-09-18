@@ -6,6 +6,7 @@ import { scrollToTop } from "../scrollUtils";
 export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [shouldReset, setShouldReset] = useState(false);
   const navigate = useNavigate();
   const x = useMotionValue(0);
 
@@ -19,17 +20,37 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
     }
   }, [autoplay, autoplayDelay, items.length, isDragging]);
 
+  // Reset position after index change
+  useEffect(() => {
+    if (!isDragging) {
+      x.set(0);
+      setShouldReset(true);
+      const timer = setTimeout(() => setShouldReset(false), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, isDragging, x]);
+
   const handleDragEnd = useCallback((_, info) => {
     const threshold = 50;
+    let indexChanged = false;
+    
     if (Math.abs(info.offset.x) > threshold) {
       if (info.offset.x > 0) {
         setCurrentIndex(prev => (prev - 1 + items.length) % items.length);
+        indexChanged = true;
       } else {
         setCurrentIndex(prev => (prev + 1) % items.length);
+        indexChanged = true;
       }
     }
-    x.set(0);
+    
     setIsDragging(false);
+    
+    // Force reset to center with a slight delay
+    setTimeout(() => {
+      x.set(0);
+    }, indexChanged ? 50 : 0);
+    
   }, [items.length, x]);
 
   const handleCardClick = useCallback((index) => {
@@ -77,7 +98,7 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
   };
 
   return (
-    <div className="relative w-full h-[55vh] sm:h-[60vh] md:h-[65vh] bg-white dark:bg-gray-900 overflow-hidden">
+    <div className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh] bg-white dark:bg-gray-900 overflow-hidden">
       {/* Subtle background pattern - matches your site */}
       <div className="absolute inset-0">
         {/* Light theme: subtle orange pattern */}
@@ -97,19 +118,22 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
         />
       </div>
 
-      {/* 3D Card Container - Start at top, tightened bottom spacing */}
+      {/* 3D Card Container - Better vertical centering */}
       <div 
-        className="absolute top-0 bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex items-start justify-center px-2 sm:px-4 pt-2 sm:pt-3 md:pt-4"
+        className="absolute top-0 bottom-6 sm:bottom-8 md:bottom-10 left-0 right-0 flex items-center justify-center px-1 sm:px-2 md:px-4"
         style={{ perspective: '1200px' }}
       >
         <motion.div
-          className="relative w-full h-full flex items-start justify-center"
+          className="relative w-full h-full flex items-center justify-center"
           drag="x"
-          dragConstraints={{ left: -100, right: 100 }}
-          dragElastic={0.1}
+          dragConstraints={{ left: -80, right: 80 }}
+          dragElastic={0.3}
+          dragMomentum={false}
           onDragStart={() => setIsDragging(true)}
           onDragEnd={handleDragEnd}
           style={{ x }}
+          animate={{ x: isDragging ? undefined : 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25, duration: 0.5 }}
         >
           <AnimatePresence mode="sync">
             {items.map((item, index) => {
@@ -122,14 +146,14 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
                     className={`absolute cursor-pointer ${isDragging ? 'cursor-grabbing' : 'cursor-pointer'}`}
                     style={{
                       left: '50%',
-                      top: '0%',
-                      transform,
+                      top: '50%',
+                      transform: `translateY(-50%) ${transform}`,
                       zIndex,
                       opacity,
                       transformStyle: 'preserve-3d'
                     }}
                     animate={{
-                      transform,
+                      transform: `translateY(-50%) ${transform}`,
                       opacity,
                     }}
                     transition={{
@@ -147,23 +171,23 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
                       transition: { duration: 0.3 }
                     }}
                   >
-                    {/* Properly proportioned cards - not stretched */}
+                    {/* Properly proportioned cards - mobile optimized, no extra space */}
                     <div 
-                      className={`relative overflow-hidden transition-all duration-500 ${
+                      className={`relative overflow-hidden transition-all duration-500 flex flex-col ${
                         isCenter 
-                          ? 'w-72 sm:w-80 md:w-96 lg:w-[420px] xl:w-[460px] h-[20rem] sm:h-[22rem] md:h-[24rem] lg:h-[26rem] xl:h-[28rem] bg-white dark:bg-gray-900' 
-                          : 'w-56 sm:w-64 md:w-80 lg:w-96 xl:w-[420px] h-[16rem] sm:h-[18rem] md:h-[20rem] lg:h-[22rem] xl:h-[24rem] bg-white dark:bg-gray-900'
-                      } rounded-xl sm:rounded-2xl shadow-2xl dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)]`}
+                          ? 'w-64 sm:w-80 md:w-96 lg:w-[420px] xl:w-[460px] h-[16rem] sm:h-[20rem] md:h-[22rem] lg:h-[24rem] xl:h-[26rem] bg-white dark:bg-gray-900' 
+                          : 'w-48 sm:w-64 md:w-80 lg:w-96 xl:w-[420px] h-[12rem] sm:h-[16rem] md:h-[18rem] lg:h-[20rem] xl:h-[22rem] bg-white dark:bg-gray-900'
+                      } rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)]`}
                     >
                       {/* Subtle border for center card - using your orange theme */}
                       {isCenter && (
                         <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-orange-400 rounded-xl sm:rounded-2xl opacity-30 blur-sm" />
                       )}
                       
-                      {/* Card content */}
-                      <div className={`relative w-full h-full bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700`}>
-                        {/* Image Section - reasonable proportions */}
-                        <div className={`relative overflow-hidden ${isCenter ? 'h-32 sm:h-36 md:h-40 lg:h-44 xl:h-48' : 'h-28 sm:h-32 md:h-36 lg:h-40 xl:h-44'}`}>
+                      {/* Card content - flex layout to eliminate gaps */}
+                      <div className={`relative w-full h-full bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col`}>
+                        {/* Image Section - larger for mobile, less text space */}
+                        <div className={`relative overflow-hidden flex-shrink-0 ${isCenter ? 'h-28 sm:h-36 md:h-40 lg:h-44 xl:h-48' : 'h-24 sm:h-32 md:h-36 lg:h-40 xl:h-44'}`}>
                           <img
                             src={item.image}
                             alt={item.title}
@@ -183,15 +207,15 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
                           )}
                         </div>
                         
-                        {/* Content Section - compact and balanced */}
-                        <div className={`${isCenter ? 'p-3 sm:p-4 md:p-5 pb-2 sm:pb-3 md:pb-4' : 'p-2 sm:p-3 md:p-4'} bg-white dark:bg-gray-900`}>
-                          <h3 className={`font-bold text-gray-900 dark:text-white mb-1 sm:mb-2 line-clamp-2 ${
-                            isCenter ? 'text-sm sm:text-base md:text-lg lg:text-xl' : 'text-xs sm:text-sm md:text-base lg:text-lg'
+                        {/* Content Section - flex-1 to fill remaining space exactly */}
+                        <div className={`flex-1 flex flex-col justify-start ${isCenter ? 'p-2 sm:p-3 md:p-4 lg:p-5' : 'p-1.5 sm:p-2 md:p-3 lg:p-4'} bg-white dark:bg-gray-900`}>
+                          <h3 className={`font-bold text-gray-900 dark:text-white mb-0.5 sm:mb-1 line-clamp-1 sm:line-clamp-2 ${
+                            isCenter ? 'text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl' : 'text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg'
                           }`}>
                             {item.title}
                           </h3>
-                          <p className={`text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2 sm:line-clamp-3 ${
-                            isCenter ? 'text-xs sm:text-sm md:text-base' : 'text-xs sm:text-xs md:text-sm'
+                          <p className={`text-gray-600 dark:text-gray-300 leading-tight line-clamp-1 sm:line-clamp-2 ${
+                            isCenter ? 'text-xs sm:text-xs md:text-sm lg:text-base' : 'text-xs sm:text-xs md:text-xs lg:text-sm'
                           }`}>
                             {item.description}
                           </p>
@@ -232,6 +256,12 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
       </div>
 
       <style jsx>{`
+        .line-clamp-1 {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
         .line-clamp-2 {
           display: -webkit-box;
           -webkit-line-clamp: 2;

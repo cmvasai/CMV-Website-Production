@@ -113,6 +113,19 @@ const RollingGallery = ({
     }
   };
 
+  // Helper: gently increase the image dimensions so images appear larger in the faces
+  const parsePx = (val) => {
+    if (typeof val === 'number') return val;
+    if (typeof val === 'string') {
+      const m = val.match(/^(\d+)(?:px)?$/);
+      if (m) return parseInt(m[1], 10);
+    }
+    return 0;
+  };
+
+  const adjustedImageHeight = `${parsePx(imageHeight) + 40}px`; // make images a bit taller
+  const adjustedImageWidth = `${parsePx(imageWidth) + 60}px`; // make images a bit wider
+
   return (
     <div className="relative w-full overflow-hidden" style={{ height }}>
       {/* Left gradient fade */}
@@ -157,7 +170,7 @@ const RollingGallery = ({
             return (
               <div
                 key={i}
-                className="group absolute flex h-fit items-center justify-center p-[8%] [backface-visibility:hidden] md:p-[6%]"
+                className="group absolute flex h-fit items-center justify-center p-2 md:p-3 [backface-visibility:hidden]"
                 style={{
                   width: `${faceWidth}px`,
                   transform: `rotateY(${(360 / faceCount) * i}deg) translateZ(${radius}px)`,
@@ -170,12 +183,10 @@ const RollingGallery = ({
                   <img
                     src={imageUrl}
                     alt={imageName}
-                    className="pointer-events-none rounded-[15px] border-[3px] object-cover
-                               transition-transform duration-300 ease-out group-hover:scale-105
-                               sm:h-[100px] sm:w-[220px]"
+                    className="pointer-events-none rounded-[12px] border-[3px] object-cover transition-transform duration-300 ease-out group-hover:scale-105"
                     style={{
-                      height: isScreenSizeSm ? "100px" : imageHeight,
-                      width: isScreenSizeSm ? "220px" : imageWidth,
+                      height: isScreenSizeSm ? `${Math.max(parsePx(imageHeight), 120)}px` : adjustedImageHeight,
+                      width: isScreenSizeSm ? `${Math.max(parsePx(imageWidth), 220)}px` : adjustedImageWidth,
                       borderColor: borderColor,
                     }}
                     loading="lazy"
@@ -183,7 +194,7 @@ const RollingGallery = ({
                   
                   {/* Optional overlay with image name */}
                   {typeof image === 'object' && image.name && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 rounded-b-[12px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-1 rounded-b-[8px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       <p className="text-white text-xs text-center font-medium truncate">
                         {image.name}
                       </p>

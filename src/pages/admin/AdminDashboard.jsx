@@ -5,6 +5,7 @@ import { scrollToTop } from '../../utils/scrollUtils';
 
 const AdminDashboard = () => {
   const [isExporting, setIsExporting] = useState(false);
+  const [isExportingCGCC, setIsExportingCGCC] = useState(false);
 
   async function handleExportClick() {
     try {
@@ -29,6 +30,33 @@ const AdminDashboard = () => {
       alert("Failed to export user data. Please try again.");
     } finally {
       setIsExporting(false);
+    }
+  }
+
+  async function handleExportCGCCClick() {
+    try {
+      setIsExportingCGCC(true);
+      
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/cgcc2025/export-csv`, {
+        responseType: 'blob'
+      });
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `cgcc2025-registrations-${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      alert("CGCC registrations have been exported successfully");
+    } catch (error) {
+      console.error("Error exporting CGCC registrations:", error);
+      alert("Failed to export CGCC registrations. Please try again.");
+    } finally {
+      setIsExportingCGCC(false);
     }
   }
 
@@ -76,12 +104,26 @@ const AdminDashboard = () => {
           >
             Manage Donations
           </Link>
+          <Link
+            to="/admin/cgcc-registrations"
+            onClick={handleAdminNavClick}
+            className="block text-center bg-purple-500 text-white p-2 rounded-lg hover:bg-purple-600 w-full"
+          >
+            Manage CGCC Registrations
+          </Link>
           <button 
             className="block text-center bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 w-full"
             onClick={handleExportClick}
             disabled={isExporting}
           >
             {isExporting ? "Exporting..." : "Export User Data"}
+          </button>
+          <button 
+            className="block text-center bg-purple-500 text-white p-2 rounded-lg hover:bg-purple-600 w-full"
+            onClick={handleExportCGCCClick}
+            disabled={isExportingCGCC}
+          >
+            {isExportingCGCC ? "Exporting..." : "Export CGCC Registrations"}
           </button>
         </div>
       </div>
