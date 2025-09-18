@@ -71,34 +71,34 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
     let opacity = 1;
     
     if (position === 0) {
-      // Center card - much larger and prominent
-      transform = "translateX(-50%) translateZ(100px) rotateY(0deg) scale(1.0)";
+      // Center card - larger and more prominent on mobile
+      transform = "translateX(-50%) translateZ(120px) rotateY(0deg) scale(1.0)";
       zIndex = 30;
       opacity = 1;
     } else if (position === 1 || position === -1) {
-      // Adjacent cards - visible but smaller
+      // Adjacent cards - closer for mobile view
       const side = position === 1 ? 1 : -1;
-      transform = `translateX(-50%) translateX(${side * 360}px) translateZ(-60px) rotateY(${-side * 25}deg) scale(0.8)`;
+      transform = `translateX(-50%) translateX(${side * 320}px) translateZ(-40px) rotateY(${-side * 20}deg) scale(0.85)`;
       zIndex = 20;
-      opacity = 0.85;
+      opacity = 0.9;
     } else if (position === 2 || position === -2) {
-      // Far cards - more distant
+      // Far cards - still visible but more distant
       const side = position === 2 ? 1 : -1;
-      transform = `translateX(-50%) translateX(${side * 540}px) translateZ(-120px) rotateY(${-side * 40}deg) scale(0.65)`;
+      transform = `translateX(-50%) translateX(${side * 480}px) translateZ(-100px) rotateY(${-side * 35}deg) scale(0.7)`;
       zIndex = 15;
-      opacity = 0.6;
+      opacity = 0.7;
     } else {
       // Hidden cards
-      transform = `translateX(-50%) translateX(${position > 0 ? 720 : -720}px) translateZ(-180px) rotateY(${position > 0 ? -55 : 55}deg) scale(0.5)`;
+      transform = `translateX(-50%) translateX(${position > 0 ? 640 : -640}px) translateZ(-160px) rotateY(${position > 0 ? -50 : 50}deg) scale(0.6)`;
       zIndex = 5;
-      opacity = 0.3;
+      opacity = 0.4;
     }
     
     return { transform, zIndex, opacity };
   };
 
   return (
-    <div className="relative w-full h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh] bg-white dark:bg-gray-900 overflow-hidden">
+    <div className="relative w-full h-[55vh] sm:h-[60vh] md:h-[65vh] lg:h-[70vh] bg-white dark:bg-gray-900 overflow-hidden">
       {/* Subtle background pattern - matches your site */}
       <div className="absolute inset-0">
         {/* Light theme: subtle orange pattern */}
@@ -118,15 +118,15 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
         />
       </div>
 
-      {/* 3D Card Container - Better vertical centering */}
+      {/* 3D Card Container - Optimized for mobile, minimal padding */}
       <div 
-        className="absolute top-0 bottom-6 sm:bottom-8 md:bottom-10 left-0 right-0 flex items-center justify-center px-1 sm:px-2 md:px-4"
+        className="absolute top-0 bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex items-center justify-center px-0 sm:px-1 md:px-2 lg:px-4"
         style={{ perspective: '1200px' }}
       >
         <motion.div
           className="relative w-full h-full flex items-center justify-center"
           drag="x"
-          dragConstraints={{ left: -80, right: 80 }}
+          dragConstraints={{ left: -100, right: 100 }}
           dragElastic={0.3}
           dragMomentum={false}
           onDragStart={() => setIsDragging(true)}
@@ -171,12 +171,12 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
                       transition: { duration: 0.3 }
                     }}
                   >
-                    {/* Properly proportioned cards - mobile optimized, no extra space */}
+                    {/* Larger mobile cards with better proportions */}
                     <div 
                       className={`relative overflow-hidden transition-all duration-500 flex flex-col ${
                         isCenter 
-                          ? 'w-64 sm:w-80 md:w-96 lg:w-[420px] xl:w-[460px] h-[16rem] sm:h-[20rem] md:h-[22rem] lg:h-[24rem] xl:h-[26rem] bg-white dark:bg-gray-900' 
-                          : 'w-48 sm:w-64 md:w-80 lg:w-96 xl:w-[420px] h-[12rem] sm:h-[16rem] md:h-[18rem] lg:h-[20rem] xl:h-[22rem] bg-white dark:bg-gray-900'
+                          ? 'w-80 sm:w-88 md:w-96 lg:w-[420px] xl:w-[460px] h-[20rem] sm:h-[22rem] md:h-[24rem] lg:h-[26rem] xl:h-[28rem] bg-white dark:bg-gray-900' 
+                          : 'w-60 sm:w-72 md:w-80 lg:w-96 xl:w-[420px] h-[16rem] sm:h-[18rem] md:h-[20rem] lg:h-[22rem] xl:h-[24rem] bg-white dark:bg-gray-900'
                       } rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)]`}
                     >
                       {/* Subtle border for center card - using your orange theme */}
@@ -186,8 +186,8 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
                       
                       {/* Card content - flex layout to eliminate gaps */}
                       <div className={`relative w-full h-full bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col`}>
-                        {/* Image Section - larger for mobile, less text space */}
-                        <div className={`relative overflow-hidden flex-shrink-0 ${isCenter ? 'h-28 sm:h-36 md:h-40 lg:h-44 xl:h-48' : 'h-24 sm:h-32 md:h-36 lg:h-40 xl:h-44'}`}>
+                        {/* Image Section - larger images for better visibility */}
+                        <div className={`relative overflow-hidden flex-shrink-0 ${isCenter ? 'h-32 sm:h-40 md:h-44 lg:h-48 xl:h-52' : 'h-28 sm:h-36 md:h-40 lg:h-44 xl:h-48'}`}>
                           <img
                             src={item.image}
                             alt={item.title}
@@ -207,15 +207,15 @@ export default function Carousel({ items, autoplay = true, autoplayDelay = 4000 
                           )}
                         </div>
                         
-                        {/* Content Section - flex-1 to fill remaining space exactly */}
-                        <div className={`flex-1 flex flex-col justify-start ${isCenter ? 'p-2 sm:p-3 md:p-4 lg:p-5' : 'p-1.5 sm:p-2 md:p-3 lg:p-4'} bg-white dark:bg-gray-900`}>
-                          <h3 className={`font-bold text-gray-900 dark:text-white mb-0.5 sm:mb-1 line-clamp-1 sm:line-clamp-2 ${
-                            isCenter ? 'text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl' : 'text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg'
+                        {/* Content Section - better proportions for mobile */}
+                        <div className={`flex-1 flex flex-col justify-start ${isCenter ? 'p-3 sm:p-4 md:p-5 lg:p-6' : 'p-2 sm:p-3 md:p-4 lg:p-5'} bg-white dark:bg-gray-900`}>
+                          <h3 className={`font-bold text-gray-900 dark:text-white mb-1 sm:mb-1.5 line-clamp-2 ${
+                            isCenter ? 'text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl' : 'text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl'
                           }`}>
                             {item.title}
                           </h3>
-                          <p className={`text-gray-600 dark:text-gray-300 leading-tight line-clamp-1 sm:line-clamp-2 ${
-                            isCenter ? 'text-xs sm:text-xs md:text-sm lg:text-base' : 'text-xs sm:text-xs md:text-xs lg:text-sm'
+                          <p className={`text-gray-600 dark:text-gray-300 leading-tight line-clamp-2 ${
+                            isCenter ? 'text-xs sm:text-sm md:text-base lg:text-lg' : 'text-xs sm:text-xs md:text-sm lg:text-base'
                           }`}>
                             {item.description}
                           </p>
