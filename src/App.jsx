@@ -29,6 +29,7 @@ const OurPledge = lazy(() => import('./pages/public/OurPledge'));
 const ArchivedEvents = lazy(() => import('./pages/public/ArchivedEvents'));
 const ArchivedEventDetails = lazy(() => import('./pages/public/ArchivedEventDetails'));
 const Donate = lazy(() => import('./pages/public/Donate'));
+const DonationResult = lazy(() => import('./pages/public/DonationResult'));
 const RegisterCGCC2025 = lazy(() => import('./pages/public/RegisterCGCC2025'));
 const RollingGalleryDemo = lazy(() => import('./pages/public/RollingGalleryDemo'));
 const NotFound = lazy(() => import('./pages/public/NotFound'));
@@ -239,6 +240,9 @@ function App() {
                   <Route path="/contact-us" element={<ContactUs />} />
                   <Route path="/volunteer" element={<Volunteer />} />
                   <Route path="/donate" element={<Donate />} />
+                  {/* Payment result routes - both paths supported for backward compatibility */}
+                  <Route path="/donation/result" element={<DonationResult />} />
+                  <Route path="/payment-result" element={<DonationResult />} />
                   <Route path="/register/cgcc2025" element={<RegisterCGCC2025 />} />
                   <Route path="/demo/3d-gallery" element={<RollingGalleryDemo />} />
                   <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
