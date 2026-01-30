@@ -1,9 +1,10 @@
 /**
  * Donate Page - Mswipe Payment Gateway Integration
  * 
- * This component handles the donation form and initiates payment via backend.
+ * PRODUCTION MODE (isProduction = true): Shows the Mswipe payment gateway form
+ * NON-PRODUCTION MODE (isProduction = false): Shows "Contact Us for Donations" page
  * 
- * PAYMENT FLOW:
+ * PAYMENT FLOW (Mswipe - Production only):
  * 1. User fills donation form (name, email, phone, amount, etc.)
  * 2. On submit, frontend calls POST /api/mswipe/initiate with donor details
  * 3. Backend creates payment session and returns { paymentUrl: "..." }
@@ -19,10 +20,18 @@
  */
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FaHeart, FaUser, FaEnvelope, FaPhone, FaIdCard, FaMapMarkerAlt, FaRupeeSign, FaFileAlt, FaCheckSquare } from 'react-icons/fa';
 import { initiateDonation } from '../../services/donationService';
 
-const Donate = () => {
+// ============================================================
+// PRODUCTION FLAG - Set to true to enable Mswipe donation form
+// When false: Shows "Contact Us for Donations" page
+// When true: Shows the Mswipe payment gateway form
+// ============================================================
+const isProduction = false;
+
+const DonateMswipe = () => {
   // Form state - simplified for Mswipe flow (no transactionId)
   const [formData, setFormData] = useState({
     fullName: '',
@@ -509,6 +518,117 @@ const Donate = () => {
       </div>
     </div>
   );
+};
+
+/**
+ * Contact Us For Donations Component
+ * Shown when isProduction is false
+ * Displays a friendly message directing users to contact the organization
+ */
+const ContactForDonations = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-20 pb-12 px-4">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mb-6 shadow-xl">
+            <FaHeart className="text-white text-3xl" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">
+            Support Our Mission
+          </h1>
+        </div>
+
+        {/* Main Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
+          {/* Decorative Header */}
+          <div className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 py-6 px-8">
+            <h2 className="text-2xl font-bold text-white text-center">
+              Contact Us for Donations
+            </h2>
+          </div>
+
+          {/* Content */}
+          <div className="p-8 md:p-12 text-center">
+            {/* Icon */}
+            <div className="mb-8">
+              <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30 rounded-full">
+                <FaEnvelope className="text-orange-500 text-4xl" />
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className="mb-8 space-y-4">
+              <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                We're currently setting up our online donation portal. In the meantime, please reach out to us directly for donation inquiries.
+              </p>
+              <p className="text-gray-600 dark:text-gray-400">
+                Our team will be happy to assist you and provide donation details.
+              </p>
+            </div>
+
+            {/* Features */}
+            <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-700/50 dark:to-gray-600/50 rounded-2xl p-6 mb-8">
+              <h3 className="font-semibold text-gray-800 dark:text-white mb-4">Your Donations Help Us:</h3>
+              <ul className="text-left space-y-3 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 mt-1">✓</span>
+                  <span>Organize spiritual programs and events</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 mt-1">✓</span>
+                  <span>Support community welfare activities</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 mt-1">✓</span>
+                  <span>Maintain and develop our facilities</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* 80G Info */}
+            <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 mb-8 border border-green-200 dark:border-green-800">
+              <p className="text-green-700 dark:text-green-300 text-sm">
+                <strong>Tax Benefits:</strong> All donations are eligible for 80G tax exemption under the Income Tax Act.
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            <Link
+              to="/contact-us"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-10 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 text-lg"
+            >
+              <FaEnvelope className="text-xl" />
+              Contact Us
+            </Link>
+
+            {/* Additional Info */}
+            <p className="mt-6 text-gray-500 dark:text-gray-400 text-sm">
+              We typically respond within 24 hours
+            </p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Donate Component - Routes to appropriate donation page based on production flag
+ * 
+ * isProduction = true:  Shows Mswipe Payment Gateway page
+ * isProduction = false: Shows Contact Us for Donations page
+ */
+const Donate = () => {
+  // In production mode, show the Mswipe payment form
+  if (isProduction) {
+    return <DonateMswipe />;
+  }
+  
+  // When not in production, show contact us for donations page
+  return <ContactForDonations />;
 };
 
 export default Donate;

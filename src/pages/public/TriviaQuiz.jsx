@@ -72,6 +72,13 @@ const translations = {
     quizSubmitted: 'Quiz submitted successfully!',
     networkError: 'Network error. Please try again.',
     loadFailed: 'Failed to load questions. Please try again.',
+    
+    // Phone Call OTP Modal
+    otpViaCall: 'OTP via Phone Call',
+    otpCallInfo: 'You will receive a phone call in a few seconds.',
+    otpCallInstructions: 'Please answer the call and listen carefully to the OTP.',
+    otpCallNote: 'Enter the OTP you hear in the text field below.',
+    gotIt: 'Got it!',
   },
   hi: {
     // Registration Screen
@@ -131,6 +138,13 @@ const translations = {
     quizSubmitted: 'प्रश्नोत्तरी सफलतापूर्वक जमा हो गई!',
     networkError: 'नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।',
     loadFailed: 'प्रश्न लोड करने में विफल। कृपया पुनः प्रयास करें।',
+    
+    // Phone Call OTP Modal
+    otpViaCall: 'फोन कॉल द्वारा OTP',
+    otpCallInfo: 'आपको कुछ ही सेकंड में फोन कॉल प्राप्त होगी।',
+    otpCallInstructions: 'कृपया कॉल का जवाब दें और OTP ध्यान से सुनें।',
+    otpCallNote: 'जो OTP आप सुनें उसे नीचे दिए गए टेक्स्ट फील्ड में दर्ज करें।',
+    gotIt: 'समझ गया!',
   }
 };
 
@@ -162,6 +176,7 @@ const TriviaQuiz = () => {
   // UI state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showOtpCallModal, setShowOtpCallModal] = useState(false);
 
   // Toggle language
   const toggleLanguage = () => {
@@ -231,7 +246,8 @@ const TriviaQuiz = () => {
         } else {
           // Default: Go to OTP screen (OTP was sent or needs to be verified)
           setCooldownSeconds(data.data?.cooldownSeconds || 60);
-          showToast(t.otpSent, 'success');
+          // Show phone call OTP modal before going to OTP screen
+          setShowOtpCallModal(true);
           setCurrentScreen(SCREENS.OTP);
         }
       } else {
@@ -302,7 +318,8 @@ const TriviaQuiz = () => {
 
       if (data.success) {
         setCooldownSeconds(60);
-        showToast(t.otpResent, 'success');
+        // Show phone call OTP modal again
+        setShowOtpCallModal(true);
       } else {
         if (data.remainingSeconds) {
           setCooldownSeconds(data.remainingSeconds);
@@ -386,6 +403,69 @@ const TriviaQuiz = () => {
       </span>
     </button>
   );
+
+  // Phone Call OTP Modal - Informs user about receiving OTP via phone call
+  const OtpCallModal = () => {
+    if (!showOtpCallModal) return null;
+    
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-fade-in">
+          {/* Phone Icon */}
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center animate-pulse">
+              <FaPhone className="text-3xl text-white" />
+            </div>
+          </div>
+          
+          {/* Title */}
+          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-4">
+            {t.otpViaCall}
+          </h3>
+          
+          {/* Instructions */}
+          <div className="space-y-4 mb-6">
+            <div className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <span className="text-2xl">📞</span>
+              <p className="text-gray-700 dark:text-gray-300">
+                {t.otpCallInfo}
+              </p>
+            </div>
+            
+            <div className="flex items-start gap-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+              <span className="text-2xl">👂</span>
+              <p className="text-gray-700 dark:text-gray-300">
+                {t.otpCallInstructions}
+              </p>
+            </div>
+            
+            <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <span className="text-2xl">✍️</span>
+              <p className="text-gray-700 dark:text-gray-300">
+                {t.otpCallNote}
+              </p>
+            </div>
+          </div>
+          
+          {/* Phone Number Display */}
+          <div className="text-center mb-6 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Calling:</p>
+            <p className="text-xl font-mono font-bold text-[#BC3612] dark:text-orange-400">
+              +91 {phoneNumber}
+            </p>
+          </div>
+          
+          {/* Got It Button */}
+          <button
+            onClick={() => setShowOtpCallModal(false)}
+            className="w-full bg-gradient-to-r from-[#BC3612] to-orange-500 hover:from-orange-500 hover:to-[#BC3612] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02]"
+          >
+            {t.gotIt}
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   // Registration Screen
   const renderRegisterScreen = () => (
@@ -810,6 +890,9 @@ const TriviaQuiz = () => {
 
       {/* Language Toggle */}
       <LanguageToggle />
+      
+      {/* Phone Call OTP Modal */}
+      <OtpCallModal />
 
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4">
         <div className="max-w-lg mx-auto">
