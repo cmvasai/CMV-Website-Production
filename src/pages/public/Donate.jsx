@@ -29,7 +29,7 @@ import { initiateDonation } from '../../services/donationService';
 // When false: Shows "Contact Us for Donations" page
 // When true: Shows the Mswipe payment gateway form
 // ============================================================
-const isProduction = false;
+const isProduction = true;
 
 const DonateMswipe = () => {
   // Form state - simplified for Mswipe flow (no transactionId)
