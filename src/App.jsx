@@ -32,6 +32,7 @@ const Donate = lazy(() => import('./pages/public/Donate'));
 const DonationResult = lazy(() => import('./pages/public/DonationResult'));
 const RegisterCGCC2025 = lazy(() => import('./pages/public/RegisterCGCC2025'));
 const RollingGalleryDemo = lazy(() => import('./pages/public/RollingGalleryDemo'));
+const TriviaQuiz = lazy(() => import('./pages/public/TriviaQuiz'));
 const NotFound = lazy(() => import('./pages/public/NotFound'));
 
 // Admin components - lazy loaded
@@ -244,6 +245,7 @@ function App() {
                   <Route path="/donation/result" element={<DonationResult />} />
                   <Route path="/payment-result" element={<DonationResult />} />
                   <Route path="/register/cgcc2025" element={<RegisterCGCC2025 />} />
+                  <Route path="/trivia" element={<TriviaQuiz />} />
                   <Route path="/demo/3d-gallery" element={<RollingGalleryDemo />} />
                   <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
                   <Route path="/events/:id" element={<EventDetails featuredEvents={featuredEvents} />} />
