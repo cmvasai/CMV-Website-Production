@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaUser, FaPhone, FaSpinner, FaCheckCircle, FaTimesCircle, FaArrowLeft, FaArrowRight, FaRedo, FaGlobe } from 'react-icons/fa';
 import { showToast } from '../../components/Toast';
@@ -58,6 +59,14 @@ const translations = {
     thankYou: 'Thank you for participating in the',
     quizName: 'Chinmaya Amrit Mahotsav Trivia Quiz!',
     startNew: 'Start New Quiz (Different User)',
+    
+    // Winner Announcement Modal
+    congratulations: 'Quiz Completed!',
+    winnerAnnouncementTitle: 'Winners Announcement',
+    winnerAnnouncementMessage: 'Winners will be announced on',
+    shivaratri: 'Maha Shivaratri',
+    stayTuned: 'Stay tuned for the results!',
+    okGotIt: 'OK, Got it!',
     
     // Validation
     validName: 'Please enter a valid name (at least 2 characters)',
@@ -125,6 +134,14 @@ const translations = {
     quizName: 'चिन्मय अमृत महोत्सव प्रश्नोत्तरी!',
     startNew: 'नई प्रश्नोत्तरी शुरू करें (अलग उपयोगकर्ता)',
     
+    // Winner Announcement Modal
+    congratulations: 'प्रश्नोत्तरी पूर्ण!',
+    winnerAnnouncementTitle: 'विजेताओं की घोषणा',
+    winnerAnnouncementMessage: 'विजेताओं की घोषणा होगी',
+    shivaratri: 'महा शिवरात्रि',
+    stayTuned: 'परिणामों के लिए बने रहें!',
+    okGotIt: 'ठीक है, समझ गया!',
+    
     // Validation
     validName: 'कृपया एक वैध नाम दर्ज करें (कम से कम 2 अक्षर)',
     validPhone: 'कृपया एक वैध 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें',
@@ -152,6 +169,9 @@ const TriviaQuiz = () => {
   // Language state
   const [language, setLanguage] = useState('en');
   const t = translations[language];
+  
+  // Navigation
+  const navigate = useNavigate();
 
   // Screen state
   const [currentScreen, setCurrentScreen] = useState(SCREENS.REGISTER);
@@ -177,6 +197,7 @@ const TriviaQuiz = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showOtpCallModal, setShowOtpCallModal] = useState(false);
+  const [showWinnerAnnouncementModal, setShowWinnerAnnouncementModal] = useState(false);
 
   // Toggle language
   const toggleLanguage = () => {
@@ -359,6 +380,7 @@ const TriviaQuiz = () => {
       if (data.success) {
         setResults(data.data);
         showToast(t.quizSubmitted, 'success');
+        setShowWinnerAnnouncementModal(true);
         setCurrentScreen(SCREENS.RESULTS);
       } else {
         setError(data.message);
@@ -461,6 +483,57 @@ const TriviaQuiz = () => {
             className="w-full bg-gradient-to-r from-[#BC3612] to-orange-500 hover:from-orange-500 hover:to-[#BC3612] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02]"
           >
             {t.gotIt}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // Winner Announcement Modal - Shows after quiz completion
+  const WinnerAnnouncementModal = () => {
+    if (!showWinnerAnnouncementModal) return null;
+    
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-fade-in">
+          {/* Celebration Icon */}
+          <div className="flex justify-center mb-6">
+            <div className="w-24 h-24 bg-gradient-to-br from-[#BC3612] to-orange-500 rounded-full flex items-center justify-center">
+              <span className="text-5xl">🎊</span>
+            </div>
+          </div>
+          
+          {/* Title */}
+          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-2">
+            {t.congratulations}
+          </h3>
+          
+          {/* Main Message */}
+          <div className="text-center mb-6">
+            <div className="p-4 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl mb-4">
+              <p className="text-lg text-gray-700 dark:text-gray-300 mb-2">
+                {t.winnerAnnouncementMessage}
+              </p>
+              <p className="text-2xl font-bold text-[#BC3612] dark:text-orange-400 flex items-center justify-center gap-2">
+                <span>🔱</span>
+                {t.shivaratri}
+                <span>🔱</span>
+              </p>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 italic">
+              {t.stayTuned}
+            </p>
+          </div>
+          
+          {/* OK Button */}
+          <button
+            onClick={() => {
+              setShowWinnerAnnouncementModal(false);
+              navigate('/');
+            }}
+            className="w-full bg-gradient-to-r from-[#BC3612] to-orange-500 hover:from-orange-500 hover:to-[#BC3612] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02]"
+          >
+            {t.okGotIt}
           </button>
         </div>
       </div>
@@ -893,6 +966,9 @@ const TriviaQuiz = () => {
       
       {/* Phone Call OTP Modal */}
       <OtpCallModal />
+      
+      {/* Winner Announcement Modal */}
+      <WinnerAnnouncementModal />
 
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4">
         <div className="max-w-lg mx-auto">
