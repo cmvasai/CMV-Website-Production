@@ -98,6 +98,13 @@ const AdminDashboard = () => {
             Manage Archived Events
           </Link>
           <Link
+            to="/admin/resources"
+            onClick={handleAdminNavClick}
+            className="block text-center bg-orange-500 text-white p-2 rounded-lg hover:bg-orange-600 w-full"
+          >
+            Add New Resource
+          </Link>
+          <Link
             to="/admin/donations"
             onClick={handleAdminNavClick}
             className="block text-center bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 w-full"

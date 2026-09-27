@@ -177,7 +177,7 @@ const UpcomingEventsModal = ({ isOpen, onClose, event }) => {
             <div className="relative w-full">
               <img
                 src={event.image}
-                alt={event.name}
+                alt={event.eventName || event.name}
                 className="w-full max-h-[50vh] object-contain rounded-2xl"
                 style={{ backgroundColor: "rgb(241 245 249)" }}
               />
@@ -188,7 +188,7 @@ const UpcomingEventsModal = ({ isOpen, onClose, event }) => {
           <div className="p-4 md:p-6">
             {/* Name */}
             <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-              {event.name}
+              {event.eventName || event.name}
             </h2>
 
             {/* Description */}

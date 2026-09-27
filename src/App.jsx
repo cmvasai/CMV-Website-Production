@@ -33,6 +33,8 @@ const DonationResult = lazy(() => import('./pages/public/DonationResult'));
 const RegisterCGCC2025 = lazy(() => import('./pages/public/RegisterCGCC2025'));
 const RollingGalleryDemo = lazy(() => import('./pages/public/RollingGalleryDemo'));
 const TriviaQuiz = lazy(() => import('./pages/public/TriviaQuiz'));
+const Resources = lazy(() => import('./pages/public/Resources'));
+const ResourceDetails = lazy(() => import('./pages/public/ResourceDetails'));
 const NotFound = lazy(() => import('./pages/public/NotFound'));
 
 // Admin components - lazy loaded
@@ -46,6 +48,7 @@ const EditArchivedEvent = lazy(() => import('./pages/admin/EditArchivedEvent'));
 const ManageArchivedEvents = lazy(() => import('./pages/admin/ManageArchivedEvents'));
 const ManageDonations = lazy(() => import('./pages/admin/ManageDonations'));
 const ManageCGCCRegistrations = lazy(() => import('./pages/admin/ManageCGCCRegistrations'));
+const ManageResources = lazy(() => import('./pages/admin/ManageResources'));
 
 // WhatsApp Floating Button Component
 
@@ -246,6 +249,8 @@ function App() {
                   <Route path="/payment-result" element={<DonationResult />} />
                   <Route path="/register/cgcc2025" element={<RegisterCGCC2025 />} />
                   <Route path="/trivia" element={<TriviaQuiz />} />
+                  <Route path="/resources" element={<Resources />} />
+                  <Route path="/resources/:id" element={<ResourceDetails />} />
                   <Route path="/demo/3d-gallery" element={<RollingGalleryDemo />} />
                   <Route path="/events" element={<Events featuredEvents={featuredEvents} />} />
                   <Route path="/events/:id" element={<EventDetails featuredEvents={featuredEvents} />} />
@@ -305,6 +310,16 @@ function App() {
                     }
                   />
                   <Route
+                    path="/admin/resources"
+                    element={
+                      adminLoggedIn ? (
+                        <ManageResources />
+                      ) : (
+                        <Navigate to="/admin/login" />
+                      )
+                    }
+                  />
+                  <Route
                     path="/admin/edit-carousel"
                     element={
                       adminLoggedIn ? (
@@ -351,6 +366,7 @@ function App() {
               </Suspense>
             </main>
             <Footer />
+            <ToastContainer />
             <ScrollToTopButton />
             <WhatsAppButton />
           </Router>

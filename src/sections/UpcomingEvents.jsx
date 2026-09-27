@@ -225,7 +225,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   <div className="relative w-full rounded-lg overflow-hidden mb-6 group">
                     <OptimizedImage
                       src={event.image}
-                      alt={event.name}
+                      alt={event.eventName || event.name}
                       className="w-full h-80 bg-white dark:bg-gray-900"
                       objectFit="contain"
                       loading="lazy"
@@ -241,7 +241,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                     </div>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white text-center">
-                    {event.name}
+                    {event.eventName || event.name}
                   </h3>
                 </div>
               ))}
@@ -272,7 +272,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                       <div className="relative w-full rounded-lg overflow-hidden mb-6 group">
                         <img
                           src={event.image}
-                          alt={event.name}
+                          alt={event.eventName || event.name}
                           className="w-full h-80 object-contain bg-white dark:bg-gray-900"
                         />
                         {/* Hover Overlay */}
@@ -286,7 +286,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                         </div>
                       </div>
                       <h3 className="text-xl font-semibold text-gray-900 dark:text-white text-center">
-                        {event.name}
+                        {event.eventName || event.name}
                       </h3>
                     </div>
                   ))}
@@ -327,7 +327,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   <div className="relative w-full rounded-lg overflow-hidden mb-5 group">
                     <img
                       src={event.image}
-                      alt={event.name}
+                      alt={event.eventName || event.name}
                       className="w-full h-72 object-contain bg-white dark:bg-gray-900"
                     />
                     <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300" />
@@ -339,7 +339,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                     </div>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">
-                    {event.name}
+                    {event.eventName || event.name}
                   </h3>
                 </div>
               ))}
@@ -370,7 +370,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                       <div className="relative w-full rounded-lg overflow-hidden mb-5 group">
                         <img
                           src={event.image}
-                          alt={event.name}
+                          alt={event.eventName || event.name}
                           className="w-full h-72 object-contain bg-white dark:bg-gray-900"
                         />
                         <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300" />
@@ -382,7 +382,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                         </div>
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">
-                        {event.name}
+                        {event.eventName || event.name}
                       </h3>
                     </div>
                   ))}
@@ -442,7 +442,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   >
                     <img
                       src={event.image}
-                      alt={event.name}
+                      alt={event.eventName || event.name}
                       className="w-full h-88 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
                     />
                     <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-90">
@@ -453,7 +453,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                     </div>
                   </div>
                   <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
-                    {event.name}
+                    {event.eventName || event.name}
                   </h3>
                 </div>
               ))}
@@ -498,7 +498,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                   >
                     <img
                       src={event.image}
-                      alt={event.name}
+                      alt={event.eventName || event.name}
                       className="w-full h-88 sm:h-72 md:h-80 object-contain bg-white dark:bg-gray-900"
                     />
                     <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 group-hover:bg-orange-500 transition-opacity duration-300 hidden sm:block" />
@@ -516,7 +516,7 @@ export const UpcomingEvents = ({ upcomingEvents }) => {
                     </motion.div>
                   </div>
                   <h3 className="text-sm sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2 text-center">
-                    {event.name}
+                    {event.eventName || event.name}
                   </h3>
                 </motion.div>
               ))}
@@ -538,7 +538,8 @@ UpcomingEvents.propTypes = {
   upcomingEvents: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
+      eventName: PropTypes.string,
+      name: PropTypes.string,
       image: PropTypes.string.isRequired,
     })
   ).isRequired,

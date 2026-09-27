@@ -128,6 +128,7 @@ const Footer = () => {
             {openSections.resources && (
               <ul className="space-y-2 pb-4">
                 {[
+                  { name: "Study Resources", path: "/resources" },
                   { name: "Our Pledge", path: "/pledge" },
                   { name: "Archived Events", path: "/archived-events" },
                   { name: "Gallery", path: "/events" },
@@ -290,6 +291,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               {[
+                { name: "Study Resources", path: "/resources" },
                 { name: "Our Pledge", path: "/pledge" },
                 { name: "Archived Events", path: "/archived-events" },
                 { name: "Gallery", path: "/events" },
