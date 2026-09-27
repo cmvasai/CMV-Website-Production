@@ -131,7 +131,13 @@ const ManageResources = () => {
       alert('Resource folder created successfully.');
     } catch (err) {
       console.error('Error creating resource:', err);
-      alert(err.response?.data?.error || 'Failed to create resource. Check Cloudinary settings for audio/PDF uploads.');
+      const status = err.response?.status;
+      const apiMessage = err.response?.data?.error;
+      if (status === 413) {
+        alert('The file is too large for the server upload limit. Try a smaller file or refresh after the latest deploy.');
+      } else {
+        alert(apiMessage || err.message || 'Failed to create resource. Please try again.');
+      }
     } finally {
       setUploading(false);
       setStatus('');

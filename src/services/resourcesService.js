@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const CLOUDINARY_CLOUD_NAME = 'dnqi49qyr';
+const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
 
 const resourcesService = {
   async getAll(params = {}) {
@@ -40,27 +42,23 @@ const resourcesService = {
   },
 
   async uploadFile(file, fileType) {
-    const fileBase64 = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-    });
+    const resourceType = fileType === 'audio' ? 'video' : fileType === 'pdf' ? 'raw' : 'auto';
+    const publicId = file.name.replace(/\.[^/.]+$/, '').replace(/[^\w-]+/g, '_');
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formData.append('public_id', publicId);
 
     const response = await axios.post(
-      `${API_BASE_URL}/api/upload-file`,
-      {
-        fileBase64,
-        filename: file.name,
-        fileType,
-      },
-      { timeout: 120000 }
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
+      formData,
+      { timeout: 180000 }
     );
 
     return {
       name: file.name,
-      url: response.data.url,
-      publicId: response.data.publicId,
+      url: response.data.secure_url,
+      publicId: response.data.public_id,
       format: response.data.format,
       bytes: response.data.bytes,
     };
